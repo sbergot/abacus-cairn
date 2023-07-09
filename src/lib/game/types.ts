@@ -1,4 +1,4 @@
-import { AllChatMessage, Stamped } from "../network2/types";
+import { AllChatMessage, Stamped } from "../network/types";
 
 export interface LibraryElement {
   name: string;
