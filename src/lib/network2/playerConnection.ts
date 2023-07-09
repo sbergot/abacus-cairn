@@ -4,13 +4,13 @@ import {
   AllChatMessage,
   AllSyncMessageForGM,
   AnyMessage,
-  BaseCharacter,
-  LibraryElement,
+  ConnectionMetadata,
   Stamped,
   UknownGameMessage,
 } from "./types";
 import Peer, { DataConnection } from "peerjs";
 import { stamp, useLog } from "./utils";
+import { BaseCharacter, LibraryElement } from "../game/types";
 
 type ConnectionStatus =
   | "connecting"
@@ -80,9 +80,10 @@ export function usePlayerConnection<
     }
 
     // Create connection to destination peer specified in the input field
+    const metadata: ConnectionMetadata = { browserId };
     let conn = peerRef.current!.connect(serverId, {
       reliable: true,
-      metadata: { browserId },
+      metadata,
     });
     connRef.current = conn;
 

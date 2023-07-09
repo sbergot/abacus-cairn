@@ -1,3 +1,5 @@
+import { LibraryElement } from "../game/types";
+
 export type Stamped<T> = T & {
   authorId: string;
   author: string;
@@ -46,17 +48,6 @@ export type AllChatMessage<TMessage> =
 export type AnyMessage<TChar, TMessage> =
   | ({ kind: "sync" } & AllSyncMessage<TChar, TMessage>)
   | ({ kind: "chat" } & Stamped<AllChatMessage<TMessage>>);
-
-export interface LibraryElement {
-  name: string;
-  description: string;
-  category: string;
-}
-
-export interface BaseCharacter {
-  id: string;
-  name: string;
-}
 
 export interface ConnectionMetadata {
   browserId: string;

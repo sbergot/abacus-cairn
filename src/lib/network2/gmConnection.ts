@@ -3,14 +3,13 @@ import {
   AllChatMessage,
   AllSyncMessageForPlayer,
   AnyMessage,
-  BaseCharacter,
   ConnectionMetadata,
-  LibraryElement,
   Stamped,
   UknownGameMessage,
 } from "./types";
 import Peer, { DataConnection } from "peerjs";
 import { stamp } from "./utils";
+import { BaseCharacter, BaseGame, LibraryElement } from "../game/types";
 
 type ConnectionState = "opened" | "closed" | "error";
 
@@ -29,11 +28,11 @@ function rotateArray<T>(arr: T[], limit: number): T[] {
 export function useDmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
-  TGame
+  TGame extends BaseGame<TMessage>
 >(
   messages: Stamped<AllChatMessage<TMessage>>[],
   revealedElements: LibraryElement[],
-  storeMessage: (m: AllChatMessage<TMessage>) => void,
+  storeMessage: (m: Stamped<AllChatMessage<TMessage>>) => void,
   getAllRevealedElements: (game: TGame) => LibraryElement[]
 ) {
   const [sessionCode, setSessionCode] = useState("");
@@ -47,7 +46,7 @@ export function useDmConnection<
   const debounceRef = useRef(false);
   const playerConnectionsRef = useRef<Record<string, DataConnection>>({});
   const [transientMessages, setTransientMessages] =
-    useState<AllChatMessage<TMessage>[]>(messages);
+    useState<Stamped<AllChatMessage<TMessage>>[]>(messages);
 
   function initialize() {
     if (debounceRef.current) {
