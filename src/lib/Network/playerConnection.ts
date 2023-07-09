@@ -24,7 +24,9 @@ export function usePlayerConnection<
   TMessage extends UknownGameMessage
 >(sessionCode: string, character: TChar) {
   const browserId = useBrowserId();
-  const [messages, setMessages] = useState<Stamped<AllChatMessage<TMessage>>[]>([]);
+  const [messages, setMessages] = useState<Stamped<AllChatMessage<TMessage>>[]>(
+    []
+  );
   const [revealedElements, setRevealedElements] = useState<LibraryElement[]>(
     []
   );
@@ -88,16 +90,15 @@ export function usePlayerConnection<
       console.log("Connected to: " + conn.peer);
 
       log({
-        kind: "chat",
         type: "SimpleMessage",
         props: { content: `${character.name} joined the session` },
         transient: true,
       });
 
       setConnectionStatus("connected");
-      syncLog({ kind: "sync", destination: "GM", type: "UpdateChar", props: { character } });
-      syncLog({ kind: "sync", destination: "GM", type: "MessageHistoryRequest", props: {} });
-      syncLog({ kind: "sync", destination: "GM", type: "RevealedElementsRequest", props: {} });
+      syncLog({ type: "UpdateChar", props: { character } });
+      syncLog({ type: "MessageHistoryRequest", props: {} });
+      syncLog({ type: "RevealedElementsRequest", props: {} });
     });
     // Handle incoming data (messages only since this is the signal sender)
     conn.on("data", function (data) {
@@ -131,16 +132,18 @@ export function usePlayerConnection<
     });
   }
 
-  function log(m: AllChatMessage<TMessage>) {
-    if (connRef.current) {
-      connRef.current.send(stamp(character, m));
-    }
-  }
-
-  function syncLog(m: AllSyncMessageForGM<TChar>) {
+  function send(m: AnyMessage<TChar, TMessage>) {
     if (connRef.current) {
       connRef.current.send(m);
     }
+  }
+
+  function log(m: AllChatMessage<TMessage>) {
+    send({ kind: "chat", ...stamp(character, m) });
+  }
+
+  function syncLog(m: AllSyncMessageForGM<TChar>) {
+    send({ kind: "sync", destination: "GM", ...m });
   }
 
   useEffect(() => {
@@ -158,8 +161,6 @@ export function usePlayerConnection<
 
   useEffect(() => {
     syncLog({
-      kind: "sync",
-      destination: "GM",
       type: "UpdateChar",
       props: { character },
     });

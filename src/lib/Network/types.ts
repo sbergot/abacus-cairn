@@ -10,45 +10,42 @@ export interface BaseMessage<T extends string, P> {
 }
 
 export interface ChatMessage<T extends string, P> extends BaseMessage<T, P> {
-  kind: "chat";
+  /** message will not be stored between sessions */
   transient?: boolean;
-  wardenOnly?: boolean;
+  /** message will only be shown to the gm */
+  gmOnly?: boolean;
 }
 
-export interface SyncMessage<T extends string, P, D extends "GM" | "Player">
-  extends BaseMessage<T, P> {
-  kind: "sync";
-  destination: D;
-}
+export interface SyncMessage<T extends string, P> extends BaseMessage<T, P> {}
 
 export type UknownGameMessage = ChatMessage<string, unknown>;
 
 export type AllSyncMessageForGM<TChar> =
-  | SyncMessage<"UpdateChar", { character: TChar }, "GM">
-  | SyncMessage<"RevealedElementsRequest", {}, "GM">
-  | SyncMessage<"MessageHistoryRequest", {}, "GM">;
+  | SyncMessage<"UpdateChar", { character: TChar }>
+  | SyncMessage<"RevealedElementsRequest", {}>
+  | SyncMessage<"MessageHistoryRequest", {}>;
 
 export type AllSyncMessageForPlayer<TMessage> =
   | SyncMessage<
       "RevealedElementsResponse",
-      { revealedElements: LibraryElement[] },
-      "Player"
+      { revealedElements: LibraryElement[] }
     >
   | SyncMessage<
       "MessageHistoryResponse",
-      { messages: Stamped<TMessage>[] },
-      "Player"
+      { messages: Stamped<AllChatMessage<TMessage>>[] }
     >;
 
 export type AllSyncMessage<TChar, TMessage> =
-  | AllSyncMessageForGM<TChar>
-  | AllSyncMessageForPlayer<TMessage>;
+  | ({ destination: "GM" } & AllSyncMessageForGM<TChar>)
+  | ({ destination: "Player" } & AllSyncMessageForPlayer<TMessage>);
 
-export type AllChatMessage<TMessage> = ChatMessage<"SimpleMessage", { content: string }> | TMessage; 
+export type AllChatMessage<TMessage> =
+  | ChatMessage<"SimpleMessage", { content: string }>
+  | TMessage;
 
 export type AnyMessage<TChar, TMessage> =
-  | AllSyncMessage<TChar, TMessage>
-  | Stamped<AllChatMessage<TMessage>>;
+  | ({ kind: "sync" } & AllSyncMessage<TChar, TMessage>)
+  | ({ kind: "chat" } & Stamped<AllChatMessage<TMessage>>);
 
 export interface LibraryElement {
   name: string;
@@ -59,4 +56,8 @@ export interface LibraryElement {
 export interface BaseCharacter {
   id: string;
   name: string;
+}
+
+export interface ConnectionMetadata {
+  browserId: string;
 }
