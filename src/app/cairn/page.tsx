@@ -3,5 +3,5 @@ import { Character } from "@/lib/game/cairn/types";
 import { BaseGame } from "@/lib/game/types";
 
 export default function CairnMainMenu() {
-  return <MainMenu<Character, BaseGame<{}>> />
+  return <MainMenu<Character, BaseGame<{}>> gameName="cairn" newCharacterPath="/cairn/create-character" />
 }

@@ -4,6 +4,7 @@ export interface Ability {
 }
 
 export interface Character {
+  id: string;
   name: string;
   background: string;
   strength: Ability;
