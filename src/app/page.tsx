@@ -1,9 +1,10 @@
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
+import { Title } from "@/components/ui/title";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Button variant="default" size="icon">test</Button>
+    <main className="p-4 max-w-6xl flex flex-col">
+      hello
     </main>
-  )
+  );
 }
