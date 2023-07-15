@@ -11,7 +11,7 @@ interface Props<T> {
 
 export default function TextField<T>({ setter, fieldName, label }: Props<T>) {
   return (
-    <>
+    <div>
       <Label htmlFor={fieldName}>{label ?? fieldName}</Label>
       <Input
         id={fieldName}
@@ -24,6 +24,6 @@ export default function TextField<T>({ setter, fieldName, label }: Props<T>) {
         list="autocompleteOff"
         aria-autocomplete="none"
       />
-    </>
+    </div>
   );
 }

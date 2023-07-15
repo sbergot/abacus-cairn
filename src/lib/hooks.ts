@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { uuidv4 } from "./utils";
 import useLocalStorage from "use-local-storage";
 import { Draft, produce } from "immer";
+import { useGameContext } from "./gameContext";
 
 export function useBrowserId(): string {
   return useMemo(() => {
@@ -24,4 +25,9 @@ export function useImmerLocalStorage<T>(key: string, defaultValue: T): [T, (r: (
     );
   }
   return [value, setImmerValue];
+}
+
+export function useCharacterStorage<TChar>() {
+  const { gameName } = useGameContext();
+  return useImmerLocalStorage<Record<string, TChar>>(`${gameName}-characters`, {});
 }

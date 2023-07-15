@@ -2,30 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
-import { Character } from "@/lib/game/cairn/types";
 import { BaseCharacter } from "@/lib/game/types";
-import { useImmerLocalStorage } from "@/lib/hooks";
+import { useCharacterStorage } from "@/lib/hooks";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface Props {
-  gameName: string;
-  newCharacterPath: string;
 }
 
 export default function MainMenu<TChar extends BaseCharacter, TGame>({
-  gameName,
-  newCharacterPath,
 }: Props) {
-  const [characters, setCharacters] = useImmerLocalStorage<
-    Record<string, TChar>
-  >(`${gameName}-characters`, {});
+  const [characters, setCharacters] = useCharacterStorage<TChar>();
+  const pathName = usePathname();
   return (
     <main className="p-4 max-w-6xl flex flex-col">
       <div className="flex flex-wrap gap-2">
         <div className="flex flex-col gap-2 max-w-lg w-full">
           <Title>characters</Title>
           <Button asChild>
-            <Link href={newCharacterPath}>new</Link>
+            <Link href={pathName + "/create-character"}>new</Link>
           </Button>
         </div>
         <div className="flex flex-col gap-2 max-w-lg w-full">
