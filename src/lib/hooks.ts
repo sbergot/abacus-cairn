@@ -3,6 +3,7 @@ import { uuidv4 } from "./utils";
 import useLocalStorage from "use-local-storage";
 import { Draft, produce } from "immer";
 import { useGameContext } from "./gameContext";
+import { usePathname } from "next/navigation";
 
 export function useBrowserId(): string {
   return useMemo(() => {
@@ -30,4 +31,9 @@ export function useImmerLocalStorage<T>(key: string, defaultValue: T): [T, (r: (
 export function useCharacterStorage<TChar>() {
   const { gameName } = useGameContext();
   return useImmerLocalStorage<Record<string, TChar>>(`${gameName}-characters`, {});
+}
+
+export function useRelativeLinker() {
+  const pathName = usePathname()
+  return (path: string) => `${pathName}/${path}`;
 }
