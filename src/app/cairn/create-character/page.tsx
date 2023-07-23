@@ -8,6 +8,7 @@ import { rollCharacter } from "@/lib/game/cairn/utils";
 import { useCharacterStorage, useRelativeLinker } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { useImmer } from "use-immer";
+import { Ability } from "../ability";
 
 export default function CreateCharacter() {
   const [char, setChar] = useImmer<Character>(rollCharacter());
@@ -40,19 +41,6 @@ export default function CreateCharacter() {
       <Button className="w-24 self-center" onClick={save}>
         Save
       </Button>
-    </div>
-  );
-}
-
-interface AbilityProps {
-  name: string;
-  value: number;
-}
-
-function Ability({ name, value }: AbilityProps) {
-  return (
-    <div className="flex gap-4 justify-between">
-      <div>{name}</div> <div>{value}</div>
     </div>
   );
 }
