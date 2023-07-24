@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import TextField from "@/components/ui/textfield";
 import { Character } from "@/lib/game/cairn/types";
@@ -30,5 +32,5 @@ export default function Session({
 }) {
   const [characters, setCharacters] = useCharacterStorage<Character>();
   const character = characters[params.characterId];
-  <TwoColumns leftPart={<CharacterSheet character={character} />} rightPart={"hello"} />
+  return <TwoColumns leftPart={<CharacterSheet character={character} />} rightPart={"hello"} />
 }

@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 
@@ -24,7 +24,7 @@ export function TwoColumns({ leftPart, rightPart }: Props) {
       </div>
       <div className="fixed right-8 bottom-8 print:invisible visible lg:invisible">
         <Button size="icon" onClick={() => setIsMessagePanelVisible((v) => !v)}>
-          {isMessagePanelVisible ? <EyeOff /> : <Eye />}
+          {isMessagePanelVisible ? <EyeOffIcon /> : <EyeIcon />}
         </Button>
       </div>
     </>
