@@ -24,7 +24,7 @@ export default function CreateCharacter() {
   }
 
   return (
-    <div className="flex flex-col gap-4 max-w-sm mx-auto">
+    <div className="flex flex-col gap-4 max-w-sm pl-4">
       <Title>Attributes</Title>
       <div className="flex gap-8">
         <div className="max-w-min">

@@ -3,22 +3,24 @@
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import { BaseCharacter } from "@/lib/game/types";
-import { useCharacterStorage, useRelativeLinker } from "@/lib/hooks";
+import {
+  useCharacterStorage,
+  useImportExport,
+  useRelativeLinker,
+} from "@/lib/hooks";
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogTitle,
-  DialogDescription,
   DialogHeader,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Label } from "@radix-ui/react-label";
-import { PlayIcon, SeparatorHorizontal, Trash2Icon } from "lucide-react";
+import { PlayIcon, UploadIcon, UserPlusIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { DeleteAlert } from "@/components/ui/delete-alert";
+import { OrSeparator } from "@/components/ui/or-separator";
+import { FileImport } from "../ui/file-import";
 
 interface Props {}
 
@@ -27,9 +29,8 @@ export default function MainMenu<
   TGame
 >({}: Props) {
   const [characters, setCharacters] = useCharacterStorage<TChar>();
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(
-    null
-  );
+  const { download, mergeData } = useImportExport("characters");
+
   const linker = useRelativeLinker();
 
   return (
@@ -37,14 +38,38 @@ export default function MainMenu<
       <div className="flex flex-wrap gap-2">
         <div className="flex flex-col gap-2 max-w-lg w-full">
           <Title>characters</Title>
+          <div className="flex gap-2">
+            <Button asChild>
+              <Link href={linker("create-character")}>
+                <UserPlusIcon className="mr-2" />
+                new
+              </Link>
+            </Button>
+            <FileImport
+              variant="secondary"
+              label="import"
+              onUpLoad={(body) => {
+                setCharacters((d) => mergeData(body));
+              }}
+            />
+            <Button variant="secondary" onClick={() => download()}>
+              <UploadIcon className="mr-2" />
+              export
+            </Button>
+          </div>
           <div className="flex flex-col gap-2">
             {Object.values(characters).map((c) => (
-              <Entry key={c.id} character={c} />
+              <CharacterEntry
+                key={c.id}
+                character={c}
+                deleteCharacter={() =>
+                  setCharacters((repo) => {
+                    delete repo[c.id];
+                  })
+                }
+              />
             ))}
           </div>
-          <Button asChild>
-            <Link href={linker("create-character")}>new</Link>
-          </Button>
         </div>
         <div className="flex flex-col gap-2 max-w-lg w-full">
           <Title>games</Title>
@@ -54,19 +79,21 @@ export default function MainMenu<
   );
 }
 
-interface EntryProps {
+interface CharacterEntryProps {
   character: BaseCharacter;
+  deleteCharacter(): void;
 }
 
-function Entry({ character }: EntryProps) {
+function CharacterEntry({ character, deleteCharacter }: CharacterEntryProps) {
   return (
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{character.name}</div>
       <div className="flex gap-2">
         <PlayModal character={character} />
-        <Button size="icon-sm">
-          <Trash2Icon size={15} />
-        </Button>
+        <DeleteAlert onConfirm={deleteCharacter}>
+          This action cannot be undone. This will permanently delete your
+          character named <span className="font-bold">{character.name}</span>.
+        </DeleteAlert>
       </div>
     </div>
   );
@@ -80,34 +107,21 @@ export function PlayModal({ character }: PlayModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="icon-sm">
-          <PlayIcon size={15} />
+        <Button size="icon-sm" variant="ghost">
+          <PlayIcon size={20} />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Start session</DialogTitle>
-          <DialogDescription>
-            Start a solo session or join a shared table.
-          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <Button>Solo</Button>
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex-grow">
-              <Separator />
-            </div>
-            <div>Or</div>
-            <div className="flex-grow">
-              <Separator />
-            </div>
+          <Button>Start a solo session</Button>
+          <OrSeparator />
+          <div className="flex flex-col gap-2">
+            <Input id="table-id" placeholder="table id" />
           </div>
-          <div className="flex items-center gap-2">
-            <Label htmlFor="name">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" />
-          </div>
+          <Button>Join a table</Button>
         </div>
       </DialogContent>
     </Dialog>
