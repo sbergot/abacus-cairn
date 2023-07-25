@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import { BaseCharacter } from "@/lib/game/types";
 import {
-  useCharacterStorage,
-  useImportExport,
   useRelativeLinker,
 } from "@/lib/hooks";
 import {
@@ -21,6 +19,8 @@ import { Input } from "@/components/ui/input";
 import { DeleteAlert } from "@/components/ui/delete-alert";
 import { OrSeparator } from "@/components/ui/or-separator";
 import { FileImport } from "../ui/file-import";
+import { useGenericGameContext } from "@/lib/gameContext";
+import { download } from "@/lib/utils";
 
 interface Props {}
 
@@ -28,8 +28,7 @@ export default function MainMenu<
   TChar extends BaseCharacter,
   TGame
 >({}: Props) {
-  const [characters, setCharacters] = useCharacterStorage<TChar>();
-  const { download, mergeData } = useImportExport("characters");
+  const { characters, setCharacters, gameName } = useGenericGameContext();
 
   const linker = useRelativeLinker();
 
@@ -49,10 +48,13 @@ export default function MainMenu<
               variant="secondary"
               label="import"
               onUpLoad={(body) => {
-                setCharacters((d) => mergeData(body));
+                setCharacters((d) => {
+                  const newData = JSON.parse(body) as Record<string, BaseCharacter>;
+                  Object.values(newData).forEach(c => d[c.id] = c);
+                });
               }}
             />
-            <Button variant="secondary" onClick={() => download()}>
+            <Button variant="secondary" onClick={() => download(`${gameName}-characters`)}>
               <UploadIcon className="mr-2" />
               export
             </Button>

@@ -5,14 +5,15 @@ import TextField from "@/components/ui/textfield";
 import { Title } from "@/components/ui/title";
 import { Character } from "@/lib/game/cairn/types";
 import { rollCharacter } from "@/lib/game/cairn/utils";
-import { useCharacterStorage, useRelativeLinker } from "@/lib/hooks";
+import { useRelativeLinker } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { useImmer } from "use-immer";
 import { Ability } from "../ability";
+import { useGameContext } from "../cairn-context";
 
 export default function CreateCharacter() {
   const [char, setChar] = useImmer<Character>(rollCharacter());
-  const [characters, setCharacters] = useCharacterStorage<Character>();
+  const { setCharacters } = useGameContext();
   const router = useRouter();
   const linker = useRelativeLinker();
 

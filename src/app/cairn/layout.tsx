@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { GameContextProvider } from "@/lib/gameContext";
+import { GameContextProvider } from "./cairn-context";
+
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -27,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </a>
         </Button>
       </div>
-      <GameContextProvider value={{ gameName: "cairn" }}>
+      <GameContextProvider>
         {children}
       </GameContextProvider>
     </div>

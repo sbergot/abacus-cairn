@@ -15,3 +15,21 @@ export function uuidv4(): string {
       ).toString(16)
   );
 }
+
+export function download(storageKey: string) {
+  const filename = `${storageKey}.json`;
+  const text = localStorage[storageKey];
+  const element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
