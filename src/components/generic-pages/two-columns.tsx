@@ -13,7 +13,7 @@ export function TwoColumns({ leftPart, rightPart }: Props) {
     ? "opacity-100"
     : "opacity-0 invisible lg:opacity-100 lg:visible";
   return (
-    <>
+    <div className="ml-4">
       <div className="flex gap-2">
         <div className="max-w-2xl w-full">{leftPart}</div>
         <div
@@ -27,6 +27,6 @@ export function TwoColumns({ leftPart, rightPart }: Props) {
           {isMessagePanelVisible ? <EyeOffIcon /> : <EyeIcon />}
         </Button>
       </div>
-    </>
+    </div>
   );
 }

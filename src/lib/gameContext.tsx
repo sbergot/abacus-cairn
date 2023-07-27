@@ -1,13 +1,14 @@
 import { createContext, useContext } from "react";
 import { BaseCharacter } from "./game/types";
-import { Draft } from "immer";
 import { Children } from "@/components/ui/types";
 import { useImmerLocalStorage } from "./hooks";
+import { IUseStateContext } from "./types";
+import { useParams } from "next/navigation";
+import { setSingle } from "./utils";
 
 export interface IGameContext<TChar extends BaseCharacter> {
+  characterRepo: IUseStateContext<Record<string, TChar>>;
   gameName: string;
-  characters: Record<string, TChar>;
-  setCharacters(r: (d: Draft<Record<string, TChar>>) => void): void;
 }
 
 const GenericGameContext = createContext<IGameContext<BaseCharacter> | null>(
@@ -33,9 +34,17 @@ export function createGameContext<TChar extends BaseCharacter>(
 
     return (
       <GenericGameContextProvider
-        value={{ gameName, characters, setCharacters }}
+        value={{
+          gameName,
+          characterRepo: { state: characters, setState: setCharacters },
+        }}
       >
-        <Provider value={{ gameName, characters, setCharacters }}>
+        <Provider
+          value={{
+            gameName,
+            characterRepo: { state: characters, setState: setCharacters },
+          }}
+        >
           {children}
         </Provider>
       </GenericGameContextProvider>
@@ -46,5 +55,14 @@ export function createGameContext<TChar extends BaseCharacter>(
     return useContext(GameContext)!;
   }
 
-  return { GameContextProvider, useGameContext };
+  function useCharacterStorage() {
+    const { characterRepo: { state, setState } } = useGameContext();
+    const params = useParams();
+    const { characterId } = params;
+    const character = state[characterId];
+    const setCharacter = setSingle(setState, characterId);
+    return { character, setCharacter }
+  }
+
+  return { GameContextProvider, useGameContext, useCharacterStorage };
 }

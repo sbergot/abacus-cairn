@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx"
+import { Draft } from "immer";
 import { twMerge } from "tailwind-merge"
  
 export function cn(...inputs: ClassValue[]) {
@@ -25,11 +26,15 @@ export function download(storageKey: string) {
     "data:text/plain;charset=utf-8," + encodeURIComponent(text)
   );
   element.setAttribute("download", filename);
-
   element.style.display = "none";
   document.body.appendChild(element);
-
   element.click();
-
   document.body.removeChild(element);
+}
+
+export function setSingle<T>(setRepo: (r: (d: Draft<Record<string, T>>) => void) => void, key: string) {
+  function setter(setEntry: (d: Draft<T>) => void) {
+    setRepo(r => setEntry(r[key]))
+  }
+  return setter;
 }

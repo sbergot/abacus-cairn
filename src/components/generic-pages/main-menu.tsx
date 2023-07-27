@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Title } from "@/components/ui/title";
 import { BaseCharacter } from "@/lib/game/types";
-import {
-  useRelativeLinker,
-} from "@/lib/hooks";
+import { useRelativeLinker } from "@/lib/hooks";
 import {
   Dialog,
   DialogTrigger,
@@ -28,8 +26,10 @@ export default function MainMenu<
   TChar extends BaseCharacter,
   TGame
 >({}: Props) {
-  const { characters, setCharacters, gameName } = useGenericGameContext();
-
+  const {
+    characterRepo: { state: characters, setState: setCharacters },
+    gameName,
+  } = useGenericGameContext();
   const linker = useRelativeLinker();
 
   return (
@@ -49,12 +49,18 @@ export default function MainMenu<
               label="import"
               onUpLoad={(body) => {
                 setCharacters((d) => {
-                  const newData = JSON.parse(body) as Record<string, BaseCharacter>;
-                  Object.values(newData).forEach(c => d[c.id] = c);
+                  const newData = JSON.parse(body) as Record<
+                    string,
+                    BaseCharacter
+                  >;
+                  Object.values(newData).forEach((c) => (d[c.id] = c));
                 });
               }}
             />
-            <Button variant="secondary" onClick={() => download(`${gameName}-characters`)}>
+            <Button
+              variant="secondary"
+              onClick={() => download(`${gameName}-characters`)}
+            >
               <UploadIcon className="mr-2" />
               export
             </Button>
@@ -63,7 +69,8 @@ export default function MainMenu<
             {Object.values(characters).map((c) => (
               <CharacterEntry
                 key={c.id}
-                character={c}
+                name={c.name}
+                sessionLink={linker(`session/${c.id}`)}
                 deleteCharacter={() =>
                   setCharacters((repo) => {
                     delete repo[c.id];
@@ -82,19 +89,24 @@ export default function MainMenu<
 }
 
 interface CharacterEntryProps {
-  character: BaseCharacter;
+  name: string;
+  sessionLink: string;
   deleteCharacter(): void;
 }
 
-function CharacterEntry({ character, deleteCharacter }: CharacterEntryProps) {
+function CharacterEntry({
+  sessionLink,
+  name,
+  deleteCharacter,
+}: CharacterEntryProps) {
   return (
     <div className="flex justify-between items-center p-2 border border-input bg-background">
-      <div className="text-lg">{character.name}</div>
+      <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <PlayModal character={character} />
+        <PlayModal sessionLink={sessionLink} />
         <DeleteAlert onConfirm={deleteCharacter}>
           This action cannot be undone. This will permanently delete your
-          character named <span className="font-bold">{character.name}</span>.
+          character named <span className="font-bold">{name}</span>.
         </DeleteAlert>
       </div>
     </div>
@@ -102,10 +114,10 @@ function CharacterEntry({ character, deleteCharacter }: CharacterEntryProps) {
 }
 
 interface PlayModalProps {
-  character: BaseCharacter;
+  sessionLink: string;
 }
 
-export function PlayModal({ character }: PlayModalProps) {
+export function PlayModal({ sessionLink }: PlayModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -118,7 +130,9 @@ export function PlayModal({ character }: PlayModalProps) {
           <DialogTitle>Start session</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <Button>Start a solo session</Button>
+          <Button asChild>
+            <Link href={sessionLink}>Start a solo session</Link>
+          </Button>
           <OrSeparator />
           <div className="flex flex-col gap-2">
             <Input id="table-id" placeholder="table id" />
