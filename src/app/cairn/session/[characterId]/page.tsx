@@ -8,6 +8,8 @@ import {
   usePlayerConnectionContext,
 } from "../../cairn-context";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { uuidv4 } from "@/lib/utils";
 
 function CharacterSheet() {
   const { character, setCharacter } = useCharacterStorage();
@@ -28,7 +30,7 @@ function CharacterSheet() {
         </div>
         <Button
           onClick={() => {
-            log({ type: "SimpleMessage", props: "test toto" });
+            log({ type: "SimpleMessage", props: uuidv4() });
           }}
         >
           +
@@ -41,10 +43,12 @@ function CharacterSheet() {
 function MessagePanel() {
   const { messages } = usePlayerConnectionContext();
   return (
-    <div>
-      {messages.map((m) => (
-        <div>{JSON.stringify(m.props)}</div>
-      ))}
+    <div className="h-full flex flex-col justify-end">
+      <ScrollArea className="flex flex-col">
+        {messages.map((m) => (
+          <div>{JSON.stringify(m.props)}</div>
+        ))}
+      </ScrollArea>
     </div>
   );
 }
