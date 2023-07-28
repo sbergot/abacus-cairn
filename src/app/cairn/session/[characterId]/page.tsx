@@ -3,12 +3,15 @@
 import { Ability, Field } from "../../ability";
 import { Title } from "@/components/ui/title";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { useCharacterStorage } from "../../cairn-context";
-import TextField from "@/components/ui/textfield";
+import {
+  useCharacterStorage,
+  usePlayerConnectionContext,
+} from "../../cairn-context";
 import { Button } from "@/components/ui/button";
 
 function CharacterSheet() {
   const { character, setCharacter } = useCharacterStorage();
+  const { log } = usePlayerConnectionContext();
 
   return (
     <div className="flex flex-col gap-4 max-w-sm">
@@ -23,12 +26,31 @@ function CharacterSheet() {
           <Ability name="HP" value={character.hp} />
           <Field name="Armor">0</Field>
         </div>
-        <Button onClick={() => setCharacter(d => { d.strength.current -= 1; })}>+</Button>
+        <Button
+          onClick={() => {
+            log({ type: "SimpleMessage", props: "test toto" });
+          }}
+        >
+          +
+        </Button>
       </div>
     </div>
   );
 }
 
+function MessagePanel() {
+  const { messages } = usePlayerConnectionContext();
+  return (
+    <div>
+      {messages.map((m) => (
+        <div>{JSON.stringify(m.props)}</div>
+      ))}
+    </div>
+  );
+}
+
 export default function Session() {
-  return <TwoColumns leftPart={<CharacterSheet />} rightPart={"hello"} />;
+  return (
+    <TwoColumns leftPart={<CharacterSheet />} rightPart={<MessagePanel />} />
+  );
 }

@@ -11,6 +11,8 @@ import {
 import Peer, { DataConnection } from "peerjs";
 import { stamp, useLog } from "./utils";
 import { BaseCharacter, LibraryElement } from "../game/types";
+import { useGenericGameContext } from "../gameContext";
+import { useParams } from "next/navigation";
 
 type ConnectionStatus =
   | "connecting"
@@ -19,10 +21,17 @@ type ConnectionStatus =
   | "disconnected"
   | "offline";
 
+export interface PlayerConnection<TMessage> {
+  log: (m: AllChatMessage<TMessage>) => void;
+  messages: Stamped<AllChatMessage<TMessage>>[];
+  connectionStatus: ConnectionStatus;
+  revealedElements: LibraryElement[];
+}
+
 export function usePlayerConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage
->(sessionCode: string, character: TChar) {
+>(sessionCode: string, character: TChar): PlayerConnection<TMessage> {
   const browserId = useBrowserId();
   const [messages, setMessages] = useState<Stamped<AllChatMessage<TMessage>>[]>(
     []
@@ -35,7 +44,6 @@ export function usePlayerConnection<
   const debounceRef = useRef(false);
   const peerRef = useRef<Peer | null>(null);
   const connRef = useRef<DataConnection | null>(null);
-  const stub = useLog(character.name, character.id);
 
   function initialize() {
     // Create own peer object with connection to shared PeerJS server
@@ -167,12 +175,21 @@ export function usePlayerConnection<
     });
   }, [character]);
 
-  return !!sessionCode
-    ? { log, messages, connectionStatus, revealedElements }
-    : {
-        log: stub.log,
-        messages: stub.messages,
-        connectionStatus,
-        revealedElements,
-      };
+  return { log, messages, connectionStatus, revealedElements };
+}
+
+export function usePlayerConnectionStub<
+  TMessage extends UknownGameMessage
+>(): PlayerConnection<TMessage> {
+  const { characterId } = useParams();
+  const { characterRepo: { state: characters } } = useGenericGameContext();
+  const character = characters[characterId];
+  const stub = useLog<TMessage>(character.name, character.id);
+
+  return {
+    log: stub.log,
+    messages: stub.messages,
+    connectionStatus: "offline",
+    revealedElements: [],
+  }
 }

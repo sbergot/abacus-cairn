@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Stamped } from "./types";
+import { AllChatMessage, Stamped } from "./types";
 
 function getNow(): string {
   const now = new Date();
@@ -19,9 +19,9 @@ export function stamp<TMessage>(
 }
 
 export function useLog<TMessage>(author: string, authorId: string) {
-  const [messages, setMessages] = useState<Stamped<TMessage>[]>([]);
+  const [messages, setMessages] = useState<Stamped<AllChatMessage<TMessage>>[]>([]);
 
-  function log(m: TMessage) {
+  function log(m: AllChatMessage<TMessage>) {
     setMessages((ms) => [...ms, stamp({ id: authorId, name: author }, m)]);
   }
 
