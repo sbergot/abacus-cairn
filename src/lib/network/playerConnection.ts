@@ -99,6 +99,7 @@ export function usePlayerConnection<
       console.log("Connected to: " + conn.peer);
 
       log({
+        kind: "chat-common",
         type: "SimpleMessage",
         props: { content: `${character.name} joined the session` },
         transient: true,
@@ -125,7 +126,7 @@ export function usePlayerConnection<
           setRevealedElements(typeData.props.revealedElements);
           return;
         }
-      } else if (typeData.kind === "chat") {
+      } else if (typeData.kind === "chat-common" || typeData.kind === "chat-custom") {
         setMessages((m) => [...m, typeData]);
         return;
       }
@@ -148,7 +149,7 @@ export function usePlayerConnection<
   }
 
   function log(m: AllChatMessage<TMessage>) {
-    send({ kind: "chat", ...stamp(character, m) });
+    send(stamp(character, m));
   }
 
   function syncLog(m: AllSyncMessageForGM<TChar>) {

@@ -1,13 +1,26 @@
-import { AllChatMessage, Stamped, UknownGameMessage } from "@/lib/network/types";
-import { useEffect, useRef, useState } from "react";
+import {
+  AllChatMessage,
+  AllCommonChatMessage,
+  Stamped,
+  UknownGameMessage,
+} from "@/lib/network/types";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
+import { Children } from "../ui/types";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 type ContextType = "player" | "gm";
+
+interface MessageContext {
+  authorId: string;
+  contextType: ContextType;
+}
 
 interface Props<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   authorId: string;
-  contextType: ContextType;
+  context: MessageContext;
+  ShowCustomMessage(props: { m: TMessage; ctx: MessageContext }): ReactNode;
 }
 
 function showLocalTime(t: string): string {
@@ -17,8 +30,8 @@ function showLocalTime(t: string): string {
 
 export function MessagePanel<TMessage extends UknownGameMessage>({
   messages,
-  authorId,
-  contextType,
+  context,
+  ShowCustomMessage,
 }: Props<TMessage>) {
   const messagesEnd = useRef<HTMLDivElement | null>(null);
   const [clearTime, setClearTime] = useState<Date>(new Date(0));
@@ -39,19 +52,12 @@ export function MessagePanel<TMessage extends UknownGameMessage>({
         {messages
           .filter((m) => new Date(m.time) > clearTime)
           .map((m, i) => {
-            const stamp = `${m.author} - ${showLocalTime(m.time)}`;
-            return m.type === "SimpleMessage" && typeof m.props === "string" ? (
-              <div key={i} className="text-sm">
-                <span className="text-mother-4">{stamp}</span> -{" "}
-                {m.props}
-              </div>
+            return m.kind === "chat-common" ? (
+              <ShowCommonMessage key={i} m={m} />
             ) : (
-              <Block key={i} variant="light">
-                <div>
-                  <div className="text-sm text-mother-4">{stamp}</div>
-                  <ShowMessage message={m} context={context} />
-                </div>
-              </Block>
+              <ShowStampedMessage key={i} m={m}>
+                <ShowCustomMessage m={m} ctx={context} />
+              </ShowStampedMessage>
             );
           })}
         <Button variant="secondary" onClick={() => setClearTime(new Date())}>
@@ -60,5 +66,29 @@ export function MessagePanel<TMessage extends UknownGameMessage>({
         <div style={{ float: "left", clear: "both" }} ref={messagesEnd}></div>
       </div>
     </div>
+  );
+}
+
+function ShowCommonMessage({ m }: { m: Stamped<AllCommonChatMessage> }) {
+  const stamp = `${m.author} - ${showLocalTime(m.time)}`;
+  if (m.type === "SimpleMessage") {
+    return (
+      <div className="text-sm">
+        <span className="text-mother-4">{stamp}</span> - {m.props.content}
+      </div>
+    );
+  }
+}
+
+function ShowStampedMessage({
+  m,
+  children,
+}: { m: Stamped<unknown> } & Children) {
+  const stamp = `${m.author} - ${showLocalTime(m.time)}`;
+  return (
+    <Card>
+      <CardHeader>{stamp}</CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
   );
 }

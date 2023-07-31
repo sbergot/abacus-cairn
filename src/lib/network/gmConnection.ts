@@ -124,7 +124,7 @@ export function useDmConnection<
             conn.send(response);
             return;
           }
-        } else if (typeData.kind === "chat") {
+        } else if (typeData.kind === "chat-common" || typeData.kind === "chat-custom") {
           storeAndSendAll(typeData);
         }
       });
@@ -175,7 +175,7 @@ export function useDmConnection<
       rotateArray([...tms, stamped], MAX_MESSAGE_NBR)
     );
     if (!stamped.gmOnly) {
-      sendAll({ kind: "chat", ...stamped });
+      sendAll(stamped);
     }
   }
 

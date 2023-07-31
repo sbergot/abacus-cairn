@@ -41,13 +41,17 @@ export type AllSyncMessage<TChar, TMessage> =
   | ({ destination: "GM" } & AllSyncMessageForGM<TChar>)
   | ({ destination: "Player" } & AllSyncMessageForPlayer<TMessage>);
 
-export type AllChatMessage<TMessage> =
+export type AllCommonChatMessage =
   | ChatMessage<"SimpleMessage", { content: string }>
-  | TMessage;
+  | ChatMessage<"BasicMessage", { title: string; content: string }>;
+
+export type AllChatMessage<TMessage> =
+  | ({ kind: "chat-common" } & AllCommonChatMessage)
+  | ({ kind: "chat-custom" } & TMessage);
 
 export type AnyMessage<TChar, TMessage> =
   | ({ kind: "sync" } & AllSyncMessage<TChar, TMessage>)
-  | ({ kind: "chat" } & Stamped<AllChatMessage<TMessage>>);
+  | Stamped<AllChatMessage<TMessage>>;
 
 export interface ConnectionMetadata {
   browserId: string;

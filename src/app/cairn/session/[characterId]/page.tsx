@@ -30,7 +30,11 @@ function CharacterSheet() {
         </div>
         <Button
           onClick={() => {
-            log({ type: "SimpleMessage", props: uuidv4() });
+            log({
+              kind: "chat-common",
+              type: "SimpleMessage",
+              props: { content: uuidv4() },
+            });
           }}
         >
           +
