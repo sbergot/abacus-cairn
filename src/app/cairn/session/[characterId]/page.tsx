@@ -8,8 +8,9 @@ import {
   usePlayerConnectionContext,
 } from "../../cairn-context";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { uuidv4 } from "@/lib/utils";
+import { MessagePanel, ShowCustomMessageProps } from "@/components/generic-pages/message-panel";
+import { Message } from "@/lib/game/cairn/types";
 
 function CharacterSheet() {
   const { character, setCharacter } = useCharacterStorage();
@@ -37,28 +38,41 @@ function CharacterSheet() {
             });
           }}
         >
-          +
+          common
+        </Button>
+        <Button
+          onClick={() => {
+            log({
+              kind: "chat-custom",
+              type: "AbilityRoll",
+              props: { content: uuidv4() },
+            });
+          }}
+        >
+          custom
         </Button>
       </div>
     </div>
   );
 }
 
-function MessagePanel() {
-  const { messages } = usePlayerConnectionContext();
-  return (
-    <div className="h-full flex flex-col justify-end">
-      <ScrollArea className="flex flex-col">
-        {messages.map((m) => (
-          <div>{JSON.stringify(m.props)}</div>
-        ))}
-      </ScrollArea>
-    </div>
-  );
+function ShowCustomMessage({ m, ctx }: ShowCustomMessageProps<Message>) {
+  return <div>custom message: {m.props.content}</div>
 }
 
 export default function Session() {
+  const { character } = useCharacterStorage();
+  const { messages } = usePlayerConnectionContext();
   return (
-    <TwoColumns leftPart={<CharacterSheet />} rightPart={<MessagePanel />} />
+    <TwoColumns
+      leftPart={<CharacterSheet />}
+      rightPart={
+        <MessagePanel<Message>
+          context={{ contextType: "player", authorId: character.id }}
+          messages={messages}
+          ShowCustomMessage={ShowCustomMessage}
+        />
+      }
+    />
   );
 }

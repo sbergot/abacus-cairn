@@ -11,16 +11,20 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 
 type ContextType = "player" | "gm";
 
-interface MessageContext {
+export interface MessageContext {
   authorId: string;
   contextType: ContextType;
 }
 
+export interface ShowCustomMessageProps<TMessage> {
+  m: TMessage;
+  ctx: MessageContext;
+}
+
 interface Props<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
-  authorId: string;
   context: MessageContext;
-  ShowCustomMessage(props: { m: TMessage; ctx: MessageContext }): ReactNode;
+  ShowCustomMessage(props: ShowCustomMessageProps<TMessage>): ReactNode;
 }
 
 function showLocalTime(t: string): string {

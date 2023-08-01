@@ -1,4 +1,4 @@
-import { UknownGameMessage } from "@/lib/network/types";
+import { ChatMessage, UknownGameMessage } from "@/lib/network/types";
 
 export interface Ability {
   current: number;
@@ -15,4 +15,4 @@ export interface Character {
   hp: Ability;
 }
 
-export type Message = UknownGameMessage;
+export type Message = ChatMessage<"AbilityRoll", { content: string }>;
