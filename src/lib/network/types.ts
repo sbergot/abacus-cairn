@@ -16,6 +16,7 @@ export interface ChatMessage<T extends string, P> extends BaseMessage<T, P> {
   transient?: boolean;
   /** message will only be shown to the gm */
   gmOnly?: boolean;
+  title?: string;
 }
 
 export interface SyncMessage<T extends string, P> extends BaseMessage<T, P> {}
@@ -43,7 +44,7 @@ export type AllSyncMessage<TChar, TMessage> =
 
 export type AllCommonChatMessage =
   | ChatMessage<"SimpleMessage", { content: string }>
-  | ChatMessage<"BasicMessage", { title: string; content: string }>;
+  | ChatMessage<"BasicMessage", { content: string }>;
 
 export type AllChatMessage<TMessage> =
   | ({ kind: "chat-common" } & AllCommonChatMessage)

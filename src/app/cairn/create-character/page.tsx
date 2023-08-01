@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import TextField from "@/components/ui/textfield";
-import { Title } from "@/components/ui/title";
 import { Character } from "@/lib/game/cairn/types";
 import { rollCharacter } from "@/lib/game/cairn/utils";
 import { useRelativeLinker } from "@/lib/hooks";
@@ -10,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useImmer } from "use-immer";
 import { Ability, Field } from "../ability";
 import { useGameContext } from "../cairn-context";
+import { Title } from "@/components/ui/typography";
 
 export default function CreateCharacter() {
   const [char, setChar] = useImmer<Character>(rollCharacter());

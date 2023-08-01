@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Title } from "@/components/ui/title";
 import { BaseCharacter } from "@/lib/game/types";
 import { useRelativeLinker } from "@/lib/hooks";
 import {
@@ -19,6 +18,7 @@ import { OrSeparator } from "@/components/ui/or-separator";
 import { FileImport } from "../ui/file-import";
 import { useGenericGameContext } from "@/lib/gameContext";
 import { download } from "@/lib/utils";
+import { Title } from "../ui/typography";
 
 interface Props {}
 

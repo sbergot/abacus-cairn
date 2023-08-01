@@ -1,7 +1,6 @@
 "use client";
 
 import { Ability, Field } from "../../ability";
-import { Title } from "@/components/ui/title";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import {
   useCharacterStorage,
@@ -9,8 +8,14 @@ import {
 } from "../../cairn-context";
 import { Button } from "@/components/ui/button";
 import { uuidv4 } from "@/lib/utils";
-import { MessagePanel, ShowCustomMessageProps } from "@/components/generic-pages/message-panel";
+import {
+  MessagePanel,
+  ShowCustomMessageProps,
+} from "@/components/generic-pages/message-panel";
 import { Message } from "@/lib/game/cairn/types";
+import { abilityCheck } from "@/lib/game/cairn/utils";
+import { DiceRoll } from "@/components/ui/dice-roll";
+import { Title } from "@/components/ui/typography";
 
 function CharacterSheet() {
   const { character, setCharacter } = useCharacterStorage();
@@ -45,7 +50,12 @@ function CharacterSheet() {
             log({
               kind: "chat-custom",
               type: "AbilityRoll",
-              props: { content: uuidv4() },
+              title: "dexterity check",
+              props: abilityCheck({
+                abilityName: "dexterity",
+                abilityValue: character.dexterity.current,
+                mode: "advantage",
+              }),
             });
           }}
         >
@@ -57,7 +67,19 @@ function CharacterSheet() {
 }
 
 function ShowCustomMessage({ m, ctx }: ShowCustomMessageProps<Message>) {
-  return <div>custom message: {m.props.content}</div>
+  if (m.type === "AbilityRoll") {
+    return (
+      <div>
+        {m.props.check.mode !== "normal" && (
+          <div>rolling with {m.props.check.mode}</div>
+        )}
+        <div>
+          <DiceRoll results={m.props.results} /> vs {m.props.check.abilityValue}{" "}
+          → {m.props.isSuccess ? "success" : "failure"}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default function Session() {

@@ -7,7 +7,8 @@ import {
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Children } from "../ui/types";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { WeakEmph } from "../ui/typography";
 
 type ContextType = "player" | "gm";
 
@@ -77,21 +78,28 @@ function ShowCommonMessage({ m }: { m: Stamped<AllCommonChatMessage> }) {
   const stamp = `${m.author} - ${showLocalTime(m.time)}`;
   if (m.type === "SimpleMessage") {
     return (
-      <div className="text-sm">
-        <span className="text-mother-4">{stamp}</span> - {m.props.content}
-      </div>
+      <WeakEmph>
+        {stamp} - {m.props.content}
+      </WeakEmph>
     );
+  }
+
+  if (m.type === "BasicMessage") {
+    return <ShowStampedMessage m={m}>{m.props.content}</ShowStampedMessage>;
   }
 }
 
 function ShowStampedMessage({
   m,
   children,
-}: { m: Stamped<unknown> } & Children) {
+}: { m: Stamped<UknownGameMessage> } & Children) {
   const stamp = `${m.author} - ${showLocalTime(m.time)}`;
   return (
     <Card>
-      <CardHeader>{stamp}</CardHeader>
+      <CardHeader>
+        <WeakEmph>{stamp}</WeakEmph>
+        {m.title && <CardTitle>{m.title}</CardTitle>}
+      </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
   );
