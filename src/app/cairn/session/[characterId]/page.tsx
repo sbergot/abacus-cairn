@@ -1,6 +1,5 @@
 "use client";
 
-import { Ability, Field } from "../../ability";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import {
   useCharacterStorage,
@@ -15,31 +14,33 @@ import { AbilityType, Message, RollMode } from "@/lib/game/cairn/types";
 import { abilityCheck } from "@/lib/game/cairn/utils";
 import { DiceRoll } from "@/components/ui/dice-roll";
 import { Title } from "@/components/ui/typography";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { DicesIcon } from "lucide-react";
 import { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 function CharacterSheet() {
   const { character } = useCharacterStorage();
 
   return (
-    <div className="flex flex-col gap-4 max-w-sm">
+    <div className="flex flex-col gap-4 max-w-sm items-start">
       <Title>Attributes</Title>
       <div className="flex gap-8">
-        <div className="max-w-min">
+        <div className="grid grid-cols-2 gap-2 items-end auto-rows-[32px]">
           <AbilityControl type="strength" />
           <AbilityControl type="dexterity" />
           <AbilityControl type="willpower" />
         </div>
-        <div className="max-w-min">
-          <Ability name="HP" value={character.hp} />
-          <Field name="Armor">0</Field>
+        <div className="grid grid-cols-2 gap-2 items-end auto-rows-[32px]">
+          <div>HP</div>
+          <div>
+            {character.hp.current}/{character.hp.max}
+          </div>
+          <div>Armor</div>
+          <div>0</div>
         </div>
       </div>
     </div>
@@ -52,11 +53,17 @@ interface AbilityControlProps {
 
 function AbilityControl({ type }: AbilityControlProps) {
   const { character } = useCharacterStorage();
+  const value = character[type];
   return (
-    <div className="flex items-center gap-2 justify-between w-full">
-      <Ability name={type} value={character[type]} />
-      <AbilityCheckModal type={type} />
-    </div>
+    <>
+      <div>{type}</div>
+      <div>
+        <span>
+          {value.current}/{value.max}
+        </span>
+        <AbilityCheckModal type={type} />
+      </div>
+    </>
   );
 }
 
@@ -117,22 +124,19 @@ export function AbilityCheckModal({ type }: AbilityCheckModalProps) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
         <Button size="icon-sm" variant="ghost">
           <DicesIcon size={20} />
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{type} check</DialogTitle>
-          <div className="flex gap-1">
-            <Button onClick={() => roll("normal")}>normal</Button>
-            <Button onClick={() => roll("advantage")}>advantage</Button>
-            <Button onClick={() => roll("disadvantage")}>disadvantage</Button>
-          </div>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+      </PopoverTrigger>
+      <PopoverContent className="max-w-xl w-full" side="right">
+        <div className="flex gap-1">
+          <Button onClick={() => roll("normal")}>normal</Button>
+          <Button onClick={() => roll("advantage")}>advantage</Button>
+          <Button onClick={() => roll("disadvantage")}>disadvantage</Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }

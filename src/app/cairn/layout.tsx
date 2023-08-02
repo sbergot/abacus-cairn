@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button";
 import { GameContextProvider } from "./cairn-context";
 import Link from "next/link";
 
+export const metadata = {
+  title: "Abacus - Cairn",
+  description: "Mapless VTT",
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
