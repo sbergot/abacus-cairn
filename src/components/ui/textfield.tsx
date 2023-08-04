@@ -4,12 +4,13 @@ import { KeyOfType, Setter } from "./types";
 import { Draft } from "immer";
 
 interface Props<T> {
+  obj: T;
   setter: Setter<T>;
-  fieldName: KeyOfType<Draft<T>, string>;
+  fieldName: KeyOfType<T, string> & KeyOfType<Draft<T>, string>;
   label?: string;
 }
 
-export default function TextField<T>({ setter, fieldName, label }: Props<T>) {
+export default function TextField<T>({ setter, obj, fieldName, label }: Props<T>) {
   return (
     <div>
       <Label htmlFor={fieldName}>{label ?? fieldName}</Label>
@@ -20,6 +21,7 @@ export default function TextField<T>({ setter, fieldName, label }: Props<T>) {
             c[fieldName] = e.target.value as any;
           })
         }
+        value={obj[fieldName] as string}
         autoComplete="off"
         list="autocompleteOff"
         aria-autocomplete="none"
