@@ -26,14 +26,12 @@ function newAttribute(val: number): Gauge {
   };
 }
 
-export function rollCharacter(): Character {
-  const char = initCharacter();
+export function rollCharacter(char: Character) {
   char.strength = newAttribute(roll(3, 6));
   char.dexterity = newAttribute(roll(3, 6));
   char.willpower = newAttribute(roll(3, 6));
   char.hp = newAttribute(roll(1, 6));
   char.age = roll(2, 20) + 10;
-  return char;
 }
 
 export function getRandomMaleName(): string {

@@ -39,7 +39,7 @@ export default function MainMenu<
           <Title>characters</Title>
           <div className="flex gap-2">
             <Button asChild>
-              <Link href={linker("create-character")}>
+              <Link href={linker("create-character/stats")}>
                 <UserPlusIcon className="mr-2" />
                 new
               </Link>
