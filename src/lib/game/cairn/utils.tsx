@@ -4,43 +4,9 @@ import {
   AbilityCheck,
   AbilityRollAnalysis,
   Character,
-  RollMode,
 } from "./types";
 import { roll } from "@/lib/random";
-import { maxRoll, minRoll, poolRoll, simpleRoll } from "@/lib/dice/dice";
-
-export function initCharacter(): Character {
-  return {
-    id: uuidv4(),
-    name: "",
-    background: "",
-    dexterity: { current: 0, max: 0 },
-    strength: { current: 0, max: 0 },
-    willpower: { current: 0, max: 0 },
-    hp: { current: 0, max: 0 },
-    age: 0,
-    deprived: false,
-    traits: [],
-    inventory: []
-  };
-}
-
-function newAttribute(val: number): Gauge {
-  return {
-    current: val,
-    max: val,
-  };
-}
-
-export function rollCharacter(): Character {
-  const char = initCharacter();
-  char.strength = newAttribute(roll(3, 6));
-  char.dexterity = newAttribute(roll(3, 6));
-  char.willpower = newAttribute(roll(3, 6));
-  char.hp = newAttribute(roll(1, 6));
-  char.age = roll(2, 20) + 10;
-  return char;
-}
+import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
   const { abilityValue, mode } = check;

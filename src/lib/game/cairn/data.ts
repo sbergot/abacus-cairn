@@ -1,4 +1,4 @@
-const femaleNames: string[] = [
+export const femaleNames: string[] = [
   "Agune",
   "Beatrice",
   "Breagan",
@@ -21,7 +21,7 @@ const femaleNames: string[] = [
   "Yslen",
 ];
 
-const maleNames: string[] = [
+export const maleNames: string[] = [
   "Arwel",
   "Bevan",
   "Boroth",
@@ -44,7 +44,7 @@ const maleNames: string[] = [
   "Yirmeor",
 ];
 
-const surnames: string[] = [
+export const surnames: string[] = [
   "Abernathy",
   "Addercap",
   "Burl",
@@ -67,7 +67,7 @@ const surnames: string[] = [
   "Wolder",
 ];
 
-const backgrounds: string[] = [
+export const backgrounds: string[] = [
   "an alchemist",
   "a blacksmith",
   "a butcher",
@@ -90,7 +90,7 @@ const backgrounds: string[] = [
   "a ranger",
 ];
 
-const physiques: string[] = [
+export const physiques: string[] = [
   "a statuesque",
   "a brawny",
   "a towering",
@@ -103,7 +103,7 @@ const physiques: string[] = [
   "a flabby",
 ];
 
-const skins: string[] = [
+export const skins: string[] = [
   "dark",
   "a birthmark on your",
   "tanned",
@@ -116,7 +116,7 @@ const skins: string[] = [
   "tattooed",
 ];
 
-const hairs: string[] = [
+export const hairs: string[] = [
   "bald",
   "braided",
   "oily",
@@ -129,7 +129,7 @@ const hairs: string[] = [
   "luxurious",
 ];
 
-const faces: string[] = [
+export const faces: string[] = [
   "a chiseled",
   "a square",
   "a bony",
@@ -142,7 +142,7 @@ const faces: string[] = [
   "a round",
 ];
 
-const speeches: string[] = [
+export const speeches: string[] = [
   "blunt",
   "booming",
   "droning",
@@ -155,7 +155,7 @@ const speeches: string[] = [
   "whispery",
 ];
 
-const clothings: string[] = [
+export const clothings: string[] = [
   "antique",
   "bloody",
   "rancid",
@@ -168,7 +168,7 @@ const clothings: string[] = [
   "filthy",
 ];
 
-const virtues: string[] = [
+export const virtues: string[] = [
   "ambitious",
   "courageous",
   "disciplined",
@@ -181,7 +181,7 @@ const virtues: string[] = [
   "cautious",
 ];
 
-const vices: string[] = [
+export const vices: string[] = [
   "aggressive",
   "bitter",
   "craven",
@@ -194,7 +194,7 @@ const vices: string[] = [
   "vain",
 ];
 
-const reputations: string[] = [
+export const reputations: string[] = [
   "an oddball",
   "wise",
   "respected",
@@ -207,7 +207,7 @@ const reputations: string[] = [
   "an entertainer",
 ];
 
-const misfortunes: string[] = [
+export const misfortunes: string[] = [
   "abandoned",
   "addicted",
   "blackmailed",
