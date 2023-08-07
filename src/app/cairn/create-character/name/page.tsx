@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import TextField from "@/components/ui/textfield";
@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { useGameContext } from "../../cairn-context";
 import { useRouter } from "next/navigation";
+import { Label } from "@/components/ui/label";
 
 export default function CharacterName() {
   const { character, setCharacter } = useCharacterCreationContext();
@@ -40,43 +41,46 @@ export default function CharacterName() {
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
       <Title>Backgrounds</Title>
-      <TextField<Character>
-        fieldName="name"
-        setter={setCharacter}
-        obj={character}
-      />
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button size="icon-sm" variant="ghost">
-            <DicesIcon size={30} />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="max-w-xl w-full" side="right">
-          <div className="flex gap-1">
-            <Button
-              onClick={() => {
-                setCharacter((d) => {
-                  d.name = getRandomMaleName();
-                });
-                setOpen(false);
-              }}
-            >
-              random male name
+      <Label htmlFor="name">Name your character</Label>
+      <div className="flex gap-2 w-full">
+        <TextField<Character>
+          fieldName="name"
+          setter={setCharacter}
+          obj={character}
+        />
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button size="icon-sm" variant="ghost">
+              <DicesIcon size={30} />
             </Button>
-            <Button
-              onClick={() => {
-                setCharacter((d) => {
-                  d.name = getRandomFemaleName();
-                });
-                setOpen(false);
-              }}
-            >
-              random female name
-            </Button>
-          </div>
-        </PopoverContent>
-      </Popover>
-      <Button className="w-24 self-center" onClick={save}>
+          </PopoverTrigger>
+          <PopoverContent className="max-w-xl w-full" side="right">
+            <div className="flex gap-1">
+              <Button
+                onClick={() => {
+                  setCharacter((d) => {
+                    d.name = getRandomMaleName();
+                  });
+                  setOpen(false);
+                }}
+              >
+                random male name
+              </Button>
+              <Button
+                onClick={() => {
+                  setCharacter((d) => {
+                    d.name = getRandomFemaleName();
+                  });
+                  setOpen(false);
+                }}
+              >
+                random female name
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
+      <Button className="w-full" onClick={save}>
         Save
       </Button>
     </div>

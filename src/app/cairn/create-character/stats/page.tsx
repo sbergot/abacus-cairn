@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Gauge } from "@/lib/game/cairn/types";
 import { useRelativeLinker } from "@/lib/hooks";
-import { useRouter } from "next/navigation";
 import { Title } from "@/components/ui/typography";
 import { Children } from "@/components/ui/types";
 import { useCharacterCreationContext } from "../character-creation-context";
@@ -13,7 +12,6 @@ import { rollCharacter } from "@/lib/game/cairn/character-generation";
 
 export default function CreateCharacterStats() {
   const { character, setCharacter } = useCharacterCreationContext();
-  const router = useRouter();
   const linker = useRelativeLinker();
 
   useEffect(() => setCharacter(rollCharacter), []);

@@ -16,6 +16,7 @@ import {
 import { backgrounds } from "@/lib/game/cairn/data";
 import { PlusCircleIcon } from "lucide-react";
 import { OrSeparator } from "@/components/ui/or-separator";
+import { pickRandom } from "@/lib/random";
 
 export default function PickCharacterBackground() {
   const { character, setCharacter } = useCharacterCreationContext();
@@ -24,8 +25,17 @@ export default function PickCharacterBackground() {
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
       <Title>Backgrounds</Title>
-      <div>Your character is {character.background}</div>
-      <Button>Pick randomly</Button>
+      <div>Pick your background</div>
+      <div>Your character is {character.background || "???"}</div>
+      <Button className="w-full"
+        onClick={() =>
+          setCharacter((d) => {
+            d.background = pickRandom(backgrounds);
+          })
+        }
+      >
+        Pick randomly
+      </Button>
       <OrSeparator />
       <Table>
         <TableHeader>
@@ -35,7 +45,7 @@ export default function PickCharacterBackground() {
         </TableHeader>
         <TableBody>
           {backgrounds.map((b) => (
-            <TableRow>
+            <TableRow key={b}>
               <TableCell className="py-2">{b}</TableCell>
               <TableCell className="py-0">
                 <Button
@@ -54,7 +64,7 @@ export default function PickCharacterBackground() {
           ))}
         </TableBody>
       </Table>
-      <Button className="w-24 self-center">
+      <Button className="w-full" asChild>
         <Link href={linker("../name")}>Next</Link>
       </Button>
     </div>
