@@ -32,6 +32,7 @@ export interface Timer extends WithId {
 }
 
 export interface BaseGame<TMessage> {
+  id: string;
   title: string;
   customEntries: CustomEntry[];
   messages: Stamped<AllChatMessage<TMessage>>[];

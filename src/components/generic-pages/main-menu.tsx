@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BaseCharacter } from "@/lib/game/types";
+import { BaseCharacter, BaseGame } from "@/lib/game/types";
 import { useRelativeLinker } from "@/lib/hooks";
 import {
   Dialog,
@@ -19,6 +19,7 @@ import { FileImport } from "../ui/file-import";
 import { useGenericGameContext } from "@/lib/gameContext";
 import { download } from "@/lib/utils";
 import { Title } from "../ui/typography";
+import { UknownGameMessage } from "@/lib/network/types";
 
 interface Props {}
 
@@ -28,6 +29,7 @@ export default function MainMenu<
 >({}: Props) {
   const {
     characterRepo: { state: characters, setState: setCharacters },
+    gameRepo: { state: games, setState: setGames },
     gameName,
   } = useGenericGameContext();
   const linker = useRelativeLinker();
@@ -82,6 +84,48 @@ export default function MainMenu<
         </div>
         <div className="flex flex-col gap-2 max-w-lg w-full">
           <Title>games</Title>
+          <div className="flex gap-2">
+            <Button asChild>
+              <Link href={linker("create-character/stats")}>
+                <UserPlusIcon className="mr-2" />
+                new
+              </Link>
+            </Button>
+            <FileImport
+              variant="secondary"
+              label="import"
+              onUpLoad={(body) => {
+                setGames((d) => {
+                  const newData = JSON.parse(body) as Record<
+                    string,
+                    BaseGame<UknownGameMessage>
+                  >;
+                  Object.values(newData).forEach((c) => (d[c.id] = c));
+                });
+              }}
+            />
+            <Button
+              variant="secondary"
+              onClick={() => download(`${gameName}-games`)}
+            >
+              <UploadIcon className="mr-2" />
+              export
+            </Button>
+          </div>
+          <div className="flex flex-col gap-2">
+            {Object.values(games).map((c) => (
+              <GameEntry
+                key={c.id}
+                name={c.title}
+                sessionLink={linker(`session/${c.id}`)}
+                deleteGame={() =>
+                  setGames((repo) => {
+                    delete repo[c.id];
+                  })
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
     </main>
@@ -107,6 +151,31 @@ function CharacterEntry({
         <DeleteAlert onConfirm={deleteCharacter}>
           This action cannot be undone. This will permanently delete your
           character named <span className="font-bold">{name}</span>.
+        </DeleteAlert>
+      </div>
+    </div>
+  );
+}
+
+interface GameEntryProps {
+  name: string;
+  sessionLink: string;
+  deleteGame(): void;
+}
+
+function GameEntry({
+  sessionLink,
+  name,
+  deleteGame,
+}: GameEntryProps) {
+  return (
+    <div className="flex justify-between items-center p-2 border border-input bg-background">
+      <div className="text-lg">{name}</div>
+      <div className="flex gap-2">
+        <PlayModal sessionLink={sessionLink} />
+        <DeleteAlert onConfirm={deleteGame}>
+          This action cannot be undone. This will permanently delete your
+          game titled <span className="font-bold">{name}</span>.
         </DeleteAlert>
       </div>
     </div>
