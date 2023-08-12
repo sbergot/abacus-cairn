@@ -79,7 +79,7 @@ export default function MainMenu<
               <CharacterEntry
                 key={c.id}
                 name={c.name}
-                sessionLink={linker(`session/${c.id}`)}
+                sessionLink={linker(`session/solo/${c.id}`)}
                 deleteCharacter={() =>
                   setCharacters((repo) => {
                     delete repo[c.id];
@@ -126,7 +126,7 @@ export default function MainMenu<
               <GameEntry
                 key={c.id}
                 name={c.title}
-                sessionLink={linker(`session/${c.id}`)}
+                sessionLink={linker(`session/shared/${c.id}/game-master`)}
                 deleteGame={() =>
                   setGames((repo) => {
                     delete repo[c.id];
@@ -156,7 +156,7 @@ function CharacterEntry({
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <PlayModal sessionLink={sessionLink} />
+        <SessionStartModal sessionLink={sessionLink} />
         <DeleteAlert onConfirm={deleteCharacter}>
           This action cannot be undone. This will permanently delete your
           character named <span className="font-bold">{name}</span>.
@@ -177,7 +177,7 @@ function GameEntry({ sessionLink, name, deleteGame }: GameEntryProps) {
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <PlayModal sessionLink={sessionLink} />
+        <SessionStartModal sessionLink={sessionLink} />
         <DeleteAlert onConfirm={deleteGame}>
           This action cannot be undone. This will permanently delete your game
           titled <span className="font-bold">{name}</span>.
@@ -187,11 +187,11 @@ function GameEntry({ sessionLink, name, deleteGame }: GameEntryProps) {
   );
 }
 
-interface PlayModalProps {
-  sessionLink: string;
+interface SessionStartProps {
+  characterId: string;
 }
 
-export function PlayModal({ sessionLink }: PlayModalProps) {
+export function SessionStartModal({ sessionLink }: SessionStartProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>

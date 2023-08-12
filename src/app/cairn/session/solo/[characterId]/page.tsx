@@ -1,10 +1,6 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import {
-  useCharacterStorage,
-  usePlayerConnectionContext,
-} from "../../cairn-context";
 import { Button } from "@/components/ui/button";
 import {
   MessagePanel,
@@ -21,6 +17,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  useCharacterStorage,
+  usePlayerConnectionContext,
+} from "@/app/cairn/cairn-context";
 
 function CharacterSheet() {
   const { character } = useCharacterStorage();
