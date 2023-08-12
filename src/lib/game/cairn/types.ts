@@ -1,4 +1,5 @@
 import { ChatMessage } from "@/lib/network/types";
+import { BaseGame } from "../types";
 
 export interface Gauge {
   current: number;
@@ -7,7 +8,7 @@ export interface Gauge {
 
 export type AbilityType = "strength" | "dexterity" | "willpower";
 
-export interface Character {
+export interface CairnCharacter {
   id: string;
   name: string;
   age: number;
@@ -59,4 +60,8 @@ export interface AbilityRollAnalysis {
   isSuccess: boolean;
 }
 
-export type Message = ChatMessage<"AbilityRoll", AbilityRollAnalysis>;
+export type CairnMessage = ChatMessage<"AbilityRoll", AbilityRollAnalysis>;
+
+export interface CairnGame extends BaseGame<CairnMessage> {
+
+}

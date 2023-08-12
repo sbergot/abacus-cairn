@@ -1,9 +1,9 @@
 import { uuidv4 } from "@/lib/utils";
-import { Character, Gauge } from "./types";
+import { CairnCharacter, Gauge } from "./types";
 import { pickRandom, roll } from "@/lib/random";
 import { femaleNames, maleNames, surnames } from "./data";
 
-export function initCharacter(): Character {
+export function initCharacter(): CairnCharacter {
   return {
     id: uuidv4(),
     name: "",
@@ -26,7 +26,7 @@ function newAttribute(val: number): Gauge {
   };
 }
 
-export function rollCharacter(char: Character) {
+export function rollCharacter(char: CairnCharacter) {
   char.strength = newAttribute(roll(3, 6));
   char.dexterity = newAttribute(roll(3, 6));
   char.willpower = newAttribute(roll(3, 6));

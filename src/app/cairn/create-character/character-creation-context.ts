@@ -1,10 +1,10 @@
 import { Setter } from "@/components/ui/types";
-import { Character } from "@/lib/game/cairn/types"
+import { CairnCharacter } from "@/lib/game/cairn/types"
 import { createContext, useContext } from "react";
 
 interface ICharacterCreationContext {
-    character: Character;
-    setCharacter: Setter<Character>;
+    character: CairnCharacter;
+    setCharacter: Setter<CairnCharacter>;
 }
 
 const CharacterCreationContext = createContext<ICharacterCreationContext | null>(null);

@@ -6,7 +6,7 @@ import {
   getRandomMaleName,
   getRandomFemaleName,
 } from "@/lib/game/cairn/character-generation";
-import { Character } from "@/lib/game/cairn/types";
+import { CairnCharacter } from "@/lib/game/cairn/types";
 import { useRelativeLinker } from "@/lib/hooks";
 import { DicesIcon } from "lucide-react";
 import { useCharacterCreationContext } from "../character-creation-context";
@@ -43,7 +43,7 @@ export default function CharacterName() {
       <Title>Backgrounds</Title>
       <Label htmlFor="name">Name your character</Label>
       <div className="flex gap-2 w-full">
-        <TextField<Character>
+        <TextField<CairnCharacter>
           fieldName="name"
           setter={setCharacter}
           obj={character}

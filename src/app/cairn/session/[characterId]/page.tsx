@@ -10,7 +10,7 @@ import {
   MessagePanel,
   ShowCustomMessageProps,
 } from "@/components/generic-pages/message-panel";
-import { AbilityType, Message, RollMode } from "@/lib/game/cairn/types";
+import { AbilityType, CairnMessage, RollMode } from "@/lib/game/cairn/types";
 import { abilityCheck } from "@/lib/game/cairn/utils";
 import { DiceRoll } from "@/components/ui/dice-roll";
 import { Title } from "@/components/ui/typography";
@@ -127,7 +127,7 @@ function HpControl() {
   );
 }
 
-function ShowCustomMessage({ m, ctx }: ShowCustomMessageProps<Message>) {
+function ShowCustomMessage({ m, ctx }: ShowCustomMessageProps<CairnMessage>) {
   if (m.type === "AbilityRoll") {
     return (
       <div>
@@ -150,7 +150,7 @@ export default function Session() {
     <TwoColumns
       leftPart={<CharacterSheet />}
       rightPart={
-        <MessagePanel<Message>
+        <MessagePanel<CairnMessage>
           context={{ contextType: "player", authorId: character.id }}
           messages={messages}
           ShowCustomMessage={ShowCustomMessage}

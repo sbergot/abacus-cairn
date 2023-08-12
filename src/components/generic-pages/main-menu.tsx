@@ -10,7 +10,12 @@ import {
   DialogTitle,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { PlayIcon, UploadIcon, UserPlusIcon } from "lucide-react";
+import {
+  FilePlus2Icon,
+  PlayIcon,
+  UploadIcon,
+  UserPlusIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { DeleteAlert } from "@/components/ui/delete-alert";
@@ -20,13 +25,15 @@ import { useGenericGameContext } from "@/lib/gameContext";
 import { download } from "@/lib/utils";
 import { Title } from "../ui/typography";
 import { UknownGameMessage } from "@/lib/network/types";
+import { useState } from "react";
+import { initGame } from "@/lib/game/cairn/utils";
 
-interface Props {}
+interface MainMenuProps {}
 
 export default function MainMenu<
   TChar extends BaseCharacter,
   TGame
->({}: Props) {
+>({}: MainMenuProps) {
   const {
     characterRepo: { state: characters, setState: setCharacters },
     gameRepo: { state: games, setState: setGames },
@@ -36,7 +43,7 @@ export default function MainMenu<
 
   return (
     <main className="p-4 max-w-6xl flex flex-col">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-8">
         <div className="flex flex-col gap-2 max-w-lg w-full">
           <Title>characters</Title>
           <div className="flex gap-2">
@@ -85,12 +92,14 @@ export default function MainMenu<
         <div className="flex flex-col gap-2 max-w-lg w-full">
           <Title>games</Title>
           <div className="flex gap-2">
-            <Button asChild>
-              <Link href={linker("create-character/stats")}>
-                <UserPlusIcon className="mr-2" />
-                new
-              </Link>
-            </Button>
+            <NewGameModal
+              onCreate={(name) => {
+                setGames((d) => {
+                  const newGame = initGame(name);
+                  d[newGame.id] = newGame;
+                });
+              }}
+            />
             <FileImport
               variant="secondary"
               label="import"
@@ -163,19 +172,15 @@ interface GameEntryProps {
   deleteGame(): void;
 }
 
-function GameEntry({
-  sessionLink,
-  name,
-  deleteGame,
-}: GameEntryProps) {
+function GameEntry({ sessionLink, name, deleteGame }: GameEntryProps) {
   return (
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <PlayModal sessionLink={sessionLink} />
         <DeleteAlert onConfirm={deleteGame}>
-          This action cannot be undone. This will permanently delete your
-          game titled <span className="font-bold">{name}</span>.
+          This action cannot be undone. This will permanently delete your game
+          titled <span className="font-bold">{name}</span>.
         </DeleteAlert>
       </div>
     </div>
@@ -208,6 +213,46 @@ export function PlayModal({ sessionLink }: PlayModalProps) {
           </div>
           <Button>Join a table</Button>
         </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+interface NewGameModalProps {
+  onCreate(name: string): void;
+}
+
+export function NewGameModal({ onCreate }: NewGameModalProps) {
+  const [open, setOpen] = useState(true);
+  const [name, setName] = useState("");
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>
+          <FilePlus2Icon size={20} className="mr-2" /> new
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>New game</DialogTitle>
+        </DialogHeader>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onCreate(name);
+            setOpen(false);
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            <Input
+              id="game-name"
+              placeholder="game name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <Button type="submit">Create</Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -1,11 +1,5 @@
 import { uuidv4 } from "@/lib/utils";
-import {
-  Gauge,
-  AbilityCheck,
-  AbilityRollAnalysis,
-  Character,
-} from "./types";
-import { roll } from "@/lib/random";
+import { AbilityCheck, AbilityRollAnalysis, CairnGame } from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
@@ -23,7 +17,7 @@ export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
           results: [{ value, valid: true }],
           rollValue: value,
         },
-        isSuccess: value <= abilityValue
+        isSuccess: value <= abilityValue,
       };
     }
     case "advantage": {
@@ -32,7 +26,7 @@ export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
       return {
         check,
         results,
-        isSuccess: results.rollValue <= abilityValue
+        isSuccess: results.rollValue <= abilityValue,
       };
     }
     case "disadvantage": {
@@ -41,8 +35,18 @@ export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
       return {
         check,
         results,
-        isSuccess: results.rollValue <= abilityValue
+        isSuccess: results.rollValue <= abilityValue,
       };
     }
   }
+}
+
+export function initGame(name: string): CairnGame {
+  return {
+    id: uuidv4(),
+    title: name,
+    messages: [],
+    customEntries: [],
+    timers: [],
+  };
 }
