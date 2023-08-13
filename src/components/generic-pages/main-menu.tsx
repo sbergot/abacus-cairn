@@ -79,7 +79,7 @@ export default function MainMenu<
               <CharacterEntry
                 key={c.id}
                 name={c.name}
-                sessionLink={linker(`session/solo/${c.id}`)}
+                characterId={c.id}
                 deleteCharacter={() =>
                   setCharacters((repo) => {
                     delete repo[c.id];
@@ -126,7 +126,7 @@ export default function MainMenu<
               <GameEntry
                 key={c.id}
                 name={c.title}
-                sessionLink={linker(`session/shared/${c.id}/game-master`)}
+                gameId={c.id}
                 deleteGame={() =>
                   setGames((repo) => {
                     delete repo[c.id];
@@ -143,12 +143,12 @@ export default function MainMenu<
 
 interface CharacterEntryProps {
   name: string;
-  sessionLink: string;
+  characterId: string;
   deleteCharacter(): void;
 }
 
 function CharacterEntry({
-  sessionLink,
+  characterId,
   name,
   deleteCharacter,
 }: CharacterEntryProps) {
@@ -156,7 +156,7 @@ function CharacterEntry({
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <SessionStartModal sessionLink={sessionLink} />
+        <SessionStartModal characterId={characterId} />
         <DeleteAlert onConfirm={deleteCharacter}>
           This action cannot be undone. This will permanently delete your
           character named <span className="font-bold">{name}</span>.
@@ -168,16 +168,21 @@ function CharacterEntry({
 
 interface GameEntryProps {
   name: string;
-  sessionLink: string;
+  gameId: string;
   deleteGame(): void;
 }
 
-function GameEntry({ sessionLink, name, deleteGame }: GameEntryProps) {
+function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
+  const linker = useRelativeLinker();
   return (
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <SessionStartModal sessionLink={sessionLink} />
+        <Button size="icon-sm" variant="ghost" asChild>
+          <Link href={linker(`session/shared/${gameId}/game-master`)}>
+            <PlayIcon size={20} />
+          </Link>
+        </Button>
         <DeleteAlert onConfirm={deleteGame}>
           This action cannot be undone. This will permanently delete your game
           titled <span className="font-bold">{name}</span>.
@@ -191,7 +196,8 @@ interface SessionStartProps {
   characterId: string;
 }
 
-export function SessionStartModal({ sessionLink }: SessionStartProps) {
+export function SessionStartModal({ characterId }: SessionStartProps) {
+  const linker = useRelativeLinker();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -205,7 +211,9 @@ export function SessionStartModal({ sessionLink }: SessionStartProps) {
         </DialogHeader>
         <div className="flex flex-col gap-2">
           <Button asChild>
-            <Link href={sessionLink}>Start a solo session</Link>
+            <Link href={linker(`session/solo/${characterId}`)}>
+              Start a solo session
+            </Link>
           </Button>
           <OrSeparator />
           <div className="flex flex-col gap-2">
@@ -223,7 +231,7 @@ interface NewGameModalProps {
 }
 
 export function NewGameModal({ onCreate }: NewGameModalProps) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   return (
     <Dialog open={open} onOpenChange={setOpen}>

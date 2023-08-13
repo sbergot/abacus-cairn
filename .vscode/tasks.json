@@ -7,6 +7,15 @@
 			"problemMatcher": [],
 			"label": "npm: dev",
 			"detail": "next dev"
+		},
+		{
+			"type": "npm",
+			"script": "check-types",
+			"problemMatcher": [
+				"$eslint-compact"
+			],
+			"label": "npm: check-types",
+			"detail": "tsc --noemit"
 		}
 	]
 }

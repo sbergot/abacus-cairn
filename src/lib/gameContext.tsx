@@ -63,7 +63,7 @@ export function createGameContext<
     return useContext(GameContext)!;
   }
 
-  function useCharacterStorage() {
+  function useCurrentCharacter() {
     const {
       characterRepo: { state, setState },
     } = useGameContext();
@@ -74,5 +74,21 @@ export function createGameContext<
     return { character, setCharacter };
   }
 
-  return { GameContextProvider, useGameContext, useCharacterStorage };
+  function useCurrentGame() {
+    const {
+      characterRepo: { state, setState },
+    } = useGameContext();
+    const params = useParams();
+    const { characterId } = params;
+    const character = state[characterId];
+    const setCharacter = setSingle(setState, characterId);
+    return { character, setCharacter };
+  }
+
+  return {
+    GameContextProvider,
+    useGameContext,
+    useCurrentCharacter,
+    useCurrentGame,
+  };
 }

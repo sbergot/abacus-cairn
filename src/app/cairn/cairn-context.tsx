@@ -1,5 +1,5 @@
 import { Children } from "@/components/ui/types";
-import { CairnCharacter, CairnMessage } from "@/lib/game/cairn/types";
+import { CairnCharacter, CairnGame, CairnMessage } from "@/lib/game/cairn/types";
 import { createGameContext } from "@/lib/gameContext";
 import {
   PlayerConnection,
@@ -7,8 +7,8 @@ import {
 } from "@/lib/network/playerConnection";
 import { createContext, useContext } from "react";
 
-export const { GameContextProvider, useGameContext, useCharacterStorage } =
-  createGameContext<CairnCharacter>("cairn");
+export const { GameContextProvider, useGameContext, useCurrentCharacter } =
+  createGameContext<CairnCharacter, CairnGame>("cairn");
 
 const PlayerConnectionContext = createContext<PlayerConnection<CairnMessage> | null>(
   null
