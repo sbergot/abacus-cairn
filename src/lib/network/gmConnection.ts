@@ -10,6 +10,7 @@ import {
 import Peer, { DataConnection } from "peerjs";
 import { stamp } from "./utils";
 import { BaseCharacter, BaseGame, LibraryElement } from "../game/types";
+import { useCurrentGame } from "@/app/cairn/cairn-context";
 
 type ConnectionState = "opened" | "closed" | "error";
 
@@ -29,12 +30,8 @@ export function useDmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
   TGame extends BaseGame<TMessage>
->(
-  messages: Stamped<AllChatMessage<TMessage>>[],
-  revealedElements: LibraryElement[],
-  storeMessage: (m: Stamped<AllChatMessage<TMessage>>) => void,
-  getAllRevealedElements: (game: TGame) => LibraryElement[]
-) {
+>() {
+  const {} = useCurrentGame();
   const [sessionCode, setSessionCode] = useState("");
   const [connectionsState, setConnectionsState] = useState<
     Record<string, ConnectionInfo>
@@ -124,7 +121,10 @@ export function useDmConnection<
             conn.send(response);
             return;
           }
-        } else if (typeData.kind === "chat-common" || typeData.kind === "chat-custom") {
+        } else if (
+          typeData.kind === "chat-common" ||
+          typeData.kind === "chat-custom"
+        ) {
           storeAndSendAll(typeData);
         }
       });
