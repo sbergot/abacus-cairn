@@ -10,7 +10,7 @@ import {
 import Peer, { DataConnection } from "peerjs";
 import { stamp } from "./utils";
 import { BaseCharacter, BaseGame, LibraryElement } from "../game/types";
-import { useCurrentGame } from "@/app/cairn/cairn-context";
+import { useCurrentGenericGame } from "../gameContext";
 
 type ConnectionState = "opened" | "closed" | "error";
 
@@ -30,14 +30,16 @@ export function useDmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
   TGame extends BaseGame<TMessage>
->() {
-  const {} = useCurrentGame();
+>(getAllRevealedElements: (g: TGame) => LibraryElement[]) {
+  const { state: game, setState: setGame } = useCurrentGenericGame();
   const [sessionCode, setSessionCode] = useState("");
   const [connectionsState, setConnectionsState] = useState<
     Record<string, ConnectionInfo>
   >({});
+  const { messages } = game;
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
+  const revealedElements = getAllRevealedElements(game as TGame);
   const revealedElementsRef = useRef(revealedElements);
   revealedElementsRef.current = revealedElements;
   const debounceRef = useRef(false);
@@ -169,7 +171,9 @@ export function useDmConnection<
 
   function storeAndSendAll(stamped: Stamped<AllChatMessage<TMessage>>) {
     if (!stamped.transient) {
-      storeMessage(stamped);
+      setGame((d) => {
+        d.messages.push(stamped);
+      });
     }
     setTransientMessages((tms) =>
       rotateArray([...tms, stamped], MAX_MESSAGE_NBR)

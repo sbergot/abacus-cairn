@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { BaseCharacter, BaseGame } from "./game/types";
 import { Children } from "@/components/ui/types";
 import { useImmerLocalStorage } from "./hooks";
-import { IUseStateContext } from "./types";
+import { ILens } from "./types";
 import { useParams } from "next/navigation";
 import { setSingle } from "./utils";
 import { UknownGameMessage } from "./network/types";
@@ -11,8 +11,8 @@ export interface IGameContext<
   TChar extends BaseCharacter,
   TGame extends BaseGame<UknownGameMessage>
 > {
-  characterRepo: IUseStateContext<Record<string, TChar>>;
-  gameRepo: IUseStateContext<Record<string, TGame>>;
+  characterRepo: ILens<Record<string, TChar>>;
+  gameRepo: ILens<Record<string, TGame>>;
   gameName: string;
 }
 
@@ -27,6 +27,29 @@ const GenericGameContextProvider = GenericGameContext.Provider;
 export function useGenericGameContext() {
   return useContext(GenericGameContext)!;
 }
+
+export function useCurrentGenericCharacter(): ILens<BaseCharacter> {
+  const {
+    characterRepo: { state, setState },
+  } = useGenericGameContext();
+  const params = useParams();
+  const { characterId } = params;
+  const character = state[characterId];
+  const setCharacter = setSingle(setState, characterId);
+  return { state: character, setState: setCharacter };
+}
+
+export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage>> {
+  const {
+    gameRepo: { state, setState },
+  } = useGenericGameContext();
+  const params = useParams();
+  const { gameId } = params;
+  const game = state[gameId];
+  const setGame = setSingle(setState, gameId);
+  return { state: game, setState: setGame };
+}
+
 
 export function createGameContext<
   TChar extends BaseCharacter,
@@ -63,7 +86,7 @@ export function createGameContext<
     return useContext(GameContext)!;
   }
 
-  function useCurrentCharacter() {
+  function useCurrentCharacter(): ILens<TChar> {
     const {
       characterRepo: { state, setState },
     } = useGameContext();
@@ -71,18 +94,18 @@ export function createGameContext<
     const { characterId } = params;
     const character = state[characterId];
     const setCharacter = setSingle(setState, characterId);
-    return { character, setCharacter };
+    return { state: character, setState: setCharacter };
   }
 
-  function useCurrentGame() {
+  function useCurrentGame(): ILens<TGame> {
     const {
-      characterRepo: { state, setState },
+      gameRepo: { state, setState },
     } = useGameContext();
     const params = useParams();
-    const { characterId } = params;
-    const character = state[characterId];
-    const setCharacter = setSingle(setState, characterId);
-    return { character, setCharacter };
+    const { gameId } = params;
+    const game = state[gameId];
+    const setGame = setSingle(setState, gameId);
+    return { state: game, setState: setGame };
   }
 
   return {

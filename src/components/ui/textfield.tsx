@@ -1,5 +1,6 @@
+import { Setter } from "@/lib/types";
 import { Input } from "./input";
-import { ClassName, KeyOfType, Setter } from "./types";
+import { ClassName, KeyOfType } from "./types";
 import { Draft } from "immer";
 
 interface Props<T> extends ClassName {

@@ -23,7 +23,7 @@ import {
 } from "@/app/cairn/cairn-context";
 
 function CharacterSheet() {
-  const { character } = useCurrentCharacter();
+  const { state: character } = useCurrentCharacter();
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
@@ -51,7 +51,7 @@ interface AbilityControlProps {
 }
 
 function AbilityControl({ type }: AbilityControlProps) {
-  const { character, setCharacter } = useCurrentCharacter();
+  const { state: character, setState: setCharacter } = useCurrentCharacter();
   const value = character[type];
   return (
     <div className="flex gap-2 items-stretch justify-between">
@@ -91,7 +91,7 @@ function AbilityControl({ type }: AbilityControlProps) {
 }
 
 function HpControl() {
-  const { character, setCharacter } = useCurrentCharacter();
+  const { state: character, setState: setCharacter } = useCurrentCharacter();
   const value = character.hp;
   return (
     <div className="flex gap-2 items-stretch justify-between">
@@ -144,7 +144,7 @@ function ShowCustomMessage({ m, ctx }: ShowCustomMessageProps<CairnMessage>) {
 }
 
 export default function Session() {
-  const { character } = useCurrentCharacter();
+  const { state: character } = useCurrentCharacter();
   const { messages } = usePlayerConnectionContext();
   return (
     <TwoColumns
@@ -165,7 +165,7 @@ interface AbilityCheckModalProps {
 }
 
 export function AbilityCheckModal({ type }: AbilityCheckModalProps) {
-  const { character } = useCurrentCharacter();
+  const { state: character } = useCurrentCharacter();
   const { log } = usePlayerConnectionContext();
   const [open, setOpen] = useState(false);
 

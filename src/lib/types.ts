@@ -1,6 +1,8 @@
 import { Draft } from "immer";
 
-export interface IUseStateContext<T> {
+export interface ILens<T> {
   state: T;
-  setState(r: (d: Draft<T>) => void): void;
+  setState: Setter<T>;
 }
+
+export type Setter<T> = (r: (d: Draft<T>) => void) => void

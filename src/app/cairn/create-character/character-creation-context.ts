@@ -1,5 +1,5 @@
-import { Setter } from "@/components/ui/types";
 import { CairnCharacter } from "@/lib/game/cairn/types"
+import { Setter } from "@/lib/types";
 import { createContext, useContext } from "react";
 
 interface ICharacterCreationContext {
