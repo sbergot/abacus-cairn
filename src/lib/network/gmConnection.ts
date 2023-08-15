@@ -17,17 +17,17 @@ type ConnectionState = "opened" | "closed" | "error";
 
 const MAX_MESSAGE_NBR = 500;
 
-interface ConnectionInfo {
+interface ConnectionInfo<TChar> {
   id: string;
-  character: BaseCharacter | null;
+  character: TChar | null;
   state: ConnectionState;
 }
 
-export interface GmConnection<TMessage, TGame> extends Logger<TMessage> {
+export interface GmConnection<TMessage, TGame, TChar> extends Logger<TMessage> {
   sessionCode: string;
   messages: Stamped<AllChatMessage<TMessage>>[];
   updateRevealedElements(g: TGame): void;
-  connections: ConnectionInfo[];
+  connections: ConnectionInfo<TChar>[];
 }
 
 function rotateArray<T>(arr: T[], limit: number): T[] {
@@ -38,11 +38,11 @@ export function useGmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
   TGame extends BaseGame<TMessage>
->(getAllRevealedElements: (g: TGame) => LibraryElement[]): GmConnection<TMessage, TGame> {
+>(getAllRevealedElements: (g: TGame) => LibraryElement[]): GmConnection<TMessage, TGame, TChar> {
   const { state: game, setState: setGame } = useCurrentGenericGame();
   const [sessionCode, setSessionCode] = useState("");
   const [connectionsState, setConnectionsState] = useState<
-    Record<string, ConnectionInfo>
+    Record<string, ConnectionInfo<TChar>>
   >({});
   const { messages } = game;
   const messagesRef = useRef(messages);
@@ -192,7 +192,7 @@ export function useGmConnection<
   }
 
   function log(m: AllChatMessage<TMessage>) {
-    const stamped = stamp({ id: "warden", name: "warden" }, m);
+    const stamped = stamp({ id: "gm", name: "gm" }, m);
     storeAndSendAll(stamped);
   }
 

@@ -1,4 +1,4 @@
-import { usePlayerConnectionContext } from "@/app/cairn/cairn-context";
+import { useLoggerContext } from "@/app/cairn/cairn-context";
 import { AbilityType, CairnCharacter, RollMode } from "@/lib/game/cairn/types";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -12,7 +12,7 @@ interface AbilityCheckModalProps {
 }
 
 export function AbilityCheckModal({ type, character }: AbilityCheckModalProps) {
-  const { log } = usePlayerConnectionContext();
+  const { log } = useLoggerContext();
   const [open, setOpen] = useState(false);
 
   function roll(mode: RollMode) {

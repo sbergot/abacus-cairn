@@ -179,7 +179,7 @@ function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <Button size="icon-sm" variant="ghost" asChild>
-          <Link href={linker(`session/shared/${gameId}/game-master`)}>
+          <Link href={linker(`session/host/${gameId}`)}>
             <PlayIcon size={20} />
           </Link>
         </Button>
@@ -198,6 +198,7 @@ interface SessionStartProps {
 
 export function SessionStartModal({ characterId }: SessionStartProps) {
   const linker = useRelativeLinker();
+  const [tableId, setTableId] = useState("");
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -217,9 +218,20 @@ export function SessionStartModal({ characterId }: SessionStartProps) {
           </Button>
           <OrSeparator />
           <div className="flex flex-col gap-2">
-            <Input id="table-id" placeholder="table id" />
+            <Input
+              id="table-id"
+              placeholder="table id"
+              value={tableId}
+              onChange={(e) => setTableId(e.target.value)}
+            />
           </div>
-          <Button>Join a table</Button>
+          <Button asChild>
+            <Link
+              href={linker(`session/table/${tableId}/character/${characterId}`)}
+            >
+              Join a table
+            </Link>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

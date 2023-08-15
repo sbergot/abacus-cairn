@@ -70,7 +70,8 @@ export function usePlayerConnectionContext() {
 
 const GmConnectionContext = createContext<GmConnection<
   CairnMessage,
-  CairnGame
+  CairnGame,
+  CairnCharacter
 > | null>(null);
 
 export function useGmConnectionContext() {
