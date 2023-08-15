@@ -4,6 +4,7 @@ import {
   AllSyncMessageForPlayer,
   AnyMessage,
   ConnectionMetadata,
+  Logger,
   Stamped,
   UknownGameMessage,
 } from "./types";
@@ -22,9 +23,8 @@ interface ConnectionInfo {
   state: ConnectionState;
 }
 
-export interface GmConnection<TMessage, TGame> {
+export interface GmConnection<TMessage, TGame> extends Logger<TMessage> {
   sessionCode: string;
-  log: (m: AllChatMessage<TMessage>) => void;
   messages: Stamped<AllChatMessage<TMessage>>[];
   updateRevealedElements(g: TGame): void;
   connections: ConnectionInfo[];

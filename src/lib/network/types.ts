@@ -57,3 +57,7 @@ export type AnyMessage<TChar, TMessage> =
 export interface ConnectionMetadata {
   browserId: string;
 }
+
+export interface Logger<TMessage> {
+  log: (m: AllChatMessage<TMessage>) => void;
+}

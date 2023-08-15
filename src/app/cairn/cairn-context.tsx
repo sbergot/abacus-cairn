@@ -11,7 +11,14 @@ import {
   usePlayerConnection,
   usePlayerConnectionStub,
 } from "@/lib/network/playerConnection";
+import { Logger } from "@/lib/network/types";
 import { createContext, useContext } from "react";
+
+const LoggerContext = createContext<Logger<CairnMessage> | null>(null);
+
+export function useLoggerContext() {
+  return useContext(LoggerContext)!;
+}
 
 export const {
   GameContextProvider,
@@ -24,9 +31,12 @@ const PlayerConnectionContext =
   createContext<PlayerConnection<CairnMessage> | null>(null);
 
 export function PlayerConnectionStubContextProvider({ children }: Children) {
+  const ctx = usePlayerConnectionStub<CairnMessage>();
   return (
-    <PlayerConnectionContext.Provider value={usePlayerConnectionStub()}>
-      {children}
+    <PlayerConnectionContext.Provider value={ctx}>
+      <LoggerContext.Provider value={{ log: ctx.log }}>
+        {children}
+      </LoggerContext.Provider>
     </PlayerConnectionContext.Provider>
   );
 }
@@ -36,10 +46,20 @@ interface PlayerConnectionContextProviderProps extends Children {
   character: CairnCharacter;
 }
 
-export function PlayerConnectionContextProvider({ sessionCode, character, children }: PlayerConnectionContextProviderProps) {
+export function PlayerConnectionContextProvider({
+  sessionCode,
+  character,
+  children,
+}: PlayerConnectionContextProviderProps) {
+  const ctx = usePlayerConnection<CairnCharacter, CairnMessage>(
+    sessionCode,
+    character
+  );
   return (
-    <PlayerConnectionContext.Provider value={usePlayerConnection<CairnCharacter, CairnMessage>(sessionCode, character)}>
-      {children}
+    <PlayerConnectionContext.Provider value={ctx}>
+      <LoggerContext.Provider value={{ log: ctx.log }}>
+        {children}
+      </LoggerContext.Provider>
     </PlayerConnectionContext.Provider>
   );
 }
@@ -58,11 +78,14 @@ export function useGmConnectionContext() {
 }
 
 export function GmConnectionContextProvider({ children }: Children) {
+  const ctx = useGmConnection<CairnCharacter, CairnMessage, CairnGame>(
+    () => []
+  );
   return (
-    <GmConnectionContext.Provider
-      value={useGmConnection<CairnCharacter, CairnMessage, CairnGame>(() => [])}
-    >
-      {children}
+    <GmConnectionContext.Provider value={ctx}>
+      <LoggerContext.Provider value={{ log: ctx.log }}>
+        {children}
+      </LoggerContext.Provider>
     </GmConnectionContext.Provider>
   );
 }

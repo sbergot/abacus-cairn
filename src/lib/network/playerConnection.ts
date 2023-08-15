@@ -5,6 +5,7 @@ import {
   AllSyncMessageForGM,
   AnyMessage,
   ConnectionMetadata,
+  Logger,
   Stamped,
   UknownGameMessage,
 } from "./types";
@@ -21,8 +22,7 @@ type ConnectionStatus =
   | "disconnected"
   | "offline";
 
-export interface PlayerConnection<TMessage> {
-  log: (m: AllChatMessage<TMessage>) => void;
+export interface PlayerConnection<TMessage> extends Logger<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   connectionStatus: ConnectionStatus;
   revealedElements: LibraryElement[];
