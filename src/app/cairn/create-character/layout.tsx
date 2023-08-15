@@ -7,9 +7,9 @@ import { useImmer } from "use-immer";
 import { CharacterCreationContextProvider } from "./character-creation-context";
 
 export default function Layout({ children }: Children) {
-    const [character, setCharacter] = useImmer<CairnCharacter>(initCharacter());
+    const [state, setState] = useImmer<CairnCharacter>(initCharacter());
 
-    return <CharacterCreationContextProvider value={{ character, setCharacter }}>
+    return <CharacterCreationContextProvider value={{ lens: { state, setState }}}>
         {children}
     </CharacterCreationContextProvider>
 }

@@ -22,7 +22,8 @@ import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 
 export default function CharacterName() {
-  const { character, setCharacter } = useCharacterCreationContext();
+  const { lens } = useCharacterCreationContext();
+  const { state: character, setState: setCharacter } = lens;
   const [open, setOpen] = useState(false);
   const linker = useRelativeLinker();
   const router = useRouter();
@@ -45,8 +46,7 @@ export default function CharacterName() {
       <div className="flex gap-2 w-full">
         <TextField<CairnCharacter>
           fieldName="name"
-          setter={setCharacter}
-          obj={character}
+          lens={lens}
         />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>

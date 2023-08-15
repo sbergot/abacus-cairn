@@ -19,7 +19,8 @@ import { OrSeparator } from "@/components/ui/or-separator";
 import { pickRandom } from "@/lib/random";
 
 export default function PickCharacterBackground() {
-  const { character, setCharacter } = useCharacterCreationContext();
+  const { lens } = useCharacterCreationContext();
+  const { state: character, setState: setCharacter } = lens;
   const linker = useRelativeLinker();
 
   return (

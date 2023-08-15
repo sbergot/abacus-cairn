@@ -27,6 +27,7 @@ import { Title } from "../ui/typography";
 import { UknownGameMessage } from "@/lib/network/types";
 import { useState } from "react";
 import { initGame } from "@/lib/game/cairn/utils";
+import { useRouter } from "next/navigation";
 
 interface MainMenuProps {}
 
@@ -198,6 +199,7 @@ interface SessionStartProps {
 
 export function SessionStartModal({ characterId }: SessionStartProps) {
   const linker = useRelativeLinker();
+  const router = useRouter();
   const [tableId, setTableId] = useState("");
   return (
     <Dialog>
@@ -225,12 +227,15 @@ export function SessionStartModal({ characterId }: SessionStartProps) {
               onChange={(e) => setTableId(e.target.value)}
             />
           </div>
-          <Button asChild>
-            <Link
-              href={linker(`session/table/${tableId}/character/${characterId}`)}
-            >
-              Join a table
-            </Link>
+          <Button
+            disabled={!tableId}
+            onClick={() =>
+              router.push(
+                linker(`session/table/${tableId}/character/${characterId}`)
+              )
+            }
+          >
+            Join a table
           </Button>
         </div>
       </DialogContent>

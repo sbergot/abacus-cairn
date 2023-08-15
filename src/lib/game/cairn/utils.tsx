@@ -1,5 +1,5 @@
 import { uuidv4 } from "@/lib/utils";
-import { AbilityCheck, AbilityRollAnalysis, CairnGame } from "./types";
+import { AbilityCheck, AbilityRollAnalysis, CairnGame, Gauge } from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
@@ -49,4 +49,13 @@ export function initGame(name: string): CairnGame {
     customEntries: [],
     timers: [],
   };
+}
+
+export function clampGauge(g: Gauge): void {
+  g.current = Math.min(g.max, Math.max(0, g.current));
+}
+
+export function updateGauge(g: Gauge, update: (v: number) => number) {
+  g.current = update(g.current);
+  clampGauge(g);
 }

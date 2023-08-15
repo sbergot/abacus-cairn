@@ -8,8 +8,8 @@ export function DiceRoll({ results }: Props) {
   if (results.pool.number > 1) {
     return (
       <span className="inline-flex gap-2">
-        {results.results.map(({ value, valid }) =>
-          valid ? <StrongEmph>{value}</StrongEmph> : <span>{value}</span>
+        {results.results.map(({ value, valid }, i) =>
+          valid ? <StrongEmph key={i}>{value}</StrongEmph> : <span key={i}>{value}</span>
         )}
       </span>
     );

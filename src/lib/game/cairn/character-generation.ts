@@ -13,9 +13,21 @@ export function initCharacter(): CairnCharacter {
     willpower: { current: 0, max: 0 },
     hp: { current: 0, max: 0 },
     age: 0,
+    gold: 0,
+    silver: 0,
+    copper: 0,
     deprived: false,
     traits: [],
-    inventory: [],
+    inventory: [
+      { id: uuidv4(), type: "hand", gear: null },
+      { id: uuidv4(), type: "hand", gear: null },
+      { id: uuidv4(), type: "body", gear: null },
+      { id: uuidv4(), type: "body", gear: null },
+      { id: uuidv4(), type: "backpack", gear: null },
+      { id: uuidv4(), type: "backpack", gear: null },
+      { id: uuidv4(), type: "backpack", gear: null },
+      { id: uuidv4(), type: "backpack", gear: null },
+    ],
   };
 }
 

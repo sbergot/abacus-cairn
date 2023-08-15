@@ -18,6 +18,9 @@ export interface CairnCharacter {
   dexterity: Gauge;
   willpower: Gauge;
   hp: Gauge;
+  gold: number;
+  silver: number;
+  copper: number;
   deprived: boolean;
   inventory: Slot[];
 }
@@ -34,7 +37,9 @@ type BaseGearTag<T extends string, P> = { type: T } & P;
 
 export type GearTag =
   | BaseGearTag<"bulky", {}>
+  | BaseGearTag<"blast", {}>
   | BaseGearTag<"relic", { charges: Gauge }>
+  | BaseGearTag<"price", { price: number }>
   | BaseGearTag<"weapon", { damage: number }>
   | BaseGearTag<"shield", { armor: number }>
   | BaseGearTag<"armor", { armor: number }>;
@@ -43,7 +48,6 @@ export interface Gear {
   id: string;
   name: string;
   tags: GearTag[];
-  bulky: boolean;
 }
 
 export type RollMode = "normal" | "advantage" | "disadvantage";

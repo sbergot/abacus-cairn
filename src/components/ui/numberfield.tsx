@@ -5,10 +5,10 @@ import { Draft } from "immer";
 
 interface Props<T> extends ClassName {
   lens: ILens<T>;
-  fieldName: KeyOfType<T, string> & KeyOfType<Draft<T>, string>;
+  fieldName: KeyOfType<T, number> & KeyOfType<Draft<T>, number>;
 }
 
-export default function TextField<T>({
+export default function NumberField<T>({
   lens,
   fieldName,
   className,
@@ -18,7 +18,7 @@ export default function TextField<T>({
       id={fieldName}
       onChange={(e) =>
         lens.setState((c) => {
-          c[fieldName] = e.target.value as any;
+          c[fieldName] = Number(e.target.value) as any;
         })
       }
       value={lens.state[fieldName] as string}
@@ -26,6 +26,7 @@ export default function TextField<T>({
       list="autocompleteOff"
       aria-autocomplete="none"
       className={className}
+      type="number"
     />
   );
 }

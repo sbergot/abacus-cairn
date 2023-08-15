@@ -11,7 +11,8 @@ import { useEffect } from "react";
 import { rollCharacter } from "@/lib/game/cairn/character-generation";
 
 export default function CreateCharacterStats() {
-  const { character, setCharacter } = useCharacterCreationContext();
+  const { lens } = useCharacterCreationContext();
+  const { state: character, setState: setCharacter } = lens;
   const linker = useRelativeLinker();
 
   useEffect(() => setCharacter(rollCharacter), []);
