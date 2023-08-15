@@ -13,6 +13,7 @@ import {
 import {
   FilePlus2Icon,
   PlayIcon,
+  Trash2Icon,
   UploadIcon,
   UserPlusIcon,
 } from "lucide-react";
@@ -158,7 +159,14 @@ function CharacterEntry({
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <SessionStartModal characterId={characterId} />
-        <DeleteAlert onConfirm={deleteCharacter}>
+        <DeleteAlert
+          onConfirm={deleteCharacter}
+          icon={
+            <Button size="icon-sm" variant="ghost">
+              <Trash2Icon size={20} />
+            </Button>
+          }
+        >
           This action cannot be undone. This will permanently delete your
           character named <span className="font-bold">{name}</span>.
         </DeleteAlert>
@@ -184,7 +192,14 @@ function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
             <PlayIcon size={20} />
           </Link>
         </Button>
-        <DeleteAlert onConfirm={deleteGame}>
+        <DeleteAlert
+          onConfirm={deleteGame}
+          icon={
+            <Button size="icon-sm" variant="ghost">
+              <Trash2Icon size={20} />
+            </Button>
+          }
+        >
           This action cannot be undone. This will permanently delete your game
           titled <span className="font-bold">{name}</span>.
         </DeleteAlert>

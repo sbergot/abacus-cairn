@@ -17,17 +17,14 @@ import {
 
 interface DeleteAlertProps {
   onConfirm(): void;
+  icon: ReactNode;
   children: ReactNode;
 }
 
-export function DeleteAlert({ onConfirm, children }: DeleteAlertProps) {
+export function DeleteAlert({ onConfirm, icon, children }: DeleteAlertProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button size="icon-sm" variant="ghost">
-          <Trash2Icon size={20} />
-        </Button>
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{icon}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

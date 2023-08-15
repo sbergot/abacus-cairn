@@ -222,7 +222,7 @@ export const misfortunes: string[] = [
   "exiled",
 ];
 
-const weapons: Gear[] = [
+export const weapons: Gear[] = [
   {
     id: "58b86ef7-65cc-4992-9e96-8397496cfbf2",
     name: "Sword",
