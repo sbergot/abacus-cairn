@@ -1,16 +1,15 @@
-import { AbilityType, CairnCharacter } from "@/lib/game/cairn/types";
-import { ILens } from "@/lib/types";
+import { AbilityType } from "@/lib/game/cairn/types";
 import { Button } from "../ui/button";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { AbilityCheckModal } from "./ability-check-modal";
+import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 
 interface AbilityControlProps {
   type: AbilityType;
-  characterLens: ILens<CairnCharacter>;
 }
 
-export function AbilityControl({ type, characterLens }: AbilityControlProps) {
-  const { state: character, setState: setCharacter } = characterLens;
+export function AbilityControl({ type }: AbilityControlProps) {
+  const { state: character, setState: setCharacter } = useCurrentCharacter();
   const value = character[type];
   return (
     <div className="flex gap-2 items-stretch justify-between">

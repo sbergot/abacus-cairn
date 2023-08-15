@@ -1,14 +1,11 @@
-import { CairnCharacter } from "@/lib/game/cairn/types";
-import { ILens } from "@/lib/types";
 import { Button } from "../ui/button";
 import { PlusIcon, MinusIcon } from "lucide-react";
+import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 
-interface HpControlProps {
-  characterLens: ILens<CairnCharacter>;
-}
+interface HpControlProps {}
 
-export function HpControl({ characterLens } : HpControlProps) {
-  const { state: character, setState: setCharacter } = characterLens;
+export function HpControl({}: HpControlProps) {
+  const { state: character, setState: setCharacter } = useCurrentCharacter();
   const value = character.hp;
   return (
     <div className="flex gap-2 items-stretch justify-between">

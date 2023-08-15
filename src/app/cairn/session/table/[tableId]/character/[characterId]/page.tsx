@@ -15,7 +15,7 @@ export default function Session() {
   const { messages } = usePlayerConnectionContext();
   return (
     <TwoColumns
-      leftPart={<CharacterSheet characterLens={characterLens} />}
+      leftPart={<CharacterSheet />}
       rightPart={
         <MessagePanel<CairnMessage>
           context={{ contextType: "player", authorId: characterLens.state.id }}

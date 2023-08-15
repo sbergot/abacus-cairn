@@ -22,15 +22,23 @@ interface ConnectionInfo {
   state: ConnectionState;
 }
 
+export interface GmConnection<TMessage, TGame> {
+  sessionCode: string;
+  log: (m: AllChatMessage<TMessage>) => void;
+  messages: Stamped<AllChatMessage<TMessage>>[];
+  updateRevealedElements(g: TGame): void;
+  connections: ConnectionInfo[];
+}
+
 function rotateArray<T>(arr: T[], limit: number): T[] {
   return arr.slice(Math.max(arr.length - limit, 0));
 }
 
-export function useDmConnection<
+export function useGmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
   TGame extends BaseGame<TMessage>
->(getAllRevealedElements: (g: TGame) => LibraryElement[]) {
+>(getAllRevealedElements: (g: TGame) => LibraryElement[]): GmConnection<TMessage, TGame> {
   const { state: game, setState: setGame } = useCurrentGenericGame();
   const [sessionCode, setSessionCode] = useState("");
   const [connectionsState, setConnectionsState] = useState<

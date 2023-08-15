@@ -1,11 +1,11 @@
 "use client";
 
-import { PlayerConnectionContextProvider } from "@/app/cairn/cairn-context";
+import { PlayerConnectionStubContextProvider } from "@/app/cairn/cairn-context";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <PlayerConnectionContextProvider>
+    <PlayerConnectionStubContextProvider>
       {children}
-    </PlayerConnectionContextProvider>
+    </PlayerConnectionStubContextProvider>
   );
 }

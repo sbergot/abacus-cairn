@@ -1,11 +1,11 @@
 "use client";
 
-import { PlayerConnectionContextProvider } from "@/app/cairn/cairn-context";
+import { GmConnectionContextProvider } from "@/app/cairn/cairn-context";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <PlayerConnectionContextProvider>
+    <GmConnectionContextProvider>
       {children}
-    </PlayerConnectionContextProvider>
+    </GmConnectionContextProvider>
   );
 }
