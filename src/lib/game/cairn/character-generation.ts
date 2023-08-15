@@ -19,14 +19,14 @@ export function initCharacter(): CairnCharacter {
     deprived: false,
     traits: [],
     inventory: [
-      { id: uuidv4(), type: "hand", gear: null },
-      { id: uuidv4(), type: "hand", gear: null },
-      { id: uuidv4(), type: "body", gear: null },
-      { id: uuidv4(), type: "body", gear: null },
-      { id: uuidv4(), type: "backpack", gear: null },
-      { id: uuidv4(), type: "backpack", gear: null },
-      { id: uuidv4(), type: "backpack", gear: null },
-      { id: uuidv4(), type: "backpack", gear: null },
+      { id: uuidv4(), type: "hand", state: { type: "empty" } },
+      { id: uuidv4(), type: "hand", state: { type: "empty" } },
+      { id: uuidv4(), type: "body", state: { type: "empty" } },
+      { id: uuidv4(), type: "body", state: { type: "empty" } },
+      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
     ],
   };
 }

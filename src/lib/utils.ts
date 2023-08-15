@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { Draft } from "immer";
 import { twMerge } from "tailwind-merge"
+import { WithId } from "./game/types";
  
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -15,6 +16,10 @@ export function uuidv4(): string {
         (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
       ).toString(16)
   );
+}
+
+export function clone<T extends WithId>(e: T): T {
+  return { ...e, id: uuidv4() };
 }
 
 export function download(storageKey: string) {

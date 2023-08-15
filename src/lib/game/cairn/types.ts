@@ -25,24 +25,30 @@ export interface CairnCharacter {
   inventory: Slot[];
 }
 
+type TaggedUnion<T extends string, P> = { type: T } & P;
+
 export type SlotType = "hand" | "body" | "backpack";
+
+export type SlotState =
+  | TaggedUnion<"empty", {}>
+  | TaggedUnion<"fatigue", {}>
+  | TaggedUnion<"bulky", { slotId: string, name: string }>
+  | TaggedUnion<"gear", { gear: Gear }>;
 
 export interface Slot {
   id: string;
   type: SlotType;
-  gear: Gear | null;
+  state: SlotState;
 }
 
-type BaseGearTag<T extends string, P> = { type: T } & P;
-
 export type GearTag =
-  | BaseGearTag<"bulky", {}>
-  | BaseGearTag<"blast", {}>
-  | BaseGearTag<"relic", { charges: Gauge }>
-  | BaseGearTag<"price", { price: number }>
-  | BaseGearTag<"weapon", { damage: number }>
-  | BaseGearTag<"shield", { armor: number }>
-  | BaseGearTag<"armor", { armor: number }>;
+  | TaggedUnion<"bulky", {}>
+  | TaggedUnion<"blast", {}>
+  | TaggedUnion<"relic", { charges: Gauge }>
+  | TaggedUnion<"price", { price: number }>
+  | TaggedUnion<"weapon", { damage: number }>
+  | TaggedUnion<"shield", { armor: number }>
+  | TaggedUnion<"armor", { armor: number }>;
 
 export interface Gear {
   id: string;
@@ -66,6 +72,4 @@ export interface AbilityRollAnalysis {
 
 export type CairnMessage = ChatMessage<"AbilityRoll", AbilityRollAnalysis>;
 
-export interface CairnGame extends BaseGame<CairnMessage> {
-
-}
+export interface CairnGame extends BaseGame<CairnMessage> {}

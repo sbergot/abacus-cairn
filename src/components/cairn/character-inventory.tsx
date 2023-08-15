@@ -14,6 +14,8 @@ import { PlusIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useRelativeLinker } from "@/lib/hooks";
 import { DeleteAlert } from "../ui/delete-alert";
+import { ShowGear } from "./show-gear";
+import { ShowSlotState } from "./show-slot-state";
 
 export function CharacterInventory() {
   const linker = useRelativeLinker();
@@ -25,32 +27,39 @@ export function CharacterInventory() {
         <TableRow>
           <TableHead className="w-[100px]">type</TableHead>
           <TableHead>gear</TableHead>
-          <TableHead>actions</TableHead>
+          <TableHead className="w-40">actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {slots.map((s) => (
           <TableRow key={s.id}>
-            <TableCell>{s.type}</TableCell>
-            <TableCell>
-              <ShowGear gear={s.gear} />
+            <TableCell className="p-1">{s.type}</TableCell>
+            <TableCell className="p-1">
+              <ShowSlotState state={s.state} />
             </TableCell>
-            <TableCell>
-              {s.gear === null && (
+            <TableCell className="p-1">
+              {s.state.type === "empty" && (
                 <Button size="icon-sm" asChild>
                   <Link href={linker(`shop/${s.id}`)}>
                     <PlusIcon />
                   </Link>
                 </Button>
               )}
-              {s.gear !== null && (
+              {(s.state.type === "gear" || s.state.type === "fatigue") && (
                 <DeleteAlert
                   onConfirm={() =>
                     lens.setState((d) => {
                       const slot = d.inventory.find(
                         (slot) => slot.id === s.id
                       )!;
-                      slot.gear = null;
+                      slot.state = { type: "empty" };
+                      const otherSlot = d.inventory.find(
+                        (s) =>
+                          s.state.type === "bulky" && s.state.slotId === s.id
+                      );
+                      if (otherSlot !== undefined) {
+                        otherSlot.state = { type: "empty" };
+                      }
                     })
                   }
                   icon={
@@ -68,16 +77,4 @@ export function CharacterInventory() {
       </TableBody>
     </Table>
   );
-}
-
-interface GearProps {
-  gear: Gear | null;
-}
-
-function ShowGear({ gear }: GearProps) {
-  if (gear === null) {
-    return <WeakEmph>empty</WeakEmph>;
-  }
-
-  return gear.name;
 }
