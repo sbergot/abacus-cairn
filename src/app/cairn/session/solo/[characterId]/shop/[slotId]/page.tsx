@@ -2,7 +2,7 @@
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
-import { CairnMessage, Gear } from "@/lib/game/cairn/types";
+import { CairnMessage, Gear, Slot } from "@/lib/game/cairn/types";
 import {
   useCurrentCharacter,
   usePlayerConnectionContext,
@@ -41,30 +41,55 @@ export default function Session() {
   );
 }
 
+function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
+  const siblingFreeSlot = inventory.find(
+    (s) =>
+      s.type === currentSlot.type &&
+      s.state.type === "empty" &&
+      s.id !== currentSlot.id
+  );
+  return siblingFreeSlot;
+}
+
+function isBulky(gear: Gear) {
+  return gear.tags.find((t) => t.type === "bulky") !== undefined;
+}
+
 function Shop() {
   const { state: character, setState: setCharacter } = useCurrentCharacter();
   const { slotId } = useParams();
   const router = useRouter();
   const linker = useRelativeLinker();
   const currentSlot = character.inventory.find((s) => s.id === slotId)!;
-  const siblingFreeSlot = character.inventory.find(
-    (s) =>
-      s.type === currentSlot.type && s.state.type === "empty" && s.id !== slotId
-  );
+  const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
 
   function canGrab(gear: Gear): boolean {
     if (currentSlot.state.type !== "empty") {
       return false;
     }
 
-    if (
-      siblingFreeSlot === null &&
-      gear.tags.find((t) => t.type === "bulky") !== null
-    ) {
+    if (!siblingFreeSlot && isBulky(gear)) {
       return false;
     }
 
     return true;
+  }
+
+  function grab(gear: Gear) {
+    setCharacter((d) => {
+      const slot = d.inventory.find((s) => s.id === slotId)!;
+      slot.state = { type: "gear", gear: clone(gear) };
+      if (isBulky(gear)) {
+        const otherSlot = d.inventory.find(
+          (s) => s.id === siblingFreeSlot?.id
+        )!;
+        otherSlot.state = {
+          type: "bulky",
+          slotId,
+          name: gear.name,
+        };
+      }
+    });
   }
   return (
     <Table>
@@ -75,29 +100,16 @@ function Shop() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {weapons.map((s) => (
-          <TableRow key={s.id}>
+        {weapons.map((g) => (
+          <TableRow key={g.id}>
             <TableCell className="p-1">
-              <ShowGear gear={s} />
+              <ShowGear gear={g} />
             </TableCell>
             <TableCell className="p-1">
-              {canGrab(s) && (
+              {canGrab(g) && (
                 <Button
                   onClick={() => {
-                    setCharacter((d) => {
-                      const slot = d.inventory.find((s) => s.id === slotId)!;
-                      slot.state = { type: "gear", gear: clone(s) };
-                      if (s.tags.find((t) => t.type === "bulky") !== null) {
-                        const otherSlot = d.inventory.find(
-                          (s) => s.id === siblingFreeSlot?.id
-                        )!;
-                        otherSlot.state = {
-                          type: "bulky",
-                          slotId,
-                          name: s.name,
-                        };
-                      }
-                    });
+                    grab(g);
                     router.push(linker("../.."));
                   }}
                   size="icon-sm"

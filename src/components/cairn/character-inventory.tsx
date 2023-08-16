@@ -7,14 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Gear } from "@/lib/game/cairn/types";
-import { WeakEmph } from "../ui/typography";
 import { Button } from "../ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useRelativeLinker } from "@/lib/hooks";
 import { DeleteAlert } from "../ui/delete-alert";
-import { ShowGear } from "./show-gear";
 import { ShowSlotState } from "./show-slot-state";
 
 export function CharacterInventory() {
@@ -31,31 +28,33 @@ export function CharacterInventory() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {slots.map((s) => (
-          <TableRow key={s.id}>
-            <TableCell className="p-1">{s.type}</TableCell>
+        {slots.map((slot) => (
+          <TableRow key={slot.id}>
+            <TableCell className="p-1">{slot.type}</TableCell>
             <TableCell className="p-1">
-              <ShowSlotState state={s.state} />
+              <ShowSlotState state={slot.state} />
             </TableCell>
             <TableCell className="p-1">
-              {s.state.type === "empty" && (
+              {slot.state.type === "empty" && (
                 <Button size="icon-sm" asChild>
-                  <Link href={linker(`shop/${s.id}`)}>
+                  <Link href={linker(`shop/${slot.id}`)}>
                     <PlusIcon />
                   </Link>
                 </Button>
               )}
-              {(s.state.type === "gear" || s.state.type === "fatigue") && (
+              {(slot.state.type === "gear" ||
+                slot.state.type === "fatigue") && (
                 <DeleteAlert
                   onConfirm={() =>
                     lens.setState((d) => {
-                      const slot = d.inventory.find(
-                        (slot) => slot.id === s.id
+                      const slotToEmpty = d.inventory.find(
+                        (s) => s.id === slot.id
                       )!;
-                      slot.state = { type: "empty" };
+                      slotToEmpty.state = { type: "empty" };
                       const otherSlot = d.inventory.find(
                         (s) =>
-                          s.state.type === "bulky" && s.state.slotId === s.id
+                          s.state.type === "bulky" &&
+                          s.state.slotId === slotToEmpty.id
                       );
                       if (otherSlot !== undefined) {
                         otherSlot.state = { type: "empty" };
