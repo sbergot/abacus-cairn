@@ -8,16 +8,30 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { CheckCircle2Icon, CircleSlashIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useRelativeLinker } from "@/lib/hooks";
 import { DeleteAlert } from "../ui/delete-alert";
 import { ShowSlotState } from "./show-slot-state";
+import { Slot } from "@/lib/game/cairn/types";
 
 export function CharacterInventory() {
   const linker = useRelativeLinker();
   const lens = useCurrentCharacter();
   const slots = lens.state.inventory;
+
+  function removeItem(slot: Slot) {
+    lens.setState((d) => {
+      const slotToEmpty = d.inventory.find((s) => s.id === slot.id)!;
+      slotToEmpty.state = { type: "empty" };
+      const otherSlot = d.inventory.find(
+        (s) => s.state.type === "bulky" && s.state.slotId === slotToEmpty.id
+      );
+      if (otherSlot !== undefined) {
+        otherSlot.state = { type: "empty" };
+      }
+    });
+  }
   return (
     <Table>
       <TableHeader>
@@ -34,33 +48,47 @@ export function CharacterInventory() {
             <TableCell className="p-1">
               <ShowSlotState state={slot.state} />
             </TableCell>
-            <TableCell className="p-1">
+            <TableCell className="p-1 flex gap-1">
               {slot.state.type === "empty" && (
-                <Button size="icon-sm" asChild>
-                  <Link href={linker(`shop/${slot.id}`)}>
-                    <PlusIcon />
-                  </Link>
-                </Button>
+                <>
+                  <Button
+                    size="icon-sm"
+                    onClick={() =>
+                      lens.setState((d) => {
+                        const targetSlot = d.inventory.find(
+                          (s) => s.id === slot.id
+                        )!;
+                        targetSlot.state = { type: "fatigue" };
+                      })
+                    }
+                  >
+                    <CircleSlashIcon />
+                  </Button>
+                  <Button size="icon-sm" asChild>
+                    <Link href={linker(`shop/${slot.id}`)}>
+                      <PlusIcon />
+                    </Link>
+                  </Button>
+                </>
               )}
-              {(slot.state.type === "gear" ||
-                slot.state.type === "fatigue") && (
-                <DeleteAlert
-                  onConfirm={() =>
+              {slot.state.type === "fatigue" && (
+                <Button
+                  size="icon-sm"
+                  onClick={() =>
                     lens.setState((d) => {
-                      const slotToEmpty = d.inventory.find(
+                      const targetSlot = d.inventory.find(
                         (s) => s.id === slot.id
                       )!;
-                      slotToEmpty.state = { type: "empty" };
-                      const otherSlot = d.inventory.find(
-                        (s) =>
-                          s.state.type === "bulky" &&
-                          s.state.slotId === slotToEmpty.id
-                      );
-                      if (otherSlot !== undefined) {
-                        otherSlot.state = { type: "empty" };
-                      }
+                      targetSlot.state = { type: "empty" };
                     })
                   }
+                >
+                  <CheckCircle2Icon />
+                </Button>
+              )}
+              {slot.state.type === "gear" && (
+                <DeleteAlert
+                  onConfirm={() => removeItem(slot)}
                   icon={
                     <Button size="icon-sm">
                       <Trash2Icon />
