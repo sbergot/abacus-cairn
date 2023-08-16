@@ -1,4 +1,7 @@
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import {
+  useCurrentCharacter,
+  useLoggerContext,
+} from "@/app/cairn/cairn-context";
 import {
   Table,
   TableBody,
@@ -8,14 +11,22 @@ import {
   TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { CheckCircle2Icon, CircleSlashIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  CheckCircle2Icon,
+  CircleSlashIcon,
+  PlusIcon,
+  SwordIcon,
+  Trash2Icon,
+} from "lucide-react";
 import Link from "next/link";
 import { useRelativeLinker } from "@/lib/hooks";
 import { DeleteAlert } from "../ui/delete-alert";
 import { ShowSlotState } from "./show-slot-state";
 import { Slot } from "@/lib/game/cairn/types";
+import { roll } from "@/lib/random";
 
 export function CharacterInventory() {
+  const { log } = useLoggerContext();
   const linker = useRelativeLinker();
   const lens = useCurrentCharacter();
   const slots = lens.state.inventory;
@@ -98,6 +109,27 @@ export function CharacterInventory() {
                   This will permanently delete your item
                 </DeleteAlert>
               )}
+              {slot.state.type === "gear" &&
+                slot.state.gear.tags.map((t) => {
+                  if (t.type !== "weapon") {
+                    return null;
+                  }
+                  return (
+                    <Button
+                      size="icon-sm"
+                      onClick={() => {
+                        log({
+                          kind: "chat-custom",
+                          type: "AttackRoll",
+                          title: "Attack roll",
+                          props: { result: roll(1, t.damage) },
+                        });
+                      }}
+                    >
+                      <SwordIcon />
+                    </Button>
+                  );
+                })}
             </TableCell>
           </TableRow>
         ))}

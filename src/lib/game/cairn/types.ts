@@ -32,7 +32,7 @@ export type SlotType = "hand" | "body" | "backpack";
 export type SlotState =
   | TaggedUnion<"empty", {}>
   | TaggedUnion<"fatigue", {}>
-  | TaggedUnion<"bulky", { slotId: string, name: string }>
+  | TaggedUnion<"bulky", { slotId: string; name: string }>
   | TaggedUnion<"gear", { gear: Gear }>;
 
 export interface Slot {
@@ -70,6 +70,12 @@ export interface AbilityRollAnalysis {
   isSuccess: boolean;
 }
 
-export type CairnMessage = ChatMessage<"AbilityRoll", AbilityRollAnalysis>;
+export interface AttackRollResult {
+  result: number;
+}
+
+export type CairnMessage =
+  | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
+  | ChatMessage<"AttackRoll", AttackRollResult>;
 
 export interface CairnGame extends BaseGame<CairnMessage> {}
