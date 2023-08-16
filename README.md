@@ -6,5 +6,4 @@ A mapless vtt
 
 - add full gear list
 - tabs in shop
-- attack rolls
 
