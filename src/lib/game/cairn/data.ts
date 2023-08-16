@@ -402,3 +402,68 @@ export const weapons: Gear[] = [
     tags: [{ type: "bulky" }, { type: "weapon", damage: 10 }],
   },
 ];
+
+export const armors: Gear[] = [
+  {
+    id: "ef159704-6ad0-4a38-9bd6-d4a6080ca876",
+    name: "Kettle Helm",
+    tags: [{ type: "shield", armor: 1 }, { type: "price", price: 10 }],
+  },
+  {
+    id: "8e7f5ee4-7255-4bf0-bdf5-497863fc33cd",
+    name: "Shield",
+    tags: [{ type: "shield", armor: 1 }, { type: "price", price: 10 }],
+  },
+  {
+    id: "71fe1cb5-e7d3-4d5f-8080-01847b5ba74e",
+    name: "Chainmail",
+    tags: [{ type: "armor", armor: 2 }, { type: "bulky" }, { type: "price", price: 40 }],
+  },
+  {
+    id: "02ad2085-ff23-4628-ba7a-191dbed384a5",
+    name: "Suit of Armor",
+    tags: [{ type: "armor", armor: 3 }, { type: "bulky" }, { type: "price", price: 60 }],
+  },
+  {
+    id: "d8397ec7-5242-4a01-9803-968fef7c59ab",
+    name: "Barbut Helm",
+    tags: [{ type: "shield", armor: 1 }, { type: "price", price: 10 }],
+  },
+  {
+    id: "5cca05d6-121e-4bba-82ee-13d5747011de",
+    name: "Brigandine",
+    tags: [{ type: "armor", armor: 1 }, { type: "bulky" }, { type: "price", price: 20 }],
+  },
+  {
+    id: "c91bf41e-5f35-4c5c-b566-8f3f3bcf2374",
+    name: "Spangenhelm",
+    tags: [{ type: "shield", armor: 1 }, { type: "price", price: 10 }],
+  },
+  {
+    id: "6bca8b4a-b028-4d69-bfe1-0a0abe88012f",
+    name: "Studded Leather",
+    tags: [{ type: "armor", armor: 1 }, { type: "price", price: 20 }],
+  },
+  {
+    id: "66a27999-a757-4bcf-8a08-bbee30852763",
+    name: "Bascinet Helm",
+    tags: [{ type: "shield", armor: 1 }, { type: "price", price: 10 }],
+  },
+  {
+    id: "90b55c42-9840-4b42-9fe4-10a877a7b466",
+    name: "Banded Mail",
+    tags: [{ type: "armor", armor: 2 }, { type: "bulky" }, { type: "price", price: 40 }],
+  },
+  {
+    id: "578d3905-c9c2-4208-b436-a1b4734c0ce7",
+    name: "Gambeson",
+    tags: [{ type: "shield", armor: 1 }, { type: "price", price: 15 }],
+  },
+  {
+    id: "403cae7c-520d-48bc-9aad-1e7b7cbee8d9",
+    name: "Plate Mail",
+    tags: [{ type: "armor", armor: 3 }, { type: "bulky" }, { type: "price", price: 60 }],
+  },
+];
+
+export const allItems: Gear[] = [...weapons, ...armors];

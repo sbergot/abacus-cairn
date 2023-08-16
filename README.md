@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- main menu
-- game layout with chat
-- player session
-- gm session
+- add full gear list
+- attack rolls
+- armor value

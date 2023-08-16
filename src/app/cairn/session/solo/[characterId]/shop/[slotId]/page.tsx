@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { weapons } from "@/lib/game/cairn/data";
+import { allItems } from "@/lib/game/cairn/data";
 import { useParams, useRouter } from "next/navigation";
 import { useRelativeLinker } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
@@ -100,7 +100,7 @@ function Shop() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {weapons.map((g) => (
+        {allItems.map((g) => (
           <TableRow key={g.id}>
             <TableCell className="p-1">
               <ShowGear gear={g} />
