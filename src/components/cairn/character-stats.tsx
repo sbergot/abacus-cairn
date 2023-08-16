@@ -3,31 +3,15 @@ import { HpControl } from "./hp-control";
 import { Title } from "../ui/typography";
 import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { Checkbox } from "../ui/checkbox";
-import { Slot } from "@/lib/game/cairn/types";
+import { getArmorValue } from "@/lib/game/cairn/utils";
 
 interface CharacterStatsProps {}
-
-function sum(values: number[]) {
-  return values.reduce((acc, v) => acc + v, 0);
-}
 
 export function CharacterStats({}: CharacterStatsProps) {
   const lens = useCurrentCharacter();
   const { state: character, setState: setCharacter } = lens;
 
-  function readArmorValue(slot: Slot) {
-    if (slot.state.type !== "gear" || slot.type === "backpack") {
-      return 0;
-    }
-
-    const values = slot.state.gear.tags.map((t) =>
-      t.type === "armor" || t.type === "shield" ? t.armor : 0
-    );
-
-    return sum(values);
-  }
-
-  const armor = Math.min(3, sum(character.inventory.map(readArmorValue)));
+  const armor = getArmorValue(lens.state);
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">

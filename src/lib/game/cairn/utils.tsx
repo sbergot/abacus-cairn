@@ -1,5 +1,5 @@
 import { uuidv4 } from "@/lib/utils";
-import { AbilityCheck, AbilityRollAnalysis, CairnGame, Gauge } from "./types";
+import { AbilityCheck, AbilityRollAnalysis, CairnCharacter, CairnGame, Gauge, Slot } from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
@@ -58,4 +58,25 @@ export function clampGauge(g: Gauge): void {
 export function updateGauge(g: Gauge, update: (v: number) => number) {
   g.current = update(g.current);
   clampGauge(g);
+}
+
+
+function sum(values: number[]) {
+  return values.reduce((acc, v) => acc + v, 0);
+}
+
+function readArmorValue(slot: Slot) {
+  if (slot.state.type !== "gear" || slot.type === "backpack") {
+    return 0;
+  }
+
+  const values = slot.state.gear.tags.map((t) =>
+    t.type === "armor" || t.type === "shield" ? t.armor : 0
+  );
+
+  return sum(values);
+}
+
+export function getArmorValue(character: CairnCharacter): number {
+  return Math.min(3, sum(character.inventory.map(readArmorValue)));
 }
