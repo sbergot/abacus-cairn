@@ -119,11 +119,12 @@ export function CharacterInventory() {
                 <Button
                   size="icon-sm"
                   onClick={() => {
+                    const damages = getDamages(slot);
                     log({
                       kind: "chat-custom",
                       type: "AttackRoll",
                       title: "Attack roll",
-                      props: { result: roll(1, getDamages(slot)) },
+                      props: { dice: damages, result: roll(1, damages) },
                     });
                   }}
                 >

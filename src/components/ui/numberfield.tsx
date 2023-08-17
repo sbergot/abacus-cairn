@@ -21,7 +21,7 @@ export default function NumberField<T>({
           c[fieldName] = Number(e.target.value) as any;
         })
       }
-      value={lens.state[fieldName] as string}
+      value={lens.state[fieldName] as number}
       autoComplete="off"
       list="autocompleteOff"
       aria-autocomplete="none"

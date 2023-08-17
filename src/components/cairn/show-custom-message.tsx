@@ -24,7 +24,7 @@ export function ShowCustomMessage({
   if (m.type === "AttackRoll") {
     return (
       <>
-        <div>{m.props.result}</div>
+        <div>1d{m.props.dice} → {m.props.result}</div>
         {ctx.contextType === "player" && (
           <TakeDamage damages={m.props.result} />
         )}

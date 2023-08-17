@@ -67,6 +67,7 @@ export interface AbilityRollAnalysis {
 }
 
 export interface AttackRollResult {
+  dice: number;
   result: number;
 }
 

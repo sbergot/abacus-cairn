@@ -4,6 +4,7 @@ import { Title } from "../ui/typography";
 import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { Checkbox } from "../ui/checkbox";
 import { getArmorValue } from "@/lib/game/cairn/utils";
+import { EditCharStats } from "./edit-char-stats";
 
 interface CharacterStatsProps {}
 
@@ -15,7 +16,10 @@ export function CharacterStats({}: CharacterStatsProps) {
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
-      <Title>{character.name}</Title>
+      <div className="flex">
+        <Title>{character.name}</Title>
+        <EditCharStats />
+      </div>
       <div className="flex gap-12">
         <div className="flex flex-col">
           <AbilityControl type="strength" />
