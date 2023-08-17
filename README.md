@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- edit character
 - add full gear list
 - tabs in shop
 - generic rolls
