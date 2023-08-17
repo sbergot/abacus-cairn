@@ -16,10 +16,6 @@ export function CharacterStats({}: CharacterStatsProps) {
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
-      <div className="flex">
-        <Title>{character.name}</Title>
-        <EditCharStats />
-      </div>
       <div className="flex gap-12">
         <div className="flex flex-col">
           <AbilityControl type="strength" />
