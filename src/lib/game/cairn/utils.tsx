@@ -70,11 +70,7 @@ function readArmorValue(slot: Slot) {
     return 0;
   }
 
-  const values = slot.state.gear.tags.map((t) =>
-    t.type === "armor" || t.type === "shield" ? t.armor : 0
-  );
-
-  return sum(values);
+  return slot.state.gear.armor ?? 0;
 }
 
 export function getArmorValue(character: CairnCharacter): number {

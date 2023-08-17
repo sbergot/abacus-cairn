@@ -25,6 +25,12 @@ import { ShowSlotState } from "./show-slot-state";
 import { Slot } from "@/lib/game/cairn/types";
 import { roll } from "@/lib/random";
 
+function getDamages(slot: Slot) {
+  return slot.state.type === "gear" && slot.state.gear.damage !== undefined
+    ? slot.state.gear.damage
+    : 0;
+}
+
 export function CharacterInventory() {
   const { log } = useLoggerContext();
   const linker = useRelativeLinker();
@@ -109,27 +115,21 @@ export function CharacterInventory() {
                   This will permanently delete your item
                 </DeleteAlert>
               )}
-              {slot.state.type === "gear" &&
-                slot.state.gear.tags.map((t) => {
-                  if (t.type !== "weapon") {
-                    return null;
-                  }
-                  return (
-                    <Button
-                      size="icon-sm"
-                      onClick={() => {
-                        log({
-                          kind: "chat-custom",
-                          type: "AttackRoll",
-                          title: "Attack roll",
-                          props: { result: roll(1, t.damage) },
-                        });
-                      }}
-                    >
-                      <SwordIcon />
-                    </Button>
-                  );
-                })}
+              {getDamages(slot) > 0 && (
+                <Button
+                  size="icon-sm"
+                  onClick={() => {
+                    log({
+                      kind: "chat-custom",
+                      type: "AttackRoll",
+                      title: "Attack roll",
+                      props: { result: roll(1, getDamages(slot)) },
+                    });
+                  }}
+                >
+                  <SwordIcon />
+                </Button>
+              )}
             </TableCell>
           </TableRow>
         ))}

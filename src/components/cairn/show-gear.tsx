@@ -6,26 +6,21 @@ interface ShowGearProps {
 
 export function ShowGear({ gear }: ShowGearProps) {
   const descr: string[] = [];
-  gear.tags.forEach((t) => {
-    if (t.type === "weapon") {
-      descr.push(`d${t.damage} damage`);
-    }
-    if (t.type === "bulky") {
-      descr.push("bulky");
-    }
-    if (t.type === "blast") {
-      descr.push("blast");
-    }
-    if (t.type === "armor") {
-      descr.push(`${t.armor} Armor`);
-    }
-    if (t.type === "shield") {
-      descr.push(`+${t.armor} Armor`);
-    }
-    if (t.type === "relic") {
-      descr.push(`${t.charges} Charges`);
-    }
-  });
+  if (gear.damage !== undefined) {
+    descr.push(`d${gear.damage} damage`);
+  }
+  if (gear.bulky) {
+    descr.push("bulky");
+  }
+  if (gear.blast) {
+    descr.push("blast");
+  }
+  if (gear.armor !== undefined) {
+    descr.push(`${gear.armor} Armor`);
+  }
+  if (gear.charges !== undefined) {
+    descr.push(`${gear.charges} Charges`);
+  }
 
   const tagDescr = descr.length > 0 ? ` (${descr.join(", ")})` : "";
   return gear.name + tagDescr;

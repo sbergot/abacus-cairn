@@ -51,10 +51,6 @@ function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
   return siblingFreeSlot;
 }
 
-function isBulky(gear: Gear) {
-  return gear.tags.find((t) => t.type === "bulky") !== undefined;
-}
-
 function Shop() {
   const { state: character, setState: setCharacter } = useCurrentCharacter();
   const { slotId } = useParams();
@@ -68,7 +64,7 @@ function Shop() {
       return false;
     }
 
-    if (!siblingFreeSlot && isBulky(gear)) {
+    if (!siblingFreeSlot && gear.bulky) {
       return false;
     }
 
@@ -79,7 +75,7 @@ function Shop() {
     setCharacter((d) => {
       const slot = d.inventory.find((s) => s.id === slotId)!;
       slot.state = { type: "gear", gear: clone(gear) };
-      if (isBulky(gear)) {
+      if (gear.bulky) {
         const otherSlot = d.inventory.find(
           (s) => s.id === siblingFreeSlot?.id
         )!;
