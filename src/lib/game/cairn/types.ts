@@ -41,19 +41,15 @@ export interface Slot {
   state: SlotState;
 }
 
-export type GearTag =
-  | TaggedUnion<"bulky", {}>
-  | TaggedUnion<"blast", {}>
-  | TaggedUnion<"relic", { charges: Gauge }>
-  | TaggedUnion<"price", { price: number }>
-  | TaggedUnion<"weapon", { damage: number }>
-  | TaggedUnion<"shield", { armor: number }>
-  | TaggedUnion<"armor", { armor: number }>;
-
 export interface Gear {
   id: string;
   name: string;
-  tags: GearTag[];
+  bulky?: boolean;
+  blast?: boolean;
+  charges?: Gauge;
+  price?: number;
+  damage?: number;
+  armor?: number;
 }
 
 export type RollMode = "normal" | "advantage" | "disadvantage";
@@ -75,6 +71,7 @@ export interface AttackRollResult {
 }
 
 export type CairnMessage =
+  | ChatMessage<"Scarred", {}>
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 
