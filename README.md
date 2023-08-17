@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- scars table
 - edit character
 - add full gear list
 - tabs in shop
