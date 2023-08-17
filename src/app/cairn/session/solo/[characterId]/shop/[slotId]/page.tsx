@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, SearchIcon } from "lucide-react";
 import {
   allItems,
   armors,
@@ -31,6 +31,8 @@ import { useRelativeLinker } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
 import { clone } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 export default function Session() {
   const characterLens = useCurrentCharacter();
@@ -61,14 +63,18 @@ function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
 
 function Shop() {
   return (
-    <Tabs>
+    <Tabs defaultValue="all">
       <TabsList>
+        <TabsTrigger value="all">All</TabsTrigger>
         <TabsTrigger value="weapons">Weapons</TabsTrigger>
         <TabsTrigger value="armors">Weapons</TabsTrigger>
         <TabsTrigger value="expeditionGear">Expedition Gear</TabsTrigger>
         <TabsTrigger value="tools">Tools</TabsTrigger>
         <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
       </TabsList>
+      <TabsContent value="all">
+        <ShopTable items={allItems} />
+      </TabsContent>
       <TabsContent value="weapons">
         <ShopTable items={weapons} />
       </TabsContent>
@@ -97,6 +103,7 @@ function ShopTable({ items }: ShopTableProps) {
   const { slotId } = useParams();
   const router = useRouter();
   const linker = useRelativeLinker();
+  const [search, setSearch] = useState("");
   const currentSlot = character.inventory.find((s) => s.id === slotId)!;
   const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
 
@@ -129,35 +136,44 @@ function ShopTable({ items }: ShopTableProps) {
     });
   }
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>gear</TableHead>
-          <TableHead className="w-40">actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {items.map((g) => (
-          <TableRow key={g.id}>
-            <TableCell className="p-1">
-              <ShowGear gear={g} />
-            </TableCell>
-            <TableCell className="p-1">
-              {canGrab(g) && (
-                <Button
-                  onClick={() => {
-                    grab(g);
-                    router.push(linker("../.."));
-                  }}
-                  size="icon-sm"
-                >
-                  <PlusIcon />
-                </Button>
-              )}
-            </TableCell>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
+        <SearchIcon />
+      <Input className="w-40" value={search} onChange={(e) => setSearch(e.target.value)} />
+      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>gear</TableHead>
+            <TableHead className="w-40">actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {items
+            .filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((g) => (
+              <TableRow key={g.id}>
+                <TableCell className="p-1">
+                  <ShowGear gear={g} />
+                </TableCell>
+                <TableCell className="p-1">
+                  {canGrab(g) && (
+                    <Button
+                      onClick={() => {
+                        grab(g);
+                        router.push(linker("../.."));
+                      }}
+                      size="icon-sm"
+                    >
+                      <PlusIcon />
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
