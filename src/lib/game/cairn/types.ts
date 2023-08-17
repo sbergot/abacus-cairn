@@ -71,6 +71,7 @@ export interface AttackRollResult {
 }
 
 export type CairnMessage =
+  | ChatMessage<"Scarred", {}>
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 

@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- remove items tags
 - scars table
 - edit character
 - add full gear list
