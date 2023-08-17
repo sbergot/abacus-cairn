@@ -22,6 +22,7 @@ import {
   allItems,
   armors,
   expeditionGear,
+  otherItems,
   tools,
   trinkets,
   weapons,
@@ -67,10 +68,11 @@ function Shop() {
       <TabsList>
         <TabsTrigger value="all">All</TabsTrigger>
         <TabsTrigger value="weapons">Weapons</TabsTrigger>
-        <TabsTrigger value="armors">Weapons</TabsTrigger>
+        <TabsTrigger value="armors">Armors</TabsTrigger>
         <TabsTrigger value="expeditionGear">Expedition Gear</TabsTrigger>
         <TabsTrigger value="tools">Tools</TabsTrigger>
         <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
+        <TabsTrigger value="others">Others</TabsTrigger>
       </TabsList>
       <TabsContent value="all">
         <ShopTable items={allItems} />
@@ -89,6 +91,9 @@ function Shop() {
       </TabsContent>
       <TabsContent value="trinkets">
         <ShopTable items={trinkets} />
+      </TabsContent>
+      <TabsContent value="others">
+        <ShopTable items={otherItems} />
       </TabsContent>
     </Tabs>
   );
@@ -145,7 +150,7 @@ function ShopTable({ items }: ShopTableProps) {
         <TableHeader>
           <TableRow>
             <TableHead>gear</TableHead>
-            <TableHead>price</TableHead>
+            <TableHead className="w-40">price</TableHead>
             <TableHead className="w-40">actions</TableHead>
           </TableRow>
         </TableHeader>

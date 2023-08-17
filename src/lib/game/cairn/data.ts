@@ -436,19 +436,15 @@ export const armors: Gear[] = [
 
 export const expeditionGear: Gear[] = [
   { id: "47210d5d-5e8b-493d-8b89-3d98e738ea43", name: "Dowsing Rod" },
-  { id: "279f69d0-2e8f-4cf4-9d6a-d6fa7831f3be", name: "Torch", price: 1 },
   { id: "9a1dfc87-2590-4178-bde1-30643fea1e52", name: "Spyglass", price: 40 },
   { id: "fc4f0451-10b8-4188-a996-40ceead09c40", name: "Rope 25ft", price: 5 },
-  { id: "cb3870ea-7af5-4668-8b6b-f9ec41b0b0ea", name: "Sleeping Bag" },
   { id: "36c6919d-1851-456a-907d-369c59c9af6c", name: "Wolfsbane", price: 10 },
   { id: "eeaf075e-fbd3-49dd-a90a-004069d706a4", name: "Pole, 10ft", price: 5 },
-  { id: "9ae2b24c-bbc8-4289-ae90-d44b65607e5c", name: "Waterskin" },
   { id: "f8ec377f-bb1a-4e41-aad7-e7a73c02c827", name: "Spirit Ward" },
   { id: "bcfc8563-bf89-47f1-8be2-823f78295fc5", name: "Antitoxin" },
   { id: "08ce2c2c-59ae-4df9-baf4-94d1245e99e9", name: "Large Trap", price: 20 },
   { id: "bc355de3-d336-4321-b490-ec0d5a58f470", name: "Tinderbox" },
   { id: "b73fe2f0-a8fe-49ee-a803-b8fbe1dd0147", name: "Sack", price: 5 },
-  { id: "478157f5-d9f3-4dd4-b0bc-0bd689a2773b", name: "Rations (3 days)", price: 10, charges: { current: 3, max: 3 } },
   { id: "40f6217d-0db6-4c16-888a-de929469d91f", name: "Repellent" },
   { id: "1941cd49-a3af-48c7-9ade-3ba5dfe16ea1", name: "Air Bladder", price: 5 },
   { id: "cdaac2be-0d84-405b-8354-a201713e7466", name: "Pulley", price: 10 },
@@ -457,19 +453,8 @@ export const expeditionGear: Gear[] = [
   { id: "8252f49d-1a36-41b6-8e26-6ebb92067382", name: "Chain, 10ft", price: 10 },
   { id: "6bc1c16b-8bca-498e-866d-ce8e47d44150", name: "Grappling Hook", price: 25 },
   { id: "b39d2344-f807-4648-b454-7e16121a2fe9", name: "Cart", bulky: true, price: 30 },
-  { id: "241bdfe2-6ab1-419f-9d6a-1f719a9420a4", name: "Wagon", bulky: true, price: 200 },
-  { id: "721860ae-5a23-4f1e-b3d2-c111290cd989", name: "Bedroll", price: 5 },
   { id: "5289ef1f-1f81-4dfd-b66a-49420d2e203d", name: "Manacles", price: 10 },
   { id: "2ae0d2ec-4f74-4fbe-9344-9a8dc07219b7", name: "Fire Oil", price: 10 },
-  { id: "fb6af4fa-6bd6-4843-aeb2-d631878463e6", name: "Rations" },
-  { id: "ae5634f1-bef7-4214-a265-9edb44e5a2f1", name: "Holy Water", price: 25 },
-  { id: "7df72be2-3aef-46fc-922e-1439837eec6b", name: "Horse", price: 75 },
-  { id: "dab16b04-c70e-4014-87e3-56a0122fd215", name: "Mule", price: 30 },
-  { id: "aa756c3d-4b33-41e7-8f2c-75987f921810", name: "Ladder 10 ft", bulky: true, price: 10 },
-  { id: "6e797f71-17fe-4649-8b8a-c1df6dbb72aa", name: "Oilskin Bag", price: 5 },
-  { id: "0a14e32b-7f34-42fb-b0ff-0f703b49c07b", name: "Spike", price: 1 },
-  { id: "93fcff8f-2eb5-4b48-9927-12d7d3649ff2", name: "Spiked boots", price: 5 },
-  { id: "93fcff8f-2eb5-4b48-9927-12d7d3649ff2", name: "Tent (fits 2 people)", bulky: true, price: 20 },
 ];
 
 export const tools: Gear[] = [
@@ -490,11 +475,9 @@ export const tools: Gear[] = [
   { id: "7598df26-a00d-4e6a-ae42-f9c288d35c89", name: "Grease", price: 10 },
   { id: "d14efd57-d340-4d6e-beea-80c4bd310f37", name: "Hourglass", price: 50 },
   { id: "f9d4485c-9e3e-4f85-95e5-01f5e2d26dd7", name: "Caltrops", price: 10 },
-  { id: "a4051c11-4bb2-44bf-a4a7-7625e68157c0", name: "Lantern & Oil", price: 10 },
   { id: "b1ea1c91-03be-4578-9264-a767a94b8f70", name: "Bellows", price: 10 },
   { id: "a98654c5-93fd-4a3b-a5d3-b7225ef798d0", name: "Fishing Rod", price: 10 },
   { id: "b212f453-430d-47ec-9041-4d9f9eb6fd6a", name: "Crowbar", price: 10 },
-  { id: "8d0a8d56-b29f-4fc5-a86e-6db97798c612", name: "Padlock", price: 5 },
 ];
 
 export const trinkets: Gear[] = [
@@ -509,7 +492,6 @@ export const trinkets: Gear[] = [
   { id: "b400adb2-0221-4597-ade9-2a74b70c7cc8", name: "Whistle", price: 5 },
   { id: "1123c5b1-97a3-4c94-a7f6-7747024566e8", name: "Bottle", price: 5 },
   { id: "15de5202-fa55-4709-947e-6cb9c62902ea", name: "Lens", price: 10 },
-  { id: "2be37b6b-0d09-40d9-a00e-4bc01102ebbe", name: "Book", price: 50 },
   { id: "9671279d-51fc-4e1d-97d0-c9ba2e3bea42", name: "Mirror", price: 5 },
   { id: "06636f8e-a2b3-47ec-b269-4a4b13436800", name: "Small Bell" },
   { id: "1ae08e5e-b3a3-4e0d-ba70-0af5c6daa2b4", name: "Tar pot", price: 10 },
@@ -521,12 +503,33 @@ export const trinkets: Gear[] = [
   { id: "f467292a-c6af-4bd0-9d1e-abe0aa26e83d", name: "Large sponge", price: 5 },
 ];
 
+export const otherItems: Gear[] = [
+  { id: "721860ae-5a23-4f1e-b3d2-c111290cd989", name: "Bedroll", price: 5 },
+  { id: "7df72be2-3aef-46fc-922e-1439837eec6b", name: "Horse", price: 75 },
+  { id: "dab16b04-c70e-4014-87e3-56a0122fd215", name: "Mule", price: 30 },
+  { id: "ae5634f1-bef7-4214-a265-9edb44e5a2f1", name: "Holy Water", price: 25 },
+  { id: "6e797f71-17fe-4649-8b8a-c1df6dbb72aa", name: "Oilskin Bag", price: 5 },
+  { id: "0a14e32b-7f34-42fb-b0ff-0f703b49c07b", name: "Spike", price: 1 },
+  { id: "93fcff8f-2eb5-4b48-9927-12d7d3649ff2", name: "Spiked boots", price: 5 },
+  { id: "93fcff8f-2eb5-4b48-9927-12d7d3649ff2", name: "Tent (fits 2 people)", bulky: true, price: 20 },
+  { id: "478157f5-d9f3-4dd4-b0bc-0bd689a2773b", name: "Rations (3 days)", price: 10, charges: { current: 3, max: 3 } },
+  { id: "279f69d0-2e8f-4cf4-9d6a-d6fa7831f3be", name: "Torch", price: 1 },
+  { id: "9ae2b24c-bbc8-4289-ae90-d44b65607e5c", name: "Waterskin" },
+  { id: "241bdfe2-6ab1-419f-9d6a-1f719a9420a4", name: "Wagon", bulky: true, price: 200 },
+  { id: "cb3870ea-7af5-4668-8b6b-f9ec41b0b0ea", name: "Sleeping Bag" },
+  { id: "aa756c3d-4b33-41e7-8f2c-75987f921810", name: "Ladder 10 ft", bulky: true, price: 10 },
+  { id: "a4051c11-4bb2-44bf-a4a7-7625e68157c0", name: "Lantern & Oil", price: 10 },
+  { id: "8d0a8d56-b29f-4fc5-a86e-6db97798c612", name: "Padlock", price: 5 },
+  { id: "2be37b6b-0d09-40d9-a00e-4bc01102ebbe", name: "Book", price: 50 },
+];
+
 export const allItems: Gear[] = [
   ...weapons,
   ...armors,
   ...expeditionGear,
   ...tools,
   ...trinkets,
+  ...otherItems
 ];
 
 export const scars: string[] = [
