@@ -18,11 +18,19 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { allItems } from "@/lib/game/cairn/data";
+import {
+  allItems,
+  armors,
+  expeditionGear,
+  tools,
+  trinkets,
+  weapons,
+} from "@/lib/game/cairn/data";
 import { useParams, useRouter } from "next/navigation";
 import { useRelativeLinker } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
 import { clone } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Session() {
   const characterLens = useCurrentCharacter();
@@ -52,6 +60,39 @@ function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
 }
 
 function Shop() {
+  return (
+    <Tabs>
+      <TabsList>
+        <TabsTrigger value="weapons">Weapons</TabsTrigger>
+        <TabsTrigger value="armors">Weapons</TabsTrigger>
+        <TabsTrigger value="expeditionGear">Expedition Gear</TabsTrigger>
+        <TabsTrigger value="tools">Tools</TabsTrigger>
+        <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
+      </TabsList>
+      <TabsContent value="weapons">
+        <ShopTable items={weapons} />
+      </TabsContent>
+      <TabsContent value="armors">
+        <ShopTable items={armors} />
+      </TabsContent>
+      <TabsContent value="expeditionGear">
+        <ShopTable items={expeditionGear} />
+      </TabsContent>
+      <TabsContent value="tools">
+        <ShopTable items={tools} />
+      </TabsContent>
+      <TabsContent value="trinkets">
+        <ShopTable items={trinkets} />
+      </TabsContent>
+    </Tabs>
+  );
+}
+
+interface ShopTableProps {
+  items: Gear[];
+}
+
+function ShopTable({ items }: ShopTableProps) {
   const { state: character, setState: setCharacter } = useCurrentCharacter();
   const { slotId } = useParams();
   const router = useRouter();
@@ -96,7 +137,7 @@ function Shop() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {allItems.map((g) => (
+        {items.map((g) => (
           <TableRow key={g.id}>
             <TableCell className="p-1">
               <ShowGear gear={g} />
