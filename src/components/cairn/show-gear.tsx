@@ -19,7 +19,7 @@ export function ShowGear({ gear }: ShowGearProps) {
     descr.push(`${gear.armor} Armor`);
   }
   if (gear.charges !== undefined) {
-    descr.push(`${gear.charges} Charges`);
+    descr.push(`${gear.charges.max} Charges`);
   }
 
   const tagDescr = descr.length > 0 ? ` (${descr.join(", ")})` : "";

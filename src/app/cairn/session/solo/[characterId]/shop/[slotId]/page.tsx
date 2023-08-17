@@ -145,6 +145,7 @@ function ShopTable({ items }: ShopTableProps) {
         <TableHeader>
           <TableRow>
             <TableHead>gear</TableHead>
+            <TableHead>price</TableHead>
             <TableHead className="w-40">actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -156,6 +157,9 @@ function ShopTable({ items }: ShopTableProps) {
               <TableRow key={g.id}>
                 <TableCell className="p-1">
                   <ShowGear gear={g} />
+                </TableCell>
+                <TableCell className="p-1">
+                  {g.price}
                 </TableCell>
                 <TableCell className="p-1">
                   {canGrab(g) && (

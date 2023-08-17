@@ -4,6 +4,7 @@ A mapless vtt
 
 ## todo
 
+- cart & horse slots
 - generic rolls
 - full random chargen
 - create item
