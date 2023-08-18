@@ -66,7 +66,7 @@ interface AbilityProps {
   value: Gauge;
 }
 
-export function AbilityField({ name, value }: AbilityProps) {
+function AbilityField({ name, value }: AbilityProps) {
   return <Field name={name}>{value.max}</Field>;
 }
 
@@ -74,7 +74,7 @@ interface FieldProps extends Children {
   name: string;
 }
 
-export function Field({ name, children }: FieldProps) {
+function Field({ name, children }: FieldProps) {
   return (
     <div className="flex gap-4 justify-between">
       <div>{name}</div>
