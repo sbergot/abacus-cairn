@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- reminder to check str when taking str damage
 - full random chargen
 - create item
 - item details
@@ -12,4 +11,5 @@ A mapless vtt
 - timers
 - npcs
 - assign damage for dm
+- retainers
 - cart & horse slots (with retainers?)

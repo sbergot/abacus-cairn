@@ -53,6 +53,11 @@ function hurt(
     const residual = adjusted - character.hp.current;
     character.hp.current = 0;
     character.strength.current -= residual;
+    log({
+      kind: "chat-common",
+      type: "BasicMessage",
+      props: { content: "Make a strength save to avoid critical damage." },
+    });
     return;
   }
 }
