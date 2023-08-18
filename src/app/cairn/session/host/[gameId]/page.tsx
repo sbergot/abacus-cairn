@@ -40,7 +40,7 @@ function AllCharacters({}: AllCharactersProps) {
     <>
       <div>{sessionCode}</div>
       {allCharacters.map((c) => (
-        <CharacterEntry character={c} />
+        <CharacterEntry key={c.id} character={c} />
       ))}
     </>
   );

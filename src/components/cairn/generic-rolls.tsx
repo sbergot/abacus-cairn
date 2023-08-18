@@ -70,7 +70,7 @@ function AttackRoll({ close }: CloseProps) {
             </SelectTrigger>
             <SelectContent>
               {[4, 6, 8, 10, 12].map((d) => (
-                <SelectItem value={d.toString()}>d{d}</SelectItem>
+                <SelectItem key={d} value={d.toString()}>d{d}</SelectItem>
               ))}
             </SelectContent>
           </Select>

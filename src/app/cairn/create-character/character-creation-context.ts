@@ -1,3 +1,5 @@
+"use client"
+
 import { CairnCharacter } from "@/lib/game/cairn/types"
 import { ILens } from "@/lib/types";
 import { createContext, useContext } from "react";
