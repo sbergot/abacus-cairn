@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useRelativeLinker } from "@/lib/hooks";
 import { Title } from "@/components/ui/typography";
 import { useCharacterCreationContext } from "../character-creation-context";
-import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -13,13 +12,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { backgrounds } from "@/lib/game/cairn/data";
+import { backgrounds, traits } from "@/lib/game/cairn/data";
 import { PlusCircleIcon } from "lucide-react";
-import { OrSeparator } from "@/components/ui/or-separator";
 import { pickRandom } from "@/lib/random";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import TextField from "@/components/ui/textfield";
+import TextAreaField from "@/components/ui/textareafield";
+import { generateTraits } from "@/lib/game/cairn/character-generation";
 
 export default function PickCharacterBackground() {
   const { lens } = useCharacterCreationContext();
@@ -30,9 +31,9 @@ export default function PickCharacterBackground() {
 
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
-      <Title>Backgrounds</Title>
+      <Title>Backgrounds & Traits</Title>
       <div>Pick your background</div>
-      <div>Your character is {character.background || "???"}</div>
+      <TextField lens={lens} fieldName="background" />
       <div className="flex gap-2 items-center w-full">
         <Button
           className="flex-grow"
@@ -54,7 +55,23 @@ export default function PickCharacterBackground() {
           </DialogContent>
         </Dialog>
       </div>
-      <Button className="w-full" disabled={!character.background} onClick={() => router.push(linker("../name"))}>
+      <div>Define your traits</div>
+      <TextAreaField lens={lens} fieldName="traits" className="resize-none" />
+      <Button
+        className="w-full"
+        onClick={() =>
+          setCharacter((d) => {
+            d.traits = generateTraits();
+          })
+        }
+      >
+        Generate
+      </Button>
+      <Button
+        className="w-full"
+        disabled={!character.background || !character.traits}
+        onClick={() => router.push(linker("../gears"))}
+      >
         Next
       </Button>
     </div>

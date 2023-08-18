@@ -1,21 +1,36 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Gauge } from "@/lib/game/cairn/types";
+import { CairnCharacter, Gauge } from "@/lib/game/cairn/types";
 import { useRelativeLinker } from "@/lib/hooks";
 import { Title } from "@/components/ui/typography";
 import { Children } from "@/components/ui/types";
 import { useCharacterCreationContext } from "../character-creation-context";
 import Link from "next/link";
 import { useEffect } from "react";
-import { rollCharacter } from "@/lib/game/cairn/character-generation";
+import { fillRandomCharacter, rollCharacterStats } from "@/lib/game/cairn/character-generation";
+import { OrSeparator } from "@/components/ui/or-separator";
+import { useRouter } from "next/navigation";
+import { useGameContext } from "../../cairn-context";
+import { clone } from "@/lib/utils";
 
 export default function CreateCharacterStats() {
   const { lens } = useCharacterCreationContext();
   const { state: character, setState: setCharacter } = lens;
   const linker = useRelativeLinker();
+  const router = useRouter();
+  const {
+    characterRepo: { setState: setCharacters },
+  } = useGameContext();
 
-  useEffect(() => setCharacter(rollCharacter), []);
+  function save(newChar: CairnCharacter) {
+    setCharacters((repo) => {
+      repo[newChar.id] = newChar;
+    });
+    router.push(linker("../.."));
+  }
+
+  useEffect(() => setCharacter(rollCharacterStats), []);
 
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
@@ -31,8 +46,16 @@ export default function CreateCharacterStats() {
           <Field name="age">{character.age}</Field>
         </div>
       </div>
+      <Button className="w-full" onClick={() => {
+        const newChar = clone(character);
+        fillRandomCharacter(newChar)
+        save(newChar);
+      }}>
+        Random
+      </Button>
+      <OrSeparator />
       <Button className="w-full" asChild>
-        <Link href={linker("../background")}>Next</Link>
+        <Link href={linker("../background")}>Manual</Link>
       </Button>
     </div>
   );

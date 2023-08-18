@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- full random chargen
 - create item
 - item details
 - revealed elements

@@ -19,7 +19,9 @@ export function uuidv4(): string {
 }
 
 export function clone<T extends WithId>(e: T): T {
-  return { ...e, id: uuidv4() };
+  const result = JSON.parse(JSON.stringify(e)) as T;
+  result.id = uuidv4();
+  return result;
 }
 
 export function download(storageKey: string) {
