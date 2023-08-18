@@ -13,7 +13,7 @@ export interface CairnCharacter {
   name: string;
   age: number;
   background: string;
-  traits: string[];
+  traits: string;
   strength: Gauge;
   dexterity: Gauge;
   willpower: Gauge;

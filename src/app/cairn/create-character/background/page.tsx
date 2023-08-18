@@ -17,57 +17,89 @@ import { backgrounds } from "@/lib/game/cairn/data";
 import { PlusCircleIcon } from "lucide-react";
 import { OrSeparator } from "@/components/ui/or-separator";
 import { pickRandom } from "@/lib/random";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function PickCharacterBackground() {
   const { lens } = useCharacterCreationContext();
   const { state: character, setState: setCharacter } = lens;
+  const [open, setOpen] = useState(false);
   const linker = useRelativeLinker();
+  const router = useRouter();
 
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
       <Title>Backgrounds</Title>
       <div>Pick your background</div>
       <div>Your character is {character.background || "???"}</div>
-      <Button className="w-full"
-        onClick={() =>
-          setCharacter((d) => {
-            d.background = pickRandom(backgrounds);
-          })
-        }
-      >
-        Pick randomly
-      </Button>
-      <OrSeparator />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Backgrounds</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {backgrounds.map((b) => (
-            <TableRow key={b}>
-              <TableCell className="py-2">{b}</TableCell>
-              <TableCell className="py-0">
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  onClick={() =>
-                    setCharacter((d) => {
-                      d.background = b;
-                    })
-                  }
-                >
-                  <PlusCircleIcon size={20} />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Button className="w-full" asChild>
-        <Link href={linker("../name")}>Next</Link>
+      <div className="flex gap-2 items-center w-full">
+        <Button
+          className="flex-grow"
+          onClick={() =>
+            setCharacter((d) => {
+              d.background = pickRandom(backgrounds);
+            })
+          }
+        >
+          Pick randomly
+        </Button>
+        <div>Or</div>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger className="flex-grow">
+            <Button className="w-full">Select from list</Button>
+          </DialogTrigger>
+          <DialogContent className="max-h-[36rem] overflow-y-scroll">
+            <BackgroundsTable close={() => setOpen(false)} />
+          </DialogContent>
+        </Dialog>
+      </div>
+      <Button className="w-full" disabled={!character.background} onClick={() => router.push(linker("../name"))}>
+        Next
       </Button>
     </div>
+  );
+}
+
+interface CloseProps {
+  close(): void;
+}
+
+function BackgroundsTable({ close }: CloseProps) {
+  const { lens } = useCharacterCreationContext();
+  const { state: character, setState: setCharacter } = lens;
+
+  return (
+    <Table className="h-24">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Backgrounds</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {backgrounds.map((b) => (
+          <TableRow
+            data-state={b === character.background ? "selected" : ""}
+            key={b}
+          >
+            <TableCell className="py-2">{b}</TableCell>
+            <TableCell className="py-0">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                onClick={() => {
+                  setCharacter((d) => {
+                    d.background = b;
+                  });
+                  close();
+                }}
+              >
+                <PlusCircleIcon size={20} />
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

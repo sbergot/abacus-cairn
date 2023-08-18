@@ -11,5 +11,5 @@ A mapless vtt
 - timers
 - npcs
 - assign damage for dm
-- retainers
-- cart & horse slots (with retainers?)
+- hirelings
+- cart & horse slots (with hirelings?)

@@ -80,7 +80,7 @@ export default function CharacterName() {
           </PopoverContent>
         </Popover>
       </div>
-      <Button className="w-full" onClick={save}>
+      <Button className="w-full" disabled={!character.name} onClick={save}>
         Save
       </Button>
     </div>

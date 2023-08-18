@@ -17,7 +17,7 @@ export function initCharacter(): CairnCharacter {
     silver: 0,
     copper: 0,
     deprived: false,
-    traits: [],
+    traits: "",
     inventory: [
       { id: uuidv4(), type: "hand", state: { type: "empty" } },
       { id: uuidv4(), type: "hand", state: { type: "empty" } },
