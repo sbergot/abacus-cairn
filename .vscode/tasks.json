@@ -1,21 +1,30 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-		{
-			"type": "npm",
-			"script": "dev",
-			"problemMatcher": [],
-			"label": "npm: dev",
-			"detail": "next dev"
-		},
-		{
-			"type": "npm",
-			"script": "check-types",
-			"problemMatcher": [
-				"$eslint-compact"
-			],
-			"label": "npm: check-types",
-			"detail": "tsc --noemit"
-		}
-	]
+    {
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "label": "npm: dev",
+      "detail": "next dev"
+    },
+    {
+      "type": "npm",
+      "script": "check-types",
+      "problemMatcher": [
+        "$eslint-compact"
+      ],
+      "label": "npm: check-types",
+      "detail": "tsc --noemit"
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [
+        "$jshint-stylish"
+      ],
+      "label": "npm: lint",
+      "detail": "next lint"
+    }
+  ]
 }
