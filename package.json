@@ -42,5 +42,8 @@
     "typescript": "5.1.6",
     "use-immer": "^0.9.0",
     "use-local-storage": "^2.3.6"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.29.5-appdir.0"
   }
 }
