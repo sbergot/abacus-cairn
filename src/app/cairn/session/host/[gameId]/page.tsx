@@ -77,7 +77,7 @@ interface AbilityShow {
   type: AbilityType;
 }
 
-export function AbilityShow({ character, type }: AbilityShow) {
+function AbilityShow({ character, type }: AbilityShow) {
   const value = character[type];
   return (
     <div className="flex gap-2 items-stretch justify-between">
@@ -96,7 +96,7 @@ interface HpShowProps {
   character: CairnCharacter;
 }
 
-export function HpShow({ character }: HpShowProps) {
+function HpShow({ character }: HpShowProps) {
   const value = character.hp;
   return (
     <div className="flex gap-2 items-stretch justify-between">

@@ -1,3 +1,5 @@
+"use client"
+
 import { Title } from "@/components/ui/typography";
 import { useCharacterCreationContext } from "../character-creation-context";
 import TextField from "@/components/ui/textfield";
