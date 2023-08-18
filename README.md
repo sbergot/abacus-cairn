@@ -4,8 +4,6 @@ A mapless vtt
 
 ## todo
 
-- cart & horse slots
-- generic rolls
 - full random chargen
 - create item
 - item details
@@ -13,3 +11,4 @@ A mapless vtt
 - timers
 - npcs
 - assign damage for dm
+- cart & horse slots (with retainers?)
