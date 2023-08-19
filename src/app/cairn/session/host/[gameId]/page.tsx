@@ -9,9 +9,11 @@ import {
 } from "@/lib/game/cairn/types";
 import { useGmConnectionContext } from "@/app/cairn/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
-import { Title } from "@/components/ui/typography";
+import { Title, WeakEmph } from "@/components/ui/typography";
 import { AbilityCheckModal } from "@/components/cairn/ability-check-modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { CopyIcon } from "lucide-react";
 
 export default function Session() {
   const { messages } = useGmConnectionContext();
@@ -48,9 +50,37 @@ function GmTabs() {
 
 function AllConnections() {
   const { connections, sessionCode } = useGmConnectionContext();
-  return <>
-      <div>{sessionCode}</div>
-  </>
+  return (
+    <div className="flex flex-col gap-4">
+      <div>
+        <span className="align-text-bottom">
+        table id: {sessionCode}{" "}
+        </span>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() => {
+            navigator.clipboard.writeText(sessionCode);
+          }}
+        >
+          <CopyIcon size={20} />
+        </Button>
+      </div>
+      <div>
+        Provide this id to the player to let them join this table. Refreshing
+        this page will create a new id.
+      </div>
+      <div>
+        <div>Connected players:</div>
+        {connections.map((c) => (
+          <div>
+            <WeakEmph>{c.id}</WeakEmph> - {c.character?.name ?? "??"} -{" "}
+            {c.state}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 interface AllCharactersProps {}

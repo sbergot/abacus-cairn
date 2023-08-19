@@ -13,7 +13,7 @@ import { stamp } from "./utils";
 import { BaseCharacter, BaseGame, LibraryElement } from "../game/types";
 import { useCurrentGenericGame } from "../gameContext";
 
-type ConnectionState = "opened" | "closed" | "error";
+type ConnectionState = "connected" | "closed" | "error";
 
 const MAX_MESSAGE_NBR = 500;
 
@@ -92,7 +92,7 @@ export function useGmConnection<
         [metadata.browserId]: {
           character: null,
           id: metadata.browserId,
-          state: "opened",
+          state: "connected",
         },
       }));
 
@@ -108,7 +108,7 @@ export function useGmConnection<
               [metadata.browserId]: {
                 character: newChar,
                 id: metadata.browserId,
-                state: "opened",
+                state: "connected",
               },
             }));
             return;
