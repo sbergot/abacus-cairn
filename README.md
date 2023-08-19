@@ -6,10 +6,14 @@ A mapless vtt
 
 - npcs, locations & custom gm elements
 - revealed elements
-- timers
+- appearance accordeon
 - assign damage for dm
 - hirelings
 - cart & horse slots (with hirelings?)
 - convert slugs to query parameters
-- item details
 - move clear message buttons to top
+
+- release beta
+
+- timers
+- item details
