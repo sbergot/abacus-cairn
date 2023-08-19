@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- create item
 - item details
 - revealed elements
 - timers

@@ -32,7 +32,7 @@ export function CharacterStats({}: CharacterStatsProps) {
             <div className="w-20">Deprived</div>
             <Checkbox
               defaultChecked={character.deprived}
-              onChange={() =>
+              onCheckedChange={() =>
                 setCharacter((d) => {
                   d.deprived = !d.deprived;
                 })

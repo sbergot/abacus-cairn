@@ -5,7 +5,7 @@ import { Draft } from "immer";
 
 interface Props<T> extends ClassName {
   lens: ILens<T>;
-  fieldName: KeyOfType<T, number> & KeyOfType<Draft<T>, number>;
+  fieldName: KeyOfType<T, number | undefined> & KeyOfType<Draft<T>, number | undefined>;
 }
 
 export default function NumberField<T>({

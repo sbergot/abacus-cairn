@@ -2,7 +2,12 @@
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
-import { CairnMessage, Gear, Slot } from "@/lib/game/cairn/types";
+import {
+  CairnCharacter,
+  CairnMessage,
+  Gear,
+  Slot,
+} from "@/lib/game/cairn/types";
 import {
   useCurrentCharacter,
   usePlayerConnectionContext,
@@ -17,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, SearchIcon } from "lucide-react";
+import { PackagePlusIcon, PlusIcon, SearchIcon } from "lucide-react";
 import {
   allItems,
   armors,
@@ -30,10 +35,23 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { useRelativeLinker } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
-import { clone } from "@/lib/utils";
+import { clone, uuidv4 } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useImmer } from "use-immer";
+import TextField from "@/components/ui/textfield";
+import { ILens } from "@/lib/types";
+import CheckboxField from "@/components/ui/checkboxfield";
+import NumberField from "@/components/ui/numberfield";
+import { DiceSelect } from "@/components/cairn/dice-select";
+import { ArmorSelect } from "@/components/cairn/armor-select";
 
 export default function Session() {
   const characterLens = useCurrentCharacter();
@@ -64,39 +82,78 @@ function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
 
 function Shop() {
   return (
-    <Tabs defaultValue="all">
-      <TabsList>
-        <TabsTrigger value="all">All</TabsTrigger>
-        <TabsTrigger value="weapons">Weapons</TabsTrigger>
-        <TabsTrigger value="armors">Armors</TabsTrigger>
-        <TabsTrigger value="expeditionGear">Expedition Gear</TabsTrigger>
-        <TabsTrigger value="tools">Tools</TabsTrigger>
-        <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
-        <TabsTrigger value="others">Others</TabsTrigger>
-      </TabsList>
-      <TabsContent value="all">
-        <ShopTable items={allItems} />
-      </TabsContent>
-      <TabsContent value="weapons">
-        <ShopTable items={weapons} />
-      </TabsContent>
-      <TabsContent value="armors">
-        <ShopTable items={armors} />
-      </TabsContent>
-      <TabsContent value="expeditionGear">
-        <ShopTable items={expeditionGear} />
-      </TabsContent>
-      <TabsContent value="tools">
-        <ShopTable items={tools} />
-      </TabsContent>
-      <TabsContent value="trinkets">
-        <ShopTable items={trinkets} />
-      </TabsContent>
-      <TabsContent value="others">
-        <ShopTable items={otherItems} />
-      </TabsContent>
-    </Tabs>
+    <>
+      <NewItemDialog />
+      <Tabs defaultValue="all">
+        <TabsList>
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="weapons">Weapons</TabsTrigger>
+          <TabsTrigger value="armors">Armors</TabsTrigger>
+          <TabsTrigger value="expeditionGear">Expedition Gear</TabsTrigger>
+          <TabsTrigger value="tools">Tools</TabsTrigger>
+          <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
+          <TabsTrigger value="others">Others</TabsTrigger>
+        </TabsList>
+        <TabsContent value="all">
+          <ShopTable items={allItems} />
+        </TabsContent>
+        <TabsContent value="weapons">
+          <ShopTable items={weapons} />
+        </TabsContent>
+        <TabsContent value="armors">
+          <ShopTable items={armors} />
+        </TabsContent>
+        <TabsContent value="expeditionGear">
+          <ShopTable items={expeditionGear} />
+        </TabsContent>
+        <TabsContent value="tools">
+          <ShopTable items={tools} />
+        </TabsContent>
+        <TabsContent value="trinkets">
+          <ShopTable items={trinkets} />
+        </TabsContent>
+        <TabsContent value="others">
+          <ShopTable items={otherItems} />
+        </TabsContent>
+      </Tabs>
+    </>
   );
+}
+
+function canGrab(
+  character: CairnCharacter,
+  gear: Gear,
+  slotId: string
+): boolean {
+  const currentSlot = character.inventory.find((s) => s.id === slotId)!;
+  const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
+
+  if (currentSlot.state.type !== "empty") {
+    return false;
+  }
+
+  if (!siblingFreeSlot && gear.bulky) {
+    return false;
+  }
+
+  return true;
+}
+
+function grab(character: CairnCharacter, gear: Gear, slotId: string) {
+  const currentSlot = character.inventory.find((s) => s.id === slotId)!;
+  const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
+  const { inventory } = character;
+
+  const slot = inventory.find((s) => s.id === slotId)!;
+  slot.state = { type: "gear", gear: clone(gear) };
+  if (gear.bulky) {
+    const otherSlot = inventory.find((s) => s.id === siblingFreeSlot?.id)!;
+    otherSlot.state = {
+      type: "bulky",
+      slotId,
+      name: gear.name,
+    };
+  }
 }
 
 interface ShopTableProps {
@@ -109,42 +166,16 @@ function ShopTable({ items }: ShopTableProps) {
   const router = useRouter();
   const linker = useRelativeLinker();
   const [search, setSearch] = useState("");
-  const currentSlot = character.inventory.find((s) => s.id === slotId)!;
-  const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
 
-  function canGrab(gear: Gear): boolean {
-    if (currentSlot.state.type !== "empty") {
-      return false;
-    }
-
-    if (!siblingFreeSlot && gear.bulky) {
-      return false;
-    }
-
-    return true;
-  }
-
-  function grab(gear: Gear) {
-    setCharacter((d) => {
-      const slot = d.inventory.find((s) => s.id === slotId)!;
-      slot.state = { type: "gear", gear: clone(gear) };
-      if (gear.bulky) {
-        const otherSlot = d.inventory.find(
-          (s) => s.id === siblingFreeSlot?.id
-        )!;
-        otherSlot.state = {
-          type: "bulky",
-          slotId,
-          name: gear.name,
-        };
-      }
-    });
-  }
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <SearchIcon />
-      <Input className="w-40" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input
+          className="w-40"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
       <Table>
         <TableHeader>
@@ -163,14 +194,12 @@ function ShopTable({ items }: ShopTableProps) {
                 <TableCell className="p-1">
                   <ShowGear gear={g} />
                 </TableCell>
+                <TableCell className="p-1">{g.price}</TableCell>
                 <TableCell className="p-1">
-                  {g.price}
-                </TableCell>
-                <TableCell className="p-1">
-                  {canGrab(g) && (
+                  {canGrab(character, g, slotId) && (
                     <Button
                       onClick={() => {
-                        grab(g);
+                        setCharacter((d) => grab(d, g, slotId));
                         router.push(linker("../.."));
                       }}
                       size="icon-sm"
@@ -184,5 +213,78 @@ function ShopTable({ items }: ShopTableProps) {
         </TableBody>
       </Table>
     </div>
+  );
+}
+
+function NewItemDialog() {
+  const { slotId } = useParams();
+  const { state: character, setState: setCharacter } = useCurrentCharacter();
+  const [open, setOpen] = useState(false);
+  const [state, setState] = useImmer<Gear>({ id: uuidv4(), name: "" });
+  const lens: ILens<Gear> = { state, setState };
+  const router = useRouter();
+  const linker = useRelativeLinker();
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <Button>
+          <PackagePlusIcon />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Custom item</DialogTitle>
+        <div className="flex flex-col gap-2">
+          <div>
+            <div>Name</div>
+            <TextField lens={lens} fieldName="name" />
+          </div>
+          <div className="flex gap-2">
+            <div>
+              <DiceSelect
+                allowNoAttack
+                dice={state.damage}
+                setDice={(v) =>
+                  setState((d) => {
+                    d.damage = v;
+                  })
+                }
+              />
+            </div>
+            <div>
+              <ArmorSelect
+                allowNoArmor
+                armor={state.armor}
+                setArmor={(v) =>
+                  setState((d) => {
+                    d.armor = v;
+                  })
+                }
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <div>bulky</div> <CheckboxField lens={lens} fieldName="bulky" />
+            </div>
+            <div className="flex items-center gap-2">
+              <div>blast</div> <CheckboxField lens={lens} fieldName="blast" />
+            </div>
+          </div>
+          <div className="flex gap-2"></div>
+          <div>
+            <div>Price</div>
+            <NumberField lens={lens} fieldName="price" />
+          </div>
+        </div>
+        <Button
+          onClick={() => {
+            setCharacter((d) => grab(d, state, slotId));
+            router.push(linker("../.."));
+          }}
+          disabled={!state.name}
+        >
+          Save
+        </Button>
+      </DialogContent>
+    </Dialog>
   );
 }

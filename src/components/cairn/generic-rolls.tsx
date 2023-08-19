@@ -2,13 +2,7 @@ import { useLoggerContext } from "@/app/cairn/cairn-context";
 import { DicesIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import {
   Select,
   SelectContent,
@@ -16,12 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Checkbox } from "../ui/checkbox";
 import { pickRandom, roll } from "@/lib/random";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { scars } from "@/lib/game/cairn/data";
-
-type DiceType = 4 | 6 | 8 | 10 | 12;
+import { DiceSelect } from "./dice-select";
 
 export function GenericRolls() {
   const [open, setOpen] = useState(false);
@@ -56,24 +48,12 @@ interface CloseProps {
 
 function AttackRoll({ close }: CloseProps) {
   const { log } = useLoggerContext();
-  const [dice, setDice] = useState<DiceType>(4);
+  const [dice, setDice] = useState<number>(4);
   return (
     <>
       <div className="flex items-center gap-4">
         <div className="w-40">
-          <Select
-            value={dice.toString()}
-            onValueChange={(v) => setDice(Number(v) as DiceType)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="dice" />
-            </SelectTrigger>
-            <SelectContent>
-              {[4, 6, 8, 10, 12].map((d) => (
-                <SelectItem key={d} value={d.toString()}>d{d}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <DiceSelect dice={dice} setDice={(n) => setDice(n ?? 4)} />
         </div>
         <Button
           onClick={() => {
