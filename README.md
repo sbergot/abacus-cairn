@@ -12,3 +12,4 @@ A mapless vtt
 - cart & horse slots (with hirelings?)
 - convert slugs to query parameters
 - item details
+- move clear message buttons to top
