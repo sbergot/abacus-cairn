@@ -1,15 +1,15 @@
 import { AbilityControl } from "./ability-control";
 import { HpControl } from "./hp-control";
-import { Title } from "../ui/typography";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { Checkbox } from "../ui/checkbox";
 import { getArmorValue } from "@/lib/game/cairn/utils";
-import { EditCharStats } from "./edit-char-stats";
+import { ILens } from "@/lib/types";
+import { CairnCharacter } from "@/lib/game/cairn/types";
 
-interface CharacterStatsProps {}
+interface CharacterStatsProps {
+  lens: ILens<CairnCharacter>;
+}
 
-export function CharacterStats({}: CharacterStatsProps) {
-  const lens = useCurrentCharacter();
+export function CharacterStats({ lens }: CharacterStatsProps) {
   const { state: character, setState: setCharacter } = lens;
 
   const armor = getArmorValue(lens.state);

@@ -1,10 +1,11 @@
-import { type ClassValue, clsx } from "clsx"
+import { type ClassValue, clsx } from "clsx";
 import { Draft } from "immer";
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 import { WithId } from "./game/types";
- 
+import { ILens } from "./types";
+
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function uuidv4(): string {
@@ -39,9 +40,22 @@ export function download(storageKey: string) {
   document.body.removeChild(element);
 }
 
-export function setSingle<T>(setRepo: (r: (d: Draft<Record<string, T>>) => void) => void, key: string) {
+export function setSingle<T>(
+  setRepo: (r: (d: Draft<Record<string, T>>) => void) => void,
+  key: string
+) {
   function setter(setEntry: (d: Draft<T>) => void) {
-    setRepo(r => setEntry(r[key]))
+    setRepo((r) => setEntry(r[key]));
   }
   return setter;
+}
+
+export function getSubLens<T, K extends keyof T>(
+  lens: ILens<T>,
+  key: K
+): ILens<T[K]> {
+  return {
+    state: lens.state[key],
+    setState: (recipe) => lens.setState((d) => recipe((d as any)[key])),
+  };
 }

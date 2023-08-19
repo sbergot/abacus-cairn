@@ -1,15 +1,18 @@
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { Title } from "../ui/typography";
-import { EditCharStats } from "./edit-char-stats";
-import { GenericRolls } from "./generic-rolls";
+import { CairnCharacter } from "@/lib/game/cairn/types";
+import { ILens } from "@/lib/types";
+import { Children } from "../ui/types";
 
-export function CharacterName() {
-  const { state: character } = useCurrentCharacter();
+interface Props extends Children {
+  lens: ILens<CairnCharacter>;
+}
+
+export function CharacterName({ lens, children }: Props) {
+  const { state: character } = lens;
   return (
     <div className="flex">
       <Title>{character.name}</Title>
-      <EditCharStats />
-      <GenericRolls />
+      {children}
     </div>
   );
 }

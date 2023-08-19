@@ -1,4 +1,3 @@
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +10,14 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import TextField from "../ui/textfield";
 import GaugeField from "./gaugefield";
+import { ILens } from "@/lib/types";
+import { CairnCharacter } from "@/lib/game/cairn/types";
 
-export function EditCharStats() {
-  const characterLens = useCurrentCharacter();
+interface Props {
+  lens: ILens<CairnCharacter>;
+}
+
+export function EditCharStats({ lens: characterLens }: Props) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
