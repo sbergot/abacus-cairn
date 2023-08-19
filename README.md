@@ -4,9 +4,9 @@ A mapless vtt
 
 ## todo
 
+- npcs, locations & custom gm elements
 - revealed elements
 - timers
-- npcs
 - assign damage for dm
 - hirelings
 - cart & horse slots (with hirelings?)
