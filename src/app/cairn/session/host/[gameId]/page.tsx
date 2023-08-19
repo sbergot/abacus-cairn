@@ -11,12 +11,13 @@ import { useGmConnectionContext } from "@/app/cairn/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { Title } from "@/components/ui/typography";
 import { AbilityCheckModal } from "@/components/cairn/ability-check-modal";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Session() {
   const { messages } = useGmConnectionContext();
   return (
     <TwoColumns
-      leftPart={<AllCharacters />}
+      leftPart={<GmTabs />}
       rightPart={
         <MessagePanel<CairnMessage>
           context={{ contextType: "gm", authorId: "gm" }}
@@ -28,17 +29,40 @@ export default function Session() {
   );
 }
 
+function GmTabs() {
+  return (
+    <Tabs defaultValue="characters">
+      <TabsList>
+        <TabsTrigger value="characters">characters</TabsTrigger>
+        <TabsTrigger value="connections">connections</TabsTrigger>
+      </TabsList>
+      <TabsContent value="characters">
+        <AllCharacters />
+      </TabsContent>
+      <TabsContent value="connections">
+        <AllConnections />
+      </TabsContent>
+    </Tabs>
+  );
+}
+
+function AllConnections() {
+  const { connections, sessionCode } = useGmConnectionContext();
+  return <>
+      <div>{sessionCode}</div>
+  </>
+}
+
 interface AllCharactersProps {}
 
 function AllCharacters({}: AllCharactersProps) {
-  const { connections, sessionCode } = useGmConnectionContext();
+  const { connections } = useGmConnectionContext();
   const allCharacters = connections
     .map((conn) => conn.character)
     .filter((c) => !!c) as CairnCharacter[];
 
   return (
     <>
-      <div>{sessionCode}</div>
       {allCharacters.map((c) => (
         <CharacterEntry key={c.id} character={c} />
       ))}
