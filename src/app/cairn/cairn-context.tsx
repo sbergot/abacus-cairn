@@ -1,3 +1,5 @@
+"use client"
+
 import { Children } from "@/components/ui/types";
 import {
   CairnCharacter,

@@ -2,6 +2,7 @@ import {
   CurrentCharacterContextProvider,
   useCurrentGame,
 } from "@/app/cairn/cairn-context";
+import { CharacterInventoryDialog } from "@/components/cairn/character-inventory-dialog";
 import { CharacterName } from "@/components/cairn/character-name";
 import { CharacterStats } from "@/components/cairn/character-stats";
 import { EditCharStats } from "@/components/cairn/edit-char-stats";
@@ -16,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { initCharacter } from "@/lib/game/cairn/character-generation";
 import { CairnCharacter } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
-import { getSubLens } from "@/lib/utils";
+import { getSubArrayLens, getSubLens } from "@/lib/utils";
 
 export function AllTables() {
   return (
@@ -53,15 +54,12 @@ function AllNpcs() {
         New
       </Button>
       {npcsLens.state.map((npc, idx) => {
-        const npcLens: ILens<CairnCharacter> = {
-          state: npcsLens.state[idx],
-          setState: (recipe) => npcsLens.setState((d) => recipe(d[idx])),
-        };
+        const npcLens: ILens<CairnCharacter> = getSubArrayLens(npcsLens, idx);
         return (
           <CurrentCharacterContextProvider value={npcLens}>
             <CharacterName>
               <EditCharStats />
-              <GenericRolls />
+              <CharacterInventoryDialog />
             </CharacterName>
             <CharacterStats />
           </CurrentCharacterContextProvider>

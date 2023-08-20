@@ -1,3 +1,5 @@
+"use client"
+
 import { CairnMessage } from "@/lib/game/cairn/types";
 import { ShowCustomMessageProps } from "../generic-pages/message-panel";
 import { DiceRoll } from "../ui/dice-roll";

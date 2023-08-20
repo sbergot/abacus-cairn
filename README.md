@@ -6,7 +6,7 @@ A mapless vtt
 
 - npcs, locations & custom gm elements
 - revealed elements
-- appearance accordeon
+- show character appearance 
 - assign damage for dm
 - hirelings
 - cart & horse slots (with hirelings?)
@@ -15,5 +15,6 @@ A mapless vtt
 
 - release beta
 
+- switch gear between two slots
 - timers
 - item details

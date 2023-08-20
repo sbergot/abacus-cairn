@@ -31,9 +31,12 @@ function getDamages(slot: Slot) {
     : 0;
 }
 
-export function CharacterInventory() {
+interface Props {
+  shopLink(slotId: string): string;
+}
+
+export function CharacterInventory({ shopLink }: Props) {
   const { log } = useLoggerContext();
-  const linker = useRelativeLinker();
   const lens = useCurrentCharacter();
   const slots = lens.state.inventory;
 
@@ -60,7 +63,7 @@ export function CharacterInventory() {
       </TableHeader>
       <TableBody>
         {slots.map((slot) => (
-          <TableRow key={slot.id}>
+          <TableRow key={slot.id} className="h-10">
             <TableCell className="p-1">{slot.type}</TableCell>
             <TableCell className="p-1">
               <ShowSlotState state={slot.state} />
@@ -82,7 +85,7 @@ export function CharacterInventory() {
                     <CircleSlashIcon />
                   </Button>
                   <Button size="icon-sm" asChild>
-                    <Link href={linker(`shop/${slot.id}`)}>
+                    <Link href={shopLink(slot.id)}>
                       <PlusIcon />
                     </Link>
                   </Button>
@@ -115,7 +118,7 @@ export function CharacterInventory() {
                   This will permanently delete your item
                 </DeleteAlert>
               )}
-              {getDamages(slot) > 0 && (
+              {getDamages(slot) > 0 && slot.type === "hand" && (
                 <Button
                   size="icon-sm"
                   onClick={() => {

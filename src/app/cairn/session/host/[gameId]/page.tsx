@@ -3,14 +3,12 @@
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
 import {
-  AbilityType,
   CairnCharacter,
   CairnMessage,
 } from "@/lib/game/cairn/types";
 import { useGmConnectionContext } from "@/app/cairn/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
-import { Title, WeakEmph } from "@/components/ui/typography";
-import { AbilityCheckModal } from "@/components/cairn/ability-check-modal";
+import { WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CopyIcon } from "lucide-react";
