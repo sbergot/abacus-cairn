@@ -22,6 +22,7 @@ export function useLoggerContext() {
 
 export const {
   GameContextProvider,
+  CurrentCharacterContextProvider,
   useGameContext,
   useCurrentCharacter,
   useCurrentGame,

@@ -50,14 +50,36 @@ export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage>> {
   return { state: game, setState: setGame };
 }
 
-
 export function createGameContext<
   TChar extends BaseCharacter,
   TGame extends BaseGame<UknownGameMessage>
 >(gameName: string) {
   // typesafe context for game specific UI
   const GameContext = createContext<IGameContext<TChar, TGame> | null>(null);
-  const { Provider } = GameContext;
+
+  const CurrentCharacterContext = createContext<ILens<TChar> | null>(null);
+  function CurrentCharacterFromParamsContextProvider({ children }: Children) {
+    const {
+      characterRepo: { state, setState },
+    } = useGameContext();
+    const params = useParams();
+    const { characterId } = params;
+    const character = state[characterId];
+    const setCharacter = setSingle(setState, characterId);
+    const currentCharacterLens: ILens<TChar> = {
+      state: character,
+      setState: setCharacter,
+    };
+    return (
+      <CurrentCharacterContext.Provider value={currentCharacterLens}>
+        {children}
+      </CurrentCharacterContext.Provider>
+    );
+  }
+
+  function useCurrentCharacter() {
+    return useContext(CurrentCharacterContext)!;
+  }
 
   function GameContextProvider({ children }: Children) {
     const [characters, setCharacters] = useImmerLocalStorage<
@@ -77,7 +99,11 @@ export function createGameContext<
 
     return (
       <GenericGameContextProvider value={context}>
-        <Provider value={context}>{children}</Provider>
+        <GameContext.Provider value={context}>
+          <CurrentCharacterFromParamsContextProvider>
+            {children}
+          </CurrentCharacterFromParamsContextProvider>
+        </GameContext.Provider>
       </GenericGameContextProvider>
     );
   }
@@ -86,7 +112,7 @@ export function createGameContext<
     return useContext(GameContext)!;
   }
 
-  function useCurrentCharacter(): ILens<TChar> {
+  function useCurrentCharacterFromParams(): ILens<TChar> {
     const {
       characterRepo: { state, setState },
     } = useGameContext();
@@ -110,6 +136,7 @@ export function createGameContext<
 
   return {
     GameContextProvider,
+    CurrentCharacterContextProvider: CurrentCharacterContext.Provider,
     useGameContext,
     useCurrentCharacter,
     useCurrentGame,

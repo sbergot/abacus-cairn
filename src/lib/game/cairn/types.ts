@@ -76,4 +76,6 @@ export type CairnMessage =
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 
-export interface CairnGame extends BaseGame<CairnMessage> {}
+export interface CairnGame extends BaseGame<CairnMessage> {
+  npcs: CairnCharacter[];
+}

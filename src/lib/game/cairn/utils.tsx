@@ -1,5 +1,12 @@
 import { uuidv4 } from "@/lib/utils";
-import { AbilityCheck, AbilityRollAnalysis, CairnCharacter, CairnGame, Gauge, Slot } from "./types";
+import {
+  AbilityCheck,
+  AbilityRollAnalysis,
+  CairnCharacter,
+  CairnGame,
+  Gauge,
+  Slot,
+} from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
@@ -48,6 +55,7 @@ export function initGame(name: string): CairnGame {
     messages: [],
     customEntries: [],
     timers: [],
+    npcs: [],
   };
 }
 
@@ -59,7 +67,6 @@ export function updateGauge(g: Gauge, update: (v: number) => number) {
   g.current = update(g.current);
   clampGauge(g);
 }
-
 
 function sum(values: number[]) {
   return values.reduce((acc, v) => acc + v, 0);

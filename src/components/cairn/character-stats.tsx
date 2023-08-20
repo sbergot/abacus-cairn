@@ -2,17 +2,14 @@ import { AbilityControl } from "./ability-control";
 import { HpControl } from "./hp-control";
 import { Checkbox } from "../ui/checkbox";
 import { getArmorValue } from "@/lib/game/cairn/utils";
-import { ILens } from "@/lib/types";
-import { CairnCharacter } from "@/lib/game/cairn/types";
+import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 
-interface CharacterStatsProps {
-  lens: ILens<CairnCharacter>;
-}
+interface CharacterStatsProps {}
 
-export function CharacterStats({ lens }: CharacterStatsProps) {
-  const { state: character, setState: setCharacter } = lens;
+export function CharacterStats({}: CharacterStatsProps) {
+  const { state: character, setState: setCharacter } = useCurrentCharacter();
 
-  const armor = getArmorValue(lens.state);
+  const armor = getArmorValue(character);
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">

@@ -13,11 +13,11 @@ export function CharacterSheet({}: CharacterSheetProps) {
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
-      <CharacterName lens={lens}>
-        <EditCharStats lens={lens} />
+      <CharacterName>
+        <EditCharStats/>
         <GenericRolls />
       </CharacterName>
-      <CharacterStats lens={lens} />
+      <CharacterStats />
       <CharacterCoins />
       <CharacterInventory />
     </div>
