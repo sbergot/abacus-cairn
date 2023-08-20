@@ -18,10 +18,13 @@ import { initCharacter } from "@/lib/game/cairn/character-generation";
 import { CairnCharacter } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
 import { getSubArrayLens, getSubLens } from "@/lib/utils";
+import { Dialog } from "@radix-ui/react-dialog";
 
-export function AllTables() {
+export function AllContent() {
   return (
     <div>
+      <Dialog></Dialog>
+      <Button>New category</Button>
       <Accordion type="multiple" className="w-full">
         <AccordionItem value="npcs">
           <AccordionTrigger>NPCs</AccordionTrigger>

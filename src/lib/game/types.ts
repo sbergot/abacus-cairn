@@ -19,7 +19,7 @@ export interface CustomEntry extends WithId {
   category: string;
   description: string;
   visibleToAll: boolean;
-  excluded: boolean;
+  excludedFromRandomPick: boolean;
 }
 
 export interface Timer extends WithId {
@@ -34,7 +34,7 @@ export interface Timer extends WithId {
 export interface BaseGame<TMessage> {
   id: string;
   title: string;
-  customEntries: CustomEntry[];
+  customEntries: Record<string, CustomEntry[]>;
   messages: Stamped<AllChatMessage<TMessage>>[];
   timers: Timer[];
 }

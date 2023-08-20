@@ -11,7 +11,7 @@ import { MessagePanel } from "@/components/generic-pages/message-panel";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { CairnMessage } from "@/lib/game/cairn/types";
 import { getSubArrayLens, getSubLens } from "@/lib/utils";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
   const { messages } = useGmConnectionContext();

@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CopyIcon } from "lucide-react";
 import { CharacterEntry } from "./character-entry";
-import { AllTables } from "./all-tables";
+import { AllContent } from "./all-content";
 
 export default function Session() {
   const { messages } = useGmConnectionContext();
@@ -37,7 +37,7 @@ function GmTabs() {
       <TabsList>
         <TabsTrigger value="connections">connections</TabsTrigger>
         <TabsTrigger value="characters">characters</TabsTrigger>
-        <TabsTrigger value="tables">tables</TabsTrigger>
+        <TabsTrigger value="content">content</TabsTrigger>
       </TabsList>
       <TabsContent value="characters">
         <AllCharacters />
@@ -45,8 +45,8 @@ function GmTabs() {
       <TabsContent value="connections">
         <AllConnections />
       </TabsContent>
-      <TabsContent value="tables">
-        <AllTables />
+      <TabsContent value="content">
+        <AllContent />
       </TabsContent>
     </Tabs>
   );
