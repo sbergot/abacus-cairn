@@ -6,12 +6,12 @@ A mapless vtt
 
 - npcs, locations & custom gm elements
 - revealed elements
+- move clear message buttons to top
+- convert slugs to query parameters
 - show character appearance 
 - assign damage for dm
 - hirelings
 - cart & horse slots (with hirelings?)
-- convert slugs to query parameters
-- move clear message buttons to top
 
 - release beta
 
