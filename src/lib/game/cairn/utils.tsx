@@ -89,7 +89,8 @@ export function getArmorValue(character: CairnCharacter): number {
 export function hurt(
   character: CairnCharacter,
   damages: number,
-  log: (m: AllChatMessage<CairnMessage>) => void
+  log: (m: AllChatMessage<CairnMessage>) => void,
+  gmOnly: boolean | null = null
 ) {
   const adjusted = damages - getArmorValue(character);
 
@@ -115,7 +116,9 @@ export function hurt(
     log({
       kind: "chat-common",
       type: "BasicMessage",
+      title: `Critical damage on ${character.name}`,
       props: { content: "Make a strength save to avoid critical damage." },
+      gmOnly: gmOnly ?? false,
     });
     return;
   }

@@ -28,7 +28,7 @@ export function GmDealDamageDialog({ damages }: Props) {
               onClick={() =>
                 gameLens.setState((d) => {
                   const npcToUpdate = d.npcs.find((n) => n.id === npc.id)!;
-                  hurt(npcToUpdate, damages, log);
+                  hurt(npcToUpdate, damages, log, true);
                   setOpen(false);
                 })
               }
