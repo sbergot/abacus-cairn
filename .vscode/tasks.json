@@ -25,6 +25,15 @@
       ],
       "label": "npm: lint",
       "detail": "next lint"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": [
+        "$jshint"
+      ],
+      "label": "npm: start",
+      "detail": "next start"
     }
   ]
 }

@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- convert slugs to query parameters
 - show character appearance 
 - assign damage for dm
 
