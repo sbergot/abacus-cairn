@@ -52,7 +52,11 @@ export function AllContent() {
           })
         }
       />
-      <Accordion type="multiple" className="w-full">
+      <Accordion
+        type="multiple"
+        className="w-full"
+        defaultValue={["npcs", ...Object.keys(gameLens.state.customEntries)]}
+      >
         <AccordionItem value="npcs">
           <AccordionTrigger>NPCs</AccordionTrigger>
           <AccordionContent>

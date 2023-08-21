@@ -13,7 +13,7 @@ interface Props {
 
 export function RevealedElements({ elements }: Props) {
   return (
-    <Accordion type="multiple">
+    <Accordion type="multiple" defaultValue={Object.keys(elements)}>
       {Object.keys(elements).map((category) => (
         <AccordionItem key={category} value={category}>
           <AccordionTrigger>{category}</AccordionTrigger>
