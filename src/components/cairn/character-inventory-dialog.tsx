@@ -5,11 +5,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { BoxesIcon, PencilIcon } from "lucide-react";
+import { BoxesIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import TextField from "../ui/textfield";
-import GaugeField from "./gaugefield";
 import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { CharacterInventory } from "./character-inventory";
 import { useRelativeLinker } from "@/lib/hooks";
@@ -29,7 +27,7 @@ export function CharacterInventoryDialog({}: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{characterLens.state.name}'s inventory</DialogTitle>
+          <DialogTitle>{characterLens.state.name}&apos;s inventory</DialogTitle>
         </DialogHeader>
         <CharacterInventory
           shopLink={(slotId) =>

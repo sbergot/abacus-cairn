@@ -15,13 +15,13 @@ export function RevealedElements({ elements }: Props) {
   return (
     <Accordion type="multiple">
       {Object.keys(elements).map((category) => (
-        <AccordionItem value={category}>
+        <AccordionItem key={category} value={category}>
           <AccordionTrigger>{category}</AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-2 gap-2 w-full">
-              {elements[category].map((entry) => {
+              {elements[category].map((entry, i) => {
                 return (
-                  <Card>
+                  <Card key={i}>
                     <CardHeader className="flex justify-between flex-row items-center gap-2">
                       <CardTitle className="flex-grow">{entry.name}</CardTitle>
                     </CardHeader>

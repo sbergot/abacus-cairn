@@ -56,7 +56,7 @@ export function AllContent() {
           </AccordionContent>
         </AccordionItem>
         {Object.keys(gameLens.state.customEntries).map((category) => (
-          <AccordionItem value={category}>
+          <AccordionItem key={category} value={category}>
             <AccordionTrigger>{category}</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-col items-start gap-2">
@@ -101,7 +101,7 @@ export function AllContent() {
                       category
                     );
                     return (
-                      <Card>
+                      <Card key={entry.id}>
                         <CardHeader className="flex justify-between flex-row items-center gap-2">
                           <CardTitle className="flex-grow">
                             {entry.name}
@@ -242,7 +242,7 @@ function AllNpcs() {
       {npcsLens.state.map((npc, idx) => {
         const npcLens: ILens<CairnNpc> = getSubArrayLens(npcsLens, idx);
         return (
-          <CurrentCharacterContextProvider value={npcLens}>
+          <CurrentCharacterContextProvider key={npc.id} value={npcLens}>
             <Card>
               <CardHeader>
                 <CharacterName>

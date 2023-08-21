@@ -1,7 +1,6 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { MessagePanel } from "@/components/generic-pages/message-panel";
 import {
   CairnCharacter,
   CairnMessage,
@@ -77,7 +76,7 @@ function AllConnections() {
       <div>
         <div>Connected players:</div>
         {connections.map((c) => (
-          <div>
+          <div key={c.id}>
             <WeakEmph>{c.id}</WeakEmph> - {c.character?.name ?? "??"} -{" "}
             {c.state}
           </div>
