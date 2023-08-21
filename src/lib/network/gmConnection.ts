@@ -103,6 +103,15 @@ export function useGmConnection<
         console.debug("Data received", data);
         const typeData = data as AnyMessage<TChar, TMessage>;
 
+        function sendSyncMessage(response: AllSyncMessageForPlayer<TMessage>) {
+          const message: AnyMessage<TChar, TMessage> = {
+            ...response,
+            destination: "Player",
+            kind: "sync",
+          };
+          conn.send(message);
+        }
+
         if (typeData.kind === "sync" && typeData.destination === "GM") {
           if (typeData.type === "UpdateChar") {
             const newChar = typeData.props.character;
@@ -123,7 +132,7 @@ export function useGmConnection<
                 messages: messagesRef.current.filter((m) => !m.gmOnly),
               },
             };
-            conn.send(response);
+            sendSyncMessage(response);
             return;
           }
           if (typeData.type === "RevealedElementsRequest") {
@@ -131,7 +140,7 @@ export function useGmConnection<
               type: "RevealedElementsResponse",
               props: { revealedElements: revealedElementsRef.current },
             };
-            conn.send(response);
+            sendSyncMessage(response);
             return;
           }
         } else if (
@@ -217,6 +226,6 @@ export function useGmConnection<
     log,
     updateRevealedElements,
     messages: transientMessages,
-    revealedElements
+    revealedElements,
   };
 }
