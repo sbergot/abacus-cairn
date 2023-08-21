@@ -220,6 +220,10 @@ export function useGmConnection<
     initialize();
   }, []);
 
+  useEffect(() => {
+    updateRevealedElements(game as TGame);
+  }, [game])
+
   return {
     sessionCode,
     connections: Object.values(connectionsState),
