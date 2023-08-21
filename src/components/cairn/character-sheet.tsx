@@ -1,4 +1,3 @@
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { CharacterCoins } from "./character-coins";
 import { CharacterInventory } from "./character-inventory";
 import { CharacterName } from "./character-name";
@@ -6,6 +5,7 @@ import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
+import { CharacterDescriptionDialog } from "./character-description";
 
 interface CharacterSheetProps {}
 
@@ -18,6 +18,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
       <CharacterName>
         <EditCharStats />
         <GenericRolls />
+        <CharacterDescriptionDialog />
       </CharacterName>
       <CharacterStats />
       <CharacterCoins />

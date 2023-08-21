@@ -11,9 +11,9 @@ import { useState } from "react";
 import TextField from "../ui/textfield";
 import GaugeField from "./gaugefield";
 import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import TextAreaField from "../ui/textareafield";
 
-interface Props {
-}
+interface Props {}
 
 export function EditCharStats({}: Props) {
   const [open, setOpen] = useState(false);
@@ -52,7 +52,13 @@ export function EditCharStats({}: Props) {
             <div>HP</div>
             <GaugeField className="w-20" lens={characterLens} fieldName="hp" />
           </div>
-          <Button onClick={() => setOpen(false)} className="w-full">Save</Button>
+          <div>
+            <div>Description</div>
+            <TextAreaField lens={characterLens} fieldName="traits" />
+          </div>
+          <Button onClick={() => setOpen(false)} className="w-full">
+            Save
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

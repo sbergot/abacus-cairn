@@ -56,7 +56,7 @@ export function Shop() {
   return (
     <>
       <NewItemDialog />
-      <Tabs defaultValue="all">
+      <Tabs className="mt-2" defaultValue="all">
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="weapons">Weapons</TabsTrigger>
@@ -129,10 +129,10 @@ function grab(character: CairnCharacter, gear: Gear, slotId: string) {
 }
 
 function removeKey(obj: Record<string, string>, keys: string[]) {
-  const newObj = {...obj};
-  keys.forEach(k => {
+  const newObj = { ...obj };
+  keys.forEach((k) => {
     delete newObj[k];
-  })
+  });
   return newObj;
 }
 
@@ -181,7 +181,7 @@ function ShopTable({ items }: ShopTableProps) {
                     <Button
                       onClick={() => {
                         setCharacter((d) => grab(d, g, slotId));
-                        router.push(linker("/..", removeKey(urlParams, ["slotId", "npcId"])));
+                        router.back();
                       }}
                       size="icon-sm"
                     >
@@ -211,7 +211,7 @@ function NewItemDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button>
-          <PackagePlusIcon />
+          <PackagePlusIcon /> Custom item
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -260,7 +260,7 @@ function NewItemDialog() {
         <Button
           onClick={() => {
             setCharacter((d) => grab(d, state, slotId));
-            router.push(linker("/..", removeKey(urlParams, ["slotId", "npcId"])));
+            router.back();
           }}
           disabled={!state.name}
         >

@@ -2,6 +2,7 @@ import {
   CurrentCharacterContextProvider,
   useCurrentGame,
 } from "@/app/cairn/cairn-context";
+import { CharacterDescriptionDialog } from "@/components/cairn/character-description";
 import { CharacterInventoryDialog } from "@/components/cairn/character-inventory-dialog";
 import { CharacterName } from "@/components/cairn/character-name";
 import { CharacterStats } from "@/components/cairn/character-stats";
@@ -19,7 +20,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { initCharacter } from "@/lib/game/cairn/character-generation";
-import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
+import { CairnNpc } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
 import {
   getSubArrayLens,
@@ -247,6 +248,7 @@ function AllNpcs() {
               <CardHeader>
                 <CharacterName>
                   <EditCharStats />
+                  <CharacterDescriptionDialog />
                   <CharacterInventoryDialog />
                   <DeleteAlert
                     icon={
