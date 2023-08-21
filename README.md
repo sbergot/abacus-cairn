@@ -4,8 +4,6 @@ A mapless vtt
 
 ## todo
 
-- assign damage for dm
-
 - release beta
 
 - hirelings

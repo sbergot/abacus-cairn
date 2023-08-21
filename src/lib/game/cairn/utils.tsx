@@ -120,3 +120,9 @@ export function hurt(
     return;
   }
 }
+
+export function getDamages(slot: Slot) {
+  return slot.state.type === "gear" && slot.state.gear.damage !== undefined
+    ? slot.state.gear.damage
+    : 0;
+}

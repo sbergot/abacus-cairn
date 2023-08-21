@@ -56,9 +56,6 @@ export function MessagePanel<TMessage extends UknownGameMessage>({
   return (
     <div className="h-full">
       <div className="overflow-auto flex flex-col gap-2 h-full border-2 rounded-3xl p-4 mb-2 border-mother-5 bg-white">
-        <Button variant="secondary" onClick={() => setClearTime(new Date())}>
-          clear messages
-        </Button>
         {messages
           .filter((m) => new Date(m.time) > clearTime)
           .map((m, i) => {
@@ -70,6 +67,9 @@ export function MessagePanel<TMessage extends UknownGameMessage>({
               </ShowStampedMessage>
             );
           })}
+        <Button variant="secondary" onClick={() => setClearTime(new Date())}>
+          clear messages
+        </Button>
         <div style={{ float: "left", clear: "both" }} ref={messagesEnd}></div>
       </div>
     </div>

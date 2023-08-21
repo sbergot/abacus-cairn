@@ -19,17 +19,11 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import { useRelativeLinker } from "@/lib/hooks";
 import { DeleteAlert } from "../ui/delete-alert";
 import { ShowSlotState } from "./show-slot-state";
 import { Slot } from "@/lib/game/cairn/types";
 import { roll } from "@/lib/random";
-
-function getDamages(slot: Slot) {
-  return slot.state.type === "gear" && slot.state.gear.damage !== undefined
-    ? slot.state.gear.damage
-    : 0;
-}
+import { getDamages } from "@/lib/game/cairn/utils";
 
 interface Props {
   shopLink(slotId: string): string;

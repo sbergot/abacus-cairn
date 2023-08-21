@@ -1,6 +1,7 @@
 import {
   CurrentCharacterContextProvider,
   useCurrentGame,
+  useLoggerContext,
 } from "@/app/cairn/cairn-context";
 import { CharacterDescriptionDialog } from "@/components/cairn/character-description";
 import { CharacterInventoryDialog } from "@/components/cairn/character-inventory-dialog";
@@ -21,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { initCharacter } from "@/lib/game/cairn/character-generation";
 import { CairnNpc } from "@/lib/game/cairn/types";
+import { getDamages } from "@/lib/game/cairn/utils";
+import { roll } from "@/lib/random";
 import { ILens } from "@/lib/types";
 import {
   getSubArrayLens,
@@ -220,6 +223,7 @@ function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
 function AllNpcs() {
   const gameLens = useCurrentGame();
   const npcsLens = getSubLens(gameLens, "npcs");
+  const { log } = useLoggerContext();
   return (
     <div className="flex flex-col gap-2 items-start">
       <Button
@@ -277,6 +281,20 @@ function AllNpcs() {
               </CardHeader>
               <CardContent>
                 <CharacterStats />
+                <div>
+                  {npcLens.state.inventory.map((s) =>
+                    s.state.type === "gear" && s.state.gear.damage ? (
+                      <Button onClick={() => log({
+                        kind: "chat-custom",
+                        type: "AttackRoll",
+                        title: "Attack roll",
+                        props: { dice: getDamages(s), result: roll(1, getDamages(s)) },
+                      })}>
+                        {s.state.gear.name} (d{s.state.gear.damage})
+                      </Button>
+                    ) : null
+                  )}
+                </div>
               </CardContent>
             </Card>
           </CurrentCharacterContextProvider>
