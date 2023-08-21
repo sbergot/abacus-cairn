@@ -7,12 +7,12 @@ import { rollCharacterStats, fillRandomCharacter } from "@/lib/game/cairn/charac
 import { CairnCharacter, Gauge } from "@/lib/game/cairn/types";
 import { useRelativeLinker } from "@/lib/hooks";
 import { clone } from "@/lib/utils";
-import { Link } from "lucide-react";
 import { useEffect } from "react";
 import { useGameContext } from "../../cairn-context";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { Title } from "@/components/ui/typography";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function CreateCharacterStats() {
