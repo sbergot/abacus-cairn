@@ -13,4 +13,8 @@ A mapless vtt
 - timers
 - clocks
 - tooltips on icons
+
+-- not sure about
+
+- solo random tables
 - item details
