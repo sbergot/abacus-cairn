@@ -26,7 +26,6 @@ interface ConnectionInfo<TChar> {
 export interface GmConnection<TMessage, TGame, TChar> extends Logger<TMessage> {
   sessionCode: string;
   messages: Stamped<AllChatMessage<TMessage>>[];
-  updateRevealedElements(g: TGame): void;
   connections: ConnectionInfo<TChar>[];
   revealedElements: Record<string, LibraryElement[]>;
 }
@@ -228,7 +227,6 @@ export function useGmConnection<
     sessionCode,
     connections: Object.values(connectionsState),
     log,
-    updateRevealedElements,
     messages: transientMessages,
     revealedElements,
   };

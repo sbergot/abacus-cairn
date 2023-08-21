@@ -1,9 +1,9 @@
 import { Children } from "./types";
 
-export default function Wrapper({ children }: Children) {
-  if (global.navigator === undefined) {
-    global.navigator = { clipboard: {} as any } as any;
-  }
+if (global.navigator === undefined) {
+  global.navigator = { clipboard: {} as any } as any;
+}
 
+export default function Wrapper({ children }: Children) {
   return <>{children}</>;
 }
