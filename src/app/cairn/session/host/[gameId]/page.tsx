@@ -63,7 +63,7 @@ function AllConnections() {
           variant="ghost"
           size="icon-sm"
           onClick={() => {
-            navigator.clipboard.writeText(sessionCode);
+            global.navigator.clipboard.writeText(sessionCode);
           }}
         >
           <CopyIcon size={20} />
