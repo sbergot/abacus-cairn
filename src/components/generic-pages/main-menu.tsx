@@ -188,7 +188,7 @@ function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <Button size="icon-sm" variant="ghost" asChild>
-          <Link href={linker(`session/host/${gameId}`)}>
+          <Link href={linker(`session/host?gameId=${gameId}`)}>
             <PlayIcon size={20} />
           </Link>
         </Button>
@@ -229,7 +229,7 @@ export function SessionStartModal({ characterId }: SessionStartProps) {
         </DialogHeader>
         <div className="flex flex-col gap-2">
           <Button asChild>
-            <Link href={linker(`session/solo/${characterId}`)}>
+            <Link href={linker(`session/solo?characterId=${characterId}`)}>
               Start a solo session
             </Link>
           </Button>
@@ -246,7 +246,7 @@ export function SessionStartModal({ characterId }: SessionStartProps) {
             disabled={!tableId}
             onClick={() =>
               router.push(
-                linker(`session/table/${tableId}/character/${characterId}`)
+                linker(`session/table?tableId=${tableId}&characterId=${characterId}`)
               )
             }
           >

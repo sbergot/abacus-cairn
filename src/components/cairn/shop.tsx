@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  CairnCharacter,
-  Gear,
-  Slot,
-} from "@/lib/game/cairn/types";
-import {
-  useCurrentCharacter,
-} from "@/app/cairn/cairn-context";
+import { CairnCharacter, Gear, Slot } from "@/lib/game/cairn/types";
+import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import {
   Table,
   TableBody,
@@ -27,8 +21,8 @@ import {
   trinkets,
   weapons,
 } from "@/lib/game/cairn/data";
-import { useParams, useRouter } from "next/navigation";
-import { useRelativeLinker } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
+import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
 import { clone, uuidv4 } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -134,13 +128,22 @@ function grab(character: CairnCharacter, gear: Gear, slotId: string) {
   }
 }
 
+function removeKey(obj: Record<string, string>, keys: string[]) {
+  const newObj = {...obj};
+  keys.forEach(k => {
+    delete newObj[k];
+  })
+  return newObj;
+}
+
 interface ShopTableProps {
   items: Gear[];
 }
 
 function ShopTable({ items }: ShopTableProps) {
   const { state: character, setState: setCharacter } = useCurrentCharacter();
-  const { slotId } = useParams();
+  const urlParams = useUrlParams();
+  const { slotId } = urlParams;
   const router = useRouter();
   const linker = useRelativeLinker();
   const [search, setSearch] = useState("");
@@ -178,7 +181,7 @@ function ShopTable({ items }: ShopTableProps) {
                     <Button
                       onClick={() => {
                         setCharacter((d) => grab(d, g, slotId));
-                        router.push(linker("../.."));
+                        router.push(linker("..", removeKey(urlParams, ["slotId", "npcId"])));
                       }}
                       size="icon-sm"
                     >
@@ -195,7 +198,8 @@ function ShopTable({ items }: ShopTableProps) {
 }
 
 function NewItemDialog() {
-  const { slotId } = useParams();
+  const urlParams = useUrlParams();
+  const { slotId } = urlParams;
   const { state: character, setState: setCharacter } = useCurrentCharacter();
   const [open, setOpen] = useState(false);
   const [state, setState] = useImmer<Gear>({ id: uuidv4(), name: "" });
@@ -256,7 +260,7 @@ function NewItemDialog() {
         <Button
           onClick={() => {
             setCharacter((d) => grab(d, state, slotId));
-            router.push(linker("../.."));
+            router.push(linker("..", removeKey(urlParams, ["slotId", "npcId"])));
           }}
           disabled={!state.name}
         >

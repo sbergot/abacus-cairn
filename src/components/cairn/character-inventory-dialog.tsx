@@ -10,11 +10,12 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { CharacterInventory } from "./character-inventory";
-import { useRelativeLinker } from "@/lib/hooks";
+import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 
 interface Props {}
 
 export function CharacterInventoryDialog({}: Props) {
+  const { gameId } = useUrlParams();
   const linker = useRelativeLinker();
   const [open, setOpen] = useState(false);
   const characterLens = useCurrentCharacter();
@@ -31,7 +32,7 @@ export function CharacterInventoryDialog({}: Props) {
         </DialogHeader>
         <CharacterInventory
           shopLink={(slotId) =>
-            linker(`shop/${slotId}?npcId=${characterLens.state.id}`)
+            linker(`shop?gameId=${gameId}&npcId=${characterLens.state.id}&slotId=${slotId}`)
           }
         />
       </DialogContent>

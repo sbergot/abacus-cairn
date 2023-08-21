@@ -1,9 +1,8 @@
 import { createContext, useContext } from "react";
 import { BaseCharacter, BaseGame } from "./game/types";
 import { Children } from "@/components/ui/types";
-import { useImmerLocalStorage } from "./hooks";
+import { useImmerLocalStorage, useUrlParams } from "./hooks";
 import { ILens } from "./types";
-import { useParams } from "next/navigation";
 import { setSingle } from "./utils";
 import { UknownGameMessage } from "./network/types";
 
@@ -32,7 +31,7 @@ export function useCurrentGenericCharacter(): ILens<BaseCharacter> {
   const {
     characterRepo: { state, setState },
   } = useGenericGameContext();
-  const params = useParams();
+  const params = useUrlParams();
   const { characterId } = params;
   const character = state[characterId];
   const setCharacter = setSingle(setState, characterId);
@@ -43,7 +42,7 @@ export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage>> {
   const {
     gameRepo: { state, setState },
   } = useGenericGameContext();
-  const params = useParams();
+  const params = useUrlParams();
   const { gameId } = params;
   const game = state[gameId];
   const setGame = setSingle(setState, gameId);
@@ -62,7 +61,7 @@ export function createGameContext<
     const {
       characterRepo: { state, setState },
     } = useGameContext();
-    const params = useParams();
+    const params = useUrlParams();
     const { characterId } = params;
     const character = state[characterId];
     const setCharacter = setSingle(setState, characterId);
@@ -112,22 +111,11 @@ export function createGameContext<
     return useContext(GameContext)!;
   }
 
-  function useCurrentCharacterFromParams(): ILens<TChar> {
-    const {
-      characterRepo: { state, setState },
-    } = useGameContext();
-    const params = useParams();
-    const { characterId } = params;
-    const character = state[characterId];
-    const setCharacter = setSingle(setState, characterId);
-    return { state: character, setState: setCharacter };
-  }
-
   function useCurrentGame(): ILens<TGame> {
     const {
       gameRepo: { state, setState },
     } = useGameContext();
-    const params = useParams();
+    const params = useUrlParams();
     const { gameId } = params;
     const game = state[gameId];
     const setGame = setSingle(setState, gameId);

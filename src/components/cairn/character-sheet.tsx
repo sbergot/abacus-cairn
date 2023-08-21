@@ -5,11 +5,12 @@ import { CharacterName } from "./character-name";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";
-import { useRelativeLinker } from "@/lib/hooks";
+import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 
 interface CharacterSheetProps {}
 
 export function CharacterSheet({}: CharacterSheetProps) {
+  const { characterId } = useUrlParams();
   const linker = useRelativeLinker();
 
   return (
@@ -20,7 +21,11 @@ export function CharacterSheet({}: CharacterSheetProps) {
       </CharacterName>
       <CharacterStats />
       <CharacterCoins />
-      <CharacterInventory shopLink={(slotId) => linker(`shop/${slotId}`)} />
+      <CharacterInventory
+        shopLink={(slotId) =>
+          linker(`shop?characterId=${characterId}&slotId=${slotId}`)
+        }
+      />
     </div>
   );
 }

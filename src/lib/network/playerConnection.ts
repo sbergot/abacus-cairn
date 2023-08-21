@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useBrowserId } from "../hooks";
+import { useBrowserId, useUrlParams } from "../hooks";
 import {
   AllChatMessage,
   AllSyncMessageForGM,
@@ -13,7 +13,6 @@ import Peer, { DataConnection } from "peerjs";
 import { stamp, useLog } from "./utils";
 import { BaseCharacter, LibraryElement } from "../game/types";
 import { useGenericGameContext } from "../gameContext";
-import { useParams } from "next/navigation";
 
 type ConnectionStatus =
   | "connecting"
@@ -185,7 +184,7 @@ export function usePlayerConnection<
 export function usePlayerConnectionStub<
   TMessage extends UknownGameMessage
 >(): PlayerConnection<TMessage> {
-  const { characterId } = useParams();
+  const { characterId } = useUrlParams();
   const {
     characterRepo: { state: characters },
   } = useGenericGameContext();
