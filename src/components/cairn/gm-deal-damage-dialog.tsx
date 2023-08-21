@@ -24,6 +24,7 @@ export function GmDealDamageDialog({ damages }: Props) {
         <div className="flex flex-wrap gap-2">
           {gameLens.state.npcs.map((npc) => (
             <Button
+              key={npc.id}
               onClick={() =>
                 gameLens.setState((d) => {
                   const npcToUpdate = d.npcs.find((n) => n.id === npc.id)!;

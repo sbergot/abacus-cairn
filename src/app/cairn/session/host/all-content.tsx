@@ -285,6 +285,7 @@ function AllNpcs() {
                   {npcLens.state.inventory.map((s) =>
                     s.state.type === "gear" && s.state.gear.damage ? (
                       <Button
+                        key={s.id}
                         onClick={() =>
                           log({
                             kind: "chat-custom",
