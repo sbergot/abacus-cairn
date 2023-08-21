@@ -284,12 +284,19 @@ function AllNpcs() {
                 <div>
                   {npcLens.state.inventory.map((s) =>
                     s.state.type === "gear" && s.state.gear.damage ? (
-                      <Button onClick={() => log({
-                        kind: "chat-custom",
-                        type: "AttackRoll",
-                        title: "Attack roll",
-                        props: { dice: getDamages(s), result: roll(1, getDamages(s)) },
-                      })}>
+                      <Button
+                        onClick={() =>
+                          log({
+                            kind: "chat-custom",
+                            type: "AttackRoll",
+                            title: "Attack roll",
+                            props: {
+                              dice: getDamages(s),
+                              result: roll(1, getDamages(s)),
+                            },
+                          })
+                        }
+                      >
                         {s.state.gear.name} (d{s.state.gear.damage})
                       </Button>
                     ) : null
