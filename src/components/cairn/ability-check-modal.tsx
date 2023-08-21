@@ -36,8 +36,8 @@ export function AbilityCheckModal({ type, character }: AbilityCheckModalProps) {
           <DicesIcon size={20} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="max-w-xl w-full" side="right">
-        <div className="flex gap-1">
+      <PopoverContent className="max-w-xl w-full" side="right" data-side="bottom">
+        <div className="flex flex-col gap-1">
           <Button onClick={() => roll("normal")}>normal</Button>
           <Button onClick={() => roll("advantage")}>advantage</Button>
           <Button onClick={() => roll("disadvantage")}>disadvantage</Button>
