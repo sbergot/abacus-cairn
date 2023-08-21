@@ -1,18 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { OrSeparator } from "@/components/ui/or-separator";
+import { Children } from "@/components/ui/types";
+import { rollCharacterStats, fillRandomCharacter } from "@/lib/game/cairn/character-generation";
 import { CairnCharacter, Gauge } from "@/lib/game/cairn/types";
 import { useRelativeLinker } from "@/lib/hooks";
-import { Title } from "@/components/ui/typography";
-import { Children } from "@/components/ui/types";
-import { useCharacterCreationContext } from "../character-creation-context";
-import Link from "next/link";
-import { useEffect } from "react";
-import { fillRandomCharacter, rollCharacterStats } from "@/lib/game/cairn/character-generation";
-import { OrSeparator } from "@/components/ui/or-separator";
-import { useRouter } from "next/navigation";
-import { useGameContext } from "../../cairn-context";
 import { clone } from "@/lib/utils";
+import { Link } from "lucide-react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useGameContext } from "../../cairn-context";
+import { useCharacterCreationContext } from "../character-creation-context";
+import { Title } from "@/components/ui/typography";
+
 
 export default function CreateCharacterStats() {
   const { lens } = useCharacterCreationContext();
