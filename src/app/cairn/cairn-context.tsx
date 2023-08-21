@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Children } from "@/components/ui/types";
 import {
@@ -6,6 +6,7 @@ import {
   CairnGame,
   CairnMessage,
 } from "@/lib/game/cairn/types";
+import { LibraryElement } from "@/lib/game/types";
 import { createGameContext } from "@/lib/gameContext";
 import { GmConnection, useGmConnection } from "@/lib/network/gmConnection";
 import {
@@ -81,9 +82,34 @@ export function useGmConnectionContext() {
   return useContext(GmConnectionContext)!;
 }
 
+function getAllRevealedElements(game: CairnGame) {
+  const result: Record<string, LibraryElement[]> = {};
+  Object.keys(game.customEntries).map((k) => {
+    const entries = game.customEntries[k].filter((e) => e.visibleToAll);
+    if (entries.length > 0) {
+      result[k] = entries.map((e) => ({
+        name: e.name,
+        description: e.description,
+        category: e.category,
+      }));
+    }
+  });
+
+  const npcs = game.npcs.filter((e) => e.visibleToAll);
+  if (npcs.length > 0) {
+    result["npcs"] = npcs.map((e) => ({
+      name: e.name,
+      description: e.traits,
+      category: "npcs",
+    }));
+  }
+
+  return result;
+}
+
 export function GmConnectionContextProvider({ children }: Children) {
   const ctx = useGmConnection<CairnCharacter, CairnMessage, CairnGame>(
-    () => []
+    getAllRevealedElements
   );
   return (
     <GmConnectionContext.Provider value={ctx}>

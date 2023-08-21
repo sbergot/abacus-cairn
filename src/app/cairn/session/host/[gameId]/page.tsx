@@ -14,17 +14,19 @@ import { Button } from "@/components/ui/button";
 import { CopyIcon } from "lucide-react";
 import { CharacterEntry } from "./character-entry";
 import { AllContent } from "./all-content";
+import { RightPanel } from "@/components/generic-pages/right-panel";
 
 export default function Session() {
-  const { messages } = useGmConnectionContext();
+  const { messages, revealedElements } = useGmConnectionContext();
   return (
     <TwoColumns
       leftPart={<GmTabs />}
       rightPart={
-        <MessagePanel<CairnMessage>
+        <RightPanel<CairnMessage>
           context={{ contextType: "gm", authorId: "gm" }}
           messages={messages}
           ShowCustomMessage={ShowCustomMessage}
+          elements={revealedElements}
         />
       }
     />

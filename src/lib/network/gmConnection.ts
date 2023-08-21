@@ -28,6 +28,7 @@ export interface GmConnection<TMessage, TGame, TChar> extends Logger<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   updateRevealedElements(g: TGame): void;
   connections: ConnectionInfo<TChar>[];
+  revealedElements: Record<string, LibraryElement[]>;
 }
 
 function rotateArray<T>(arr: T[], limit: number): T[] {
@@ -38,7 +39,9 @@ export function useGmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
   TGame extends BaseGame<TMessage>
->(getAllRevealedElements: (g: TGame) => LibraryElement[]): GmConnection<TMessage, TGame, TChar> {
+>(
+  getAllRevealedElements: (g: TGame) => Record<string, LibraryElement[]>
+): GmConnection<TMessage, TGame, TChar> {
   const { state: game, setState: setGame } = useCurrentGenericGame();
   const [sessionCode, setSessionCode] = useState("");
   const [connectionsState, setConnectionsState] = useState<
@@ -214,5 +217,6 @@ export function useGmConnection<
     log,
     updateRevealedElements,
     messages: transientMessages,
+    revealedElements
   };
 }

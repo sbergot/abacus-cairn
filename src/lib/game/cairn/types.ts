@@ -76,6 +76,11 @@ export type CairnMessage =
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 
+export interface CairnNpc extends CairnCharacter {
+  visibleToAll: boolean;
+  excludedFromRandomPick: boolean;
+}
+
 export interface CairnGame extends BaseGame<CairnMessage> {
-  npcs: CairnCharacter[];
+  npcs: CairnNpc[];
 }

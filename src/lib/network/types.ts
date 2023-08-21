@@ -31,7 +31,7 @@ export type AllSyncMessageForGM<TChar> =
 export type AllSyncMessageForPlayer<TMessage> =
   | SyncMessage<
       "RevealedElementsResponse",
-      { revealedElements: LibraryElement[] }
+      { revealedElements: Record<string, LibraryElement[]> }
     >
   | SyncMessage<
       "MessageHistoryResponse",

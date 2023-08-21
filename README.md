@@ -17,4 +17,5 @@ A mapless vtt
 - switch gear between two slots
 - pick random character, npc, custom entry
 - timers
+- clocks
 - item details

@@ -19,7 +19,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { initCharacter } from "@/lib/game/cairn/character-generation";
-import { CairnCharacter } from "@/lib/game/cairn/types";
+import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
 import {
   getSubArrayLens,
@@ -224,7 +224,11 @@ function AllNpcs() {
       <Button
         onClick={() =>
           npcsLens.setState((d) => {
-            const newNpc: CairnCharacter = initCharacter();
+            const newNpc: CairnNpc = {
+              ...initCharacter(),
+              visibleToAll: false,
+              excludedFromRandomPick: false,
+            };
             newNpc.strength = { current: 10, max: 10 };
             newNpc.dexterity = { current: 10, max: 10 };
             newNpc.willpower = { current: 10, max: 10 };
@@ -236,7 +240,7 @@ function AllNpcs() {
         <UserPlusIcon className="mr-2" /> New npc
       </Button>
       {npcsLens.state.map((npc, idx) => {
-        const npcLens: ILens<CairnCharacter> = getSubArrayLens(npcsLens, idx);
+        const npcLens: ILens<CairnNpc> = getSubArrayLens(npcsLens, idx);
         return (
           <CurrentCharacterContextProvider value={npcLens}>
             <Card>
@@ -256,6 +260,17 @@ function AllNpcs() {
                   >
                     This will permanently delete this npc
                   </DeleteAlert>
+                  <Button
+                    size="icon-sm"
+                    variant="ghost"
+                    onClick={() =>
+                      npcLens.setState((d) => {
+                        d.visibleToAll = !d.visibleToAll;
+                      })
+                    }
+                  >
+                    {npcLens.state.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+                  </Button>
                 </CharacterName>
               </CardHeader>
               <CardContent>
