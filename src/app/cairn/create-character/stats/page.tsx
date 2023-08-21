@@ -8,11 +8,11 @@ import { CairnCharacter, Gauge } from "@/lib/game/cairn/types";
 import { useRelativeLinker } from "@/lib/hooks";
 import { clone } from "@/lib/utils";
 import { Link } from "lucide-react";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useGameContext } from "../../cairn-context";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { Title } from "@/components/ui/typography";
+import { useRouter } from "next/navigation";
 
 
 export default function CreateCharacterStats() {
