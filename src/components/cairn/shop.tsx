@@ -181,7 +181,7 @@ function ShopTable({ items }: ShopTableProps) {
                     <Button
                       onClick={() => {
                         setCharacter((d) => grab(d, g, slotId));
-                        router.push(linker("..", removeKey(urlParams, ["slotId", "npcId"])));
+                        router.push(linker("/..", removeKey(urlParams, ["slotId", "npcId"])));
                       }}
                       size="icon-sm"
                     >
@@ -260,7 +260,7 @@ function NewItemDialog() {
         <Button
           onClick={() => {
             setCharacter((d) => grab(d, state, slotId));
-            router.push(linker("..", removeKey(urlParams, ["slotId", "npcId"])));
+            router.push(linker("/..", removeKey(urlParams, ["slotId", "npcId"])));
           }}
           disabled={!state.name}
         >
