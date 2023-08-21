@@ -27,7 +27,7 @@ export function RightPanel<TMessage extends UknownGameMessage>({
   elements
 }: Props<TMessage>) {
   return (
-    <Tabs className="h-full">
+    <Tabs defaultValue="messages" className="h-full">
       <TabsList>
         <TabsTrigger value="messages">messages</TabsTrigger>
         <TabsTrigger value="revealed-elements">revealed elements</TabsTrigger>

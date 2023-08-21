@@ -4,8 +4,6 @@ A mapless vtt
 
 ## todo
 
-- revealed elements
-- move clear message buttons to top
 - convert slugs to query parameters
 - show character appearance 
 - assign damage for dm
@@ -18,4 +16,5 @@ A mapless vtt
 - pick random character, npc, custom entry
 - timers
 - clocks
+- tooltips on icons
 - item details

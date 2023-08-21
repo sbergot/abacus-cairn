@@ -25,7 +25,7 @@ type ConnectionStatus =
 export interface PlayerConnection<TMessage> extends Logger<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   connectionStatus: ConnectionStatus;
-  revealedElements: LibraryElement[];
+  revealedElements: Record<string, LibraryElement[]>;
 }
 
 export function usePlayerConnection<
@@ -36,9 +36,9 @@ export function usePlayerConnection<
   const [messages, setMessages] = useState<Stamped<AllChatMessage<TMessage>>[]>(
     []
   );
-  const [revealedElements, setRevealedElements] = useState<LibraryElement[]>(
-    []
-  );
+  const [revealedElements, setRevealedElements] = useState<
+    Record<string, LibraryElement[]>
+  >({});
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("connecting");
   const debounceRef = useRef(false);
@@ -126,7 +126,10 @@ export function usePlayerConnection<
           setRevealedElements(typeData.props.revealedElements);
           return;
         }
-      } else if (typeData.kind === "chat-common" || typeData.kind === "chat-custom") {
+      } else if (
+        typeData.kind === "chat-common" ||
+        typeData.kind === "chat-custom"
+      ) {
         setMessages((m) => [...m, typeData]);
         return;
       }
@@ -183,7 +186,9 @@ export function usePlayerConnectionStub<
   TMessage extends UknownGameMessage
 >(): PlayerConnection<TMessage> {
   const { characterId } = useParams();
-  const { characterRepo: { state: characters } } = useGenericGameContext();
+  const {
+    characterRepo: { state: characters },
+  } = useGenericGameContext();
   const character = characters[characterId];
   const stub = useLog<TMessage>(character.name, character.id);
 
@@ -191,6 +196,6 @@ export function usePlayerConnectionStub<
     log: stub.log,
     messages: stub.messages,
     connectionStatus: "offline",
-    revealedElements: [],
-  }
+    revealedElements: {},
+  };
 }
