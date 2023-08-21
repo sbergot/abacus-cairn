@@ -4,6 +4,7 @@ A mapless vtt
 
 ## todo
 
+- fix revealed elements
 - convert slugs to query parameters
 - show character appearance 
 - assign damage for dm
