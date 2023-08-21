@@ -36,7 +36,7 @@ export default function CharacterName() {
     setCharacters((repo) => {
       repo[character.id] = character;
     });
-    router.push(linker("../.."));
+    router.push("/cairn");
   }
 
   return (
