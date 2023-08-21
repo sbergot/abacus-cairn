@@ -4,10 +4,12 @@ import {
   AbilityRollAnalysis,
   CairnCharacter,
   CairnGame,
+  CairnMessage,
   Gauge,
   Slot,
 } from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
+import { AllChatMessage } from "@/lib/network/types";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
   const { abilityValue, mode } = check;
@@ -82,4 +84,39 @@ function readArmorValue(slot: Slot) {
 
 export function getArmorValue(character: CairnCharacter): number {
   return Math.min(3, sum(character.inventory.map(readArmorValue)));
+}
+
+export function hurt(
+  character: CairnCharacter,
+  damages: number,
+  log: (m: AllChatMessage<CairnMessage>) => void
+) {
+  const adjusted = damages - getArmorValue(character);
+
+  if (character.hp.current > adjusted) {
+    character.hp.current -= adjusted;
+    return;
+  }
+
+  if (character.hp.current === adjusted) {
+    character.hp.current = 0;
+    log({
+      kind: "chat-custom",
+      type: "Scarred",
+      props: {},
+    });
+    return;
+  }
+
+  if (character.hp.current < adjusted) {
+    const residual = adjusted - character.hp.current;
+    character.hp.current = 0;
+    character.strength.current -= residual;
+    log({
+      kind: "chat-common",
+      type: "BasicMessage",
+      props: { content: "Make a strength save to avoid critical damage." },
+    });
+    return;
+  }
 }

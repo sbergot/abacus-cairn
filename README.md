@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- show character appearance 
 - assign damage for dm
 
 - release beta

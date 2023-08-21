@@ -5,6 +5,7 @@ import { ShowCustomMessageProps } from "../generic-pages/message-panel";
 import { DiceRoll } from "../ui/dice-roll";
 import { TakeDamage } from "./take-damage";
 import { RollScar } from "./roll-scar";
+import { GmDealDamageDialog } from "./gm-deal-damage-dialog";
 
 export function ShowCustomMessage({
   m,
@@ -29,6 +30,9 @@ export function ShowCustomMessage({
         <div>1d{m.props.dice} → {m.props.result}</div>
         {ctx.contextType === "player" && (
           <TakeDamage damages={m.props.result} />
+        )}
+        {ctx.contextType === "gm" && (
+          <GmDealDamageDialog damages={m.props.result} />
         )}
       </>
     );
