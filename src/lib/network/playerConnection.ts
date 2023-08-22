@@ -21,10 +21,11 @@ type ConnectionStatus =
   | "disconnected"
   | "offline";
 
-export interface PlayerConnection<TMessage> extends Logger<TMessage> {
+export interface PlayerConnection<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   connectionStatus: ConnectionStatus;
   revealedElements: Record<string, LibraryElement[]>;
+  log: Logger<TMessage>;
 }
 
 export function usePlayerConnection<

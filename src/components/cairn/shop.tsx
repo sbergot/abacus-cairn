@@ -1,7 +1,7 @@
 "use client";
 
-import { CairnCharacter, Gear, Slot } from "@/lib/game/cairn/types";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { CairnCharacter, CairnMessage, Gear, Slot } from "@/lib/game/cairn/types";
+import { useCurrentCharacter, useLoggerContext } from "@/app/cairn/cairn-context";
 import {
   Table,
   TableBody,
@@ -41,6 +41,7 @@ import CheckboxField from "@/components/ui/checkboxfield";
 import NumberField from "@/components/ui/numberfield";
 import { DiceSelect } from "@/components/cairn/dice-select";
 import { ArmorSelect } from "@/components/cairn/armor-select";
+import { Logger } from "@/lib/network/types";
 
 function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
   const siblingFreeSlot = inventory.find(
@@ -111,7 +112,7 @@ function canGrab(
   return true;
 }
 
-function grab(character: CairnCharacter, gear: Gear, slotId: string) {
+function grab(character: CairnCharacter, gear: Gear, slotId: string, log: Logger<CairnMessage>) {
   const currentSlot = character.inventory.find((s) => s.id === slotId)!;
   const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
   const { inventory } = character;
@@ -126,14 +127,15 @@ function grab(character: CairnCharacter, gear: Gear, slotId: string) {
       name: gear.name,
     };
   }
-}
 
-function removeKey(obj: Record<string, string>, keys: string[]) {
-  const newObj = { ...obj };
-  keys.forEach((k) => {
-    delete newObj[k];
-  });
-  return newObj;
+  if (character.inventory.every(s => s.state.type !== "empty")) {
+    log({
+      kind: "chat-common",
+      type: "BasicMessage",
+      title: "Overburdened",
+      props: { content: "reduce your HP to 0" }
+    })
+  }
 }
 
 interface ShopTableProps {
@@ -147,6 +149,7 @@ function ShopTable({ items }: ShopTableProps) {
   const router = useRouter();
   const linker = useRelativeLinker();
   const [search, setSearch] = useState("");
+  const log = useLoggerContext();
 
   return (
     <div className="flex flex-col gap-4">
@@ -180,7 +183,7 @@ function ShopTable({ items }: ShopTableProps) {
                   {canGrab(character, g, slotId) && (
                     <Button
                       onClick={() => {
-                        setCharacter((d) => grab(d, g, slotId));
+                        setCharacter((d) => grab(d, g, slotId, log));
                         router.back();
                       }}
                       size="icon-sm"
@@ -206,6 +209,7 @@ function NewItemDialog() {
   const lens: ILens<Gear> = { state, setState };
   const router = useRouter();
   const linker = useRelativeLinker();
+  const log = useLoggerContext();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -259,7 +263,7 @@ function NewItemDialog() {
         </div>
         <Button
           onClick={() => {
-            setCharacter((d) => grab(d, state, slotId));
+            setCharacter((d) => grab(d, state, slotId, log));
             router.back();
           }}
           disabled={!state.name}

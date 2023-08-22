@@ -12,7 +12,7 @@ interface AbilityCheckModalProps {
 }
 
 export function AbilityCheckModal({ type, character }: AbilityCheckModalProps) {
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   const [open, setOpen] = useState(false);
 
   function roll(mode: RollMode) {

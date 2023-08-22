@@ -13,7 +13,7 @@ interface TakeDamageProps {
 
 export function TakeDamage({ damages }: TakeDamageProps) {
   const { setState } = useCurrentCharacter();
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   return (
     <Button
       onClick={() =>

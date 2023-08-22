@@ -38,6 +38,8 @@ export function initCharacter(): CairnCharacter {
       { id: uuidv4(), type: "backpack", state: { type: "empty" } },
       { id: uuidv4(), type: "backpack", state: { type: "empty" } },
       { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
     ],
   };
 }

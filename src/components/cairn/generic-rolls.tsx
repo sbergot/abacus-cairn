@@ -47,7 +47,7 @@ interface CloseProps {
 }
 
 function AttackRoll({ close }: CloseProps) {
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   const [dice, setDice] = useState<number>(4);
   return (
     <>
@@ -75,7 +75,7 @@ function AttackRoll({ close }: CloseProps) {
 }
 
 function ScarRoll({ close }: CloseProps) {
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   return (
     <div className="flex flex-col gap-2">
       <Button

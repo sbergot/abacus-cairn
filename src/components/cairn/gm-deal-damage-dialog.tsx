@@ -11,7 +11,7 @@ interface Props {
 export function GmDealDamageDialog({ damages }: Props) {
   const [open, setOpen] = useState(false);
   const gameLens = useCurrentGame();
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>

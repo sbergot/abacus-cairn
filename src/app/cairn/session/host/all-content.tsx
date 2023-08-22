@@ -227,7 +227,7 @@ function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
 function AllNpcs() {
   const gameLens = useCurrentGame();
   const npcsLens = getSubLens(gameLens, "npcs");
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   return (
     <div className="flex flex-col gap-2 items-start">
       <Button

@@ -38,7 +38,7 @@ export function PlayerConnectionStubContextProvider({ children }: Children) {
   const ctx = usePlayerConnectionStub<CairnMessage>();
   return (
     <PlayerConnectionContext.Provider value={ctx}>
-      <LoggerContext.Provider value={{ log: ctx.log }}>
+      <LoggerContext.Provider value={ctx.log}>
         {children}
       </LoggerContext.Provider>
     </PlayerConnectionContext.Provider>
@@ -61,7 +61,7 @@ export function PlayerConnectionContextProvider({
   );
   return (
     <PlayerConnectionContext.Provider value={ctx}>
-      <LoggerContext.Provider value={{ log: ctx.log }}>
+      <LoggerContext.Provider value={ctx.log}>
         {children}
       </LoggerContext.Provider>
     </PlayerConnectionContext.Provider>
@@ -113,7 +113,7 @@ export function GmConnectionContextProvider({ children }: Children) {
   );
   return (
     <GmConnectionContext.Provider value={ctx}>
-      <LoggerContext.Provider value={{ log: ctx.log }}>
+      <LoggerContext.Provider value={ctx.log}>
         {children}
       </LoggerContext.Provider>
     </GmConnectionContext.Provider>

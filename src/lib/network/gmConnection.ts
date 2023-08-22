@@ -23,11 +23,12 @@ interface ConnectionInfo<TChar> {
   state: ConnectionState;
 }
 
-export interface GmConnection<TMessage, TGame, TChar> extends Logger<TMessage> {
+export interface GmConnection<TMessage, TGame, TChar> {
   sessionCode: string;
   messages: Stamped<AllChatMessage<TMessage>>[];
   connections: ConnectionInfo<TChar>[];
   revealedElements: Record<string, LibraryElement[]>;
+  log: Logger<TMessage>;
 }
 
 function rotateArray<T>(arr: T[], limit: number): T[] {

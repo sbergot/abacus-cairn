@@ -30,7 +30,7 @@ interface Props {
 }
 
 export function CharacterInventory({ shopLink }: Props) {
-  const { log } = useLoggerContext();
+  const log = useLoggerContext();
   const lens = useCurrentCharacter();
   const slots = lens.state.inventory;
 

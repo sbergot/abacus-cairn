@@ -58,6 +58,4 @@ export interface ConnectionMetadata {
   browserId: string;
 }
 
-export interface Logger<TMessage> {
-  log: (m: AllChatMessage<TMessage>) => void;
-}
+export type Logger<TMessage> = (m: AllChatMessage<TMessage>) => void;

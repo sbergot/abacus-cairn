@@ -4,8 +4,14 @@ A mapless vtt
 
 ## todo
 
+- message for full inventory -> 0 hp
+- remove cairn folder
+- create url & configure https
+
 - release beta
 
+- check firstname lastname
+- character view for full random gen
 - hirelings
 - cart & horse slots (with hirelings?)
 - switch gear between two slots
