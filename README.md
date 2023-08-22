@@ -4,7 +4,6 @@ A mapless vtt
 
 ## todo
 
-- message for full inventory -> 0 hp
 - remove cairn folder
 - create url & configure https
 

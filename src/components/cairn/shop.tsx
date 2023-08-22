@@ -1,7 +1,15 @@
 "use client";
 
-import { CairnCharacter, CairnMessage, Gear, Slot } from "@/lib/game/cairn/types";
-import { useCurrentCharacter, useLoggerContext } from "@/app/cairn/cairn-context";
+import {
+  CairnCharacter,
+  CairnMessage,
+  Gear,
+  Slot,
+} from "@/lib/game/cairn/types";
+import {
+  useCurrentCharacter,
+  useLoggerContext,
+} from "@/app/cairn/cairn-context";
 import {
   Table,
   TableBody,
@@ -11,7 +19,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PackagePlusIcon, PlusIcon, SearchIcon } from "lucide-react";
+import { PackagePlusIcon, PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
 import {
   allItems,
   armors,
@@ -54,8 +62,10 @@ function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
 }
 
 export function Shop() {
+  const router = useRouter();
   return (
     <>
+      <Button onClick={() => router.back()} className="mr-2"><Undo2Icon /> Back</Button>
       <NewItemDialog />
       <Tabs className="mt-2" defaultValue="all">
         <TabsList>
@@ -112,7 +122,12 @@ function canGrab(
   return true;
 }
 
-function grab(character: CairnCharacter, gear: Gear, slotId: string, log: Logger<CairnMessage>) {
+function grab(
+  character: CairnCharacter,
+  gear: Gear,
+  slotId: string,
+  log: Logger<CairnMessage>
+) {
   const currentSlot = character.inventory.find((s) => s.id === slotId)!;
   const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
   const { inventory } = character;
@@ -128,13 +143,13 @@ function grab(character: CairnCharacter, gear: Gear, slotId: string, log: Logger
     };
   }
 
-  if (character.inventory.every(s => s.state.type !== "empty")) {
+  if (character.inventory.every((s) => s.state.type !== "empty")) {
     log({
       kind: "chat-common",
       type: "BasicMessage",
       title: "Overburdened",
-      props: { content: "reduce your HP to 0" }
-    })
+      props: { content: "reduce your HP to 0" },
+    });
   }
 }
 

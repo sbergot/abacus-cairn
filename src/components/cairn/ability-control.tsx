@@ -1,7 +1,7 @@
 import { AbilityType } from "@/lib/game/cairn/types";
 import { Button } from "../ui/button";
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { AbilityCheckModal } from "./ability-check-modal";
+import { AbilityCheckDialog } from "./ability-check-dialog";
 import { useCurrentCharacter } from "@/app/cairn/cairn-context";
 import { updateGauge } from "@/lib/game/cairn/utils";
 
@@ -43,7 +43,7 @@ export function AbilityControl({ type }: AbilityControlProps) {
         {value.current}/{value.max}
       </div>
       <div>
-        <AbilityCheckModal type={type} character={character} />
+        <AbilityCheckDialog type={type} character={character} />
       </div>
     </div>
   );

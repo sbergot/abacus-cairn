@@ -1,4 +1,4 @@
-import { AbilityCheckModal } from "@/components/cairn/ability-check-modal";
+import { AbilityCheckDialog } from "@/components/cairn/ability-check-dialog";
 import { Title } from "@/components/ui/typography";
 import { CairnCharacter, AbilityType } from "@/lib/game/cairn/types";
 
@@ -42,7 +42,7 @@ function AbilityShow({ character, type }: AbilityShow) {
         {value.current}/{value.max}
       </div>
       <div>
-        <AbilityCheckModal type={type} character={character} />
+        <AbilityCheckDialog type={type} character={character} />
       </div>
     </div>
   );
