@@ -41,7 +41,6 @@ export default function MainMenu<
     gameRepo: { state: games, setState: setGames },
     gameName,
   } = useGenericGameContext();
-  const linker = useRelativeLinker();
 
   return (
     <main className="p-4 max-w-6xl flex flex-col">

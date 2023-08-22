@@ -8,7 +8,7 @@ export interface Gauge {
 
 export type AbilityType = "strength" | "dexterity" | "willpower";
 
-interface CairnCharacterBase {
+export interface CairnCharacterBase {
   id: string;
   name: string;
   age: number;
@@ -26,10 +26,10 @@ interface CairnCharacterBase {
 }
 
 export interface CairnCharacter extends CairnCharacterBase {
-  hireLings: CairnCharacterBase[];
+  hireLings: CairnCharacter[];
 }
 
-export interface CairnNpc extends CairnCharacterBase {
+export interface CairnNpc extends CairnCharacter {
   visibleToAll: boolean;
   excludedFromRandomPick: boolean;
 }

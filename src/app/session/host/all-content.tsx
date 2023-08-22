@@ -3,6 +3,7 @@ import {
   useCurrentGame,
   useLoggerContext,
 } from "@/app/cairn-context";
+import { CharacterCollection } from "@/components/cairn/character-collection";
 import { CharacterDescriptionDialog } from "@/components/cairn/character-description";
 import { CharacterInventoryDialog } from "@/components/cairn/character-inventory-dialog";
 import { CharacterName } from "@/components/cairn/character-name";
@@ -20,8 +21,12 @@ import { DeleteAlert } from "@/components/ui/delete-alert";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { getRandomName, initCharacter } from "@/lib/game/cairn/character-generation";
-import { CairnNpc } from "@/lib/game/cairn/types";
+import {
+  getRandomName,
+  initCharacter,
+  initCharacterBase,
+} from "@/lib/game/cairn/character-generation";
+import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
 import { getDamages } from "@/lib/game/cairn/utils";
 import { roll } from "@/lib/random";
 import { ILens } from "@/lib/types";
@@ -32,14 +37,16 @@ import {
   uuidv4,
 } from "@/lib/utils";
 import {
+  CheckCircle2Icon,
   EyeIcon,
   EyeOffIcon,
   FolderPlusIcon,
   PlusIcon,
   Trash2Icon,
   UserPlusIcon,
+  XCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 export function AllContent() {
   const gameLens = useCurrentGame();
@@ -224,94 +231,41 @@ function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
   );
 }
 
-function AllNpcs() {
-  const gameLens = useCurrentGame();
-  const npcsLens = getSubLens(gameLens, "npcs");
-  const log = useLoggerContext();
+function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   return (
-    <div className="flex flex-col gap-2 items-start">
+    <>
       <Button
+        size="icon-sm"
+        variant="ghost"
         onClick={() =>
-          npcsLens.setState((d) => {
-            const newNpc: CairnNpc = {
-              ...initCharacter(),
-              visibleToAll: false,
-              excludedFromRandomPick: false,
-            };
-            newNpc.strength = { current: 10, max: 10 };
-            newNpc.dexterity = { current: 10, max: 10 };
-            newNpc.willpower = { current: 10, max: 10 };
-            newNpc.name = getRandomName();
-            d.push(newNpc);
+          characterLens.setState((d) => {
+            d.visibleToAll = !d.visibleToAll;
           })
         }
       >
-        <UserPlusIcon className="mr-2" /> New npc
+        {characterLens.state.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
       </Button>
-      {npcsLens.state.map((npc, idx) => {
-        const npcLens: ILens<CairnNpc> = getSubArrayLens(npcsLens, idx);
-        return (
-          <CurrentCharacterContextProvider key={npc.id} value={npcLens}>
-            <Card>
-              <CardHeader>
-                <CharacterName>
-                  <EditCharStats />
-                  <CharacterDescriptionDialog />
-                  <CharacterInventoryDialog />
-                  <DeleteAlert
-                    icon={
-                      <Button variant="ghost" size="icon-sm">
-                        <Trash2Icon />
-                      </Button>
-                    }
-                    onConfirm={() =>
-                      npcsLens.setState((d) => d.filter((n) => n.id !== npc.id))
-                    }
-                  >
-                    This will permanently delete this npc
-                  </DeleteAlert>
-                  <Button
-                    size="icon-sm"
-                    variant="ghost"
-                    onClick={() =>
-                      npcLens.setState((d) => {
-                        d.visibleToAll = !d.visibleToAll;
-                      })
-                    }
-                  >
-                    {npcLens.state.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
-                  </Button>
-                </CharacterName>
-              </CardHeader>
-              <CardContent>
-                <CharacterStats />
-                <div>
-                  {npcLens.state.inventory.map((s) =>
-                    s.state.type === "gear" && s.state.gear.damage ? (
-                      <Button
-                        key={s.id}
-                        onClick={() =>
-                          log({
-                            kind: "chat-custom",
-                            type: "AttackRoll",
-                            title: "Attack roll",
-                            props: {
-                              dice: getDamages(s),
-                              result: roll(1, getDamages(s)),
-                            },
-                          })
-                        }
-                      >
-                        {s.state.gear.name} (d{s.state.gear.damage})
-                      </Button>
-                    ) : null
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </CurrentCharacterContextProvider>
-        );
-      })}
-    </div>
+      <Button
+        size="icon-sm"
+        variant="ghost"
+        onClick={() =>
+          characterLens.setState((d) => {
+            d.excludedFromRandomPick = !d.excludedFromRandomPick;
+          })
+        }
+      >
+        {characterLens.state.excludedFromRandomPick ? (
+          <XCircle />
+        ) : (
+          <CheckCircle2Icon />
+        )}
+      </Button>
+    </>
   );
+}
+
+function AllNpcs() {
+  const gameLens = useCurrentGame();
+  const npcsLens = getSubLens(gameLens, "npcs");
+  return <CharacterCollection<CairnNpc> lens={npcsLens} Tools={NpcTools} />;
 }

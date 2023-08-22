@@ -8,12 +8,11 @@ import { useEffect } from "react";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { Title } from "@/components/ui/typography";
 import Link from "next/link";
-import { CharacterStatsView } from "../../../components/cairn/character-stats-view";
-
+import { CharacterStatsView } from "@/components/cairn/character-stats-view";
 
 export default function CreateCharacterStats() {
   const { lens } = useCharacterCreationContext();
-  const { setState: setCharacter } = lens;
+  const { state: character, setState: setCharacter } = lens;
   const linker = useRelativeLinker();
 
   useEffect(() => setCharacter(rollCharacterStats), []);
@@ -21,7 +20,7 @@ export default function CreateCharacterStats() {
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
       <Title>New character - Roll stats</Title>
-      <CharacterStatsView />
+      <CharacterStatsView character={character} />
       <Button className="w-full" asChild>
         <Link href={linker("../view")}>Random</Link>
       </Button>

@@ -1,5 +1,5 @@
 import { clone, uuidv4 } from "@/lib/utils";
-import { CairnCharacter, Gauge, Gear, SlotState } from "./types";
+import { CairnCharacter, CairnCharacterBase, Gauge, Gear, SlotState } from "./types";
 import { pickRandom, roll } from "@/lib/random";
 import {
   armors,
@@ -14,7 +14,8 @@ import {
   weapons,
 } from "./data";
 
-export function initCharacter(): CairnCharacter {
+
+export function initCharacterBase(): CairnCharacterBase {
   return {
     id: uuidv4(),
     name: "",
@@ -41,6 +42,12 @@ export function initCharacter(): CairnCharacter {
       { id: uuidv4(), type: "backpack", state: { type: "empty" } },
       { id: uuidv4(), type: "backpack", state: { type: "empty" } },
     ],
+  };
+}
+
+export function initCharacter(): CairnCharacter {
+  return {
+    ...initCharacterBase(),
     hireLings: [],
   };
 }
