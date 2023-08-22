@@ -1,7 +1,9 @@
-export default function Home() {
-  return (
-    <main className="p-4 max-w-6xl flex flex-col">
-      hello
-    </main>
-  );
+"use client"
+
+import MainMenu from "@/components/generic-pages/main-menu";
+import { CairnCharacter } from "@/lib/game/cairn/types";
+import { BaseGame } from "@/lib/game/types";
+
+export default function CairnMainMenu() {
+  return <MainMenu<CairnCharacter, BaseGame<{}>> />
 }

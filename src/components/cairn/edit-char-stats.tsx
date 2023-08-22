@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import TextField from "../ui/textfield";
 import GaugeField from "./gaugefield";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 import TextAreaField from "../ui/textareafield";
 
 interface Props {}

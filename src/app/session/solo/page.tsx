@@ -6,7 +6,7 @@ import { CairnMessage } from "@/lib/game/cairn/types";
 import {
   useCurrentCharacter,
   usePlayerConnectionContext,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { CharacterSheet } from "@/components/cairn/character-sheet";
 

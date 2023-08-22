@@ -25,7 +25,6 @@ export default function CharacterName() {
   const { lens } = useCharacterCreationContext();
   const { state: character, setState: setCharacter } = lens;
   const [open, setOpen] = useState(false);
-  const linker = useRelativeLinker();
   const router = useRouter();
 
   const {
@@ -36,7 +35,7 @@ export default function CharacterName() {
     setCharacters((repo) => {
       repo[character.id] = character;
     });
-    router.push("/cairn");
+    router.push("/");
   }
 
   return (

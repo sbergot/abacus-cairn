@@ -2,7 +2,7 @@ import { Title } from "../ui/typography";
 import { CairnCharacter } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
 import { Children } from "../ui/types";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 
 interface Props extends Children {
 }

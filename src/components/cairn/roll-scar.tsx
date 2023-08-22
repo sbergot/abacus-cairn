@@ -1,4 +1,4 @@
-import { useLoggerContext } from "@/app/cairn/cairn-context";
+import { useLoggerContext } from "@/app/cairn-context";
 import { Button } from "../ui/button";
 import { pickRandom } from "@/lib/random";
 import { scars } from "@/lib/game/cairn/data";

@@ -4,7 +4,7 @@ import {
   CurrentCharacterContextProvider,
   useCurrentGame,
   useGmConnectionContext,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import { Shop } from "@/components/cairn/shop";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { MessagePanel } from "@/components/generic-pages/message-panel";

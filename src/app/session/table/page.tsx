@@ -6,21 +6,23 @@ import { CairnMessage } from "@/lib/game/cairn/types";
 import {
   useCurrentCharacter,
   usePlayerConnectionContext,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
-import { Shop } from "@/components/cairn/shop";
+import { CharacterSheet } from "@/components/cairn/character-sheet";
+import { RightPanel } from "@/components/generic-pages/right-panel";
 
 export default function Session() {
   const characterLens = useCurrentCharacter();
-  const { messages } = usePlayerConnectionContext();
+  const { messages, revealedElements } = usePlayerConnectionContext();
   return (
     <TwoColumns
-      leftPart={<Shop />}
+      leftPart={<CharacterSheet />}
       rightPart={
-        <MessagePanel<CairnMessage>
+        <RightPanel<CairnMessage>
           context={{ contextType: "player", authorId: characterLens.state.id }}
           messages={messages}
           ShowCustomMessage={ShowCustomMessage}
+          elements={revealedElements}
         />
       }
     />

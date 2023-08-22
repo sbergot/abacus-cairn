@@ -1,4 +1,4 @@
-import { useLoggerContext } from "@/app/cairn/cairn-context";
+import { useLoggerContext } from "@/app/cairn-context";
 import { DicesIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";

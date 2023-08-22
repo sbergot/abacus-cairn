@@ -2,7 +2,7 @@ import {
   CurrentCharacterContextProvider,
   useCurrentGame,
   useLoggerContext,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import { CharacterDescriptionDialog } from "@/components/cairn/character-description";
 import { CharacterInventoryDialog } from "@/components/cairn/character-inventory-dialog";
 import { CharacterName } from "@/components/cairn/character-name";
@@ -20,7 +20,7 @@ import { DeleteAlert } from "@/components/ui/delete-alert";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { initCharacter } from "@/lib/game/cairn/character-generation";
+import { getRandomName, initCharacter } from "@/lib/game/cairn/character-generation";
 import { CairnNpc } from "@/lib/game/cairn/types";
 import { getDamages } from "@/lib/game/cairn/utils";
 import { roll } from "@/lib/random";
@@ -241,7 +241,7 @@ function AllNpcs() {
             newNpc.strength = { current: 10, max: 10 };
             newNpc.dexterity = { current: 10, max: 10 };
             newNpc.willpower = { current: 10, max: 10 };
-            newNpc.name = "new npc";
+            newNpc.name = getRandomName();
             d.push(newNpc);
           })
         }

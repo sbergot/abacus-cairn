@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { PlusIcon, MinusIcon } from "lucide-react";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 import { updateGauge } from "@/lib/game/cairn/utils";
 
 interface HpControlProps {}

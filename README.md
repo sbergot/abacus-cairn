@@ -4,12 +4,10 @@ A mapless vtt
 
 ## todo
 
-- remove cairn folder
 - create url & configure https
 
 - release beta
 
-- check firstname lastname
 - character view for full random gen
 - hirelings
 - cart & horse slots (with hirelings?)

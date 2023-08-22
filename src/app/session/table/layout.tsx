@@ -3,7 +3,7 @@
 import {
   PlayerConnectionContextProvider,
   useCurrentCharacter,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import { useUrlParams } from "@/lib/hooks";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

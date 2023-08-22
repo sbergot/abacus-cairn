@@ -60,11 +60,15 @@ export function rollCharacterStats(char: CairnCharacter) {
 }
 
 export function getRandomMaleName(): string {
-  return `${pickRandom(surnames)} ${pickRandom(maleNames)}`;
+  return `${pickRandom(maleNames)} ${pickRandom(surnames)}`;
 }
 
 export function getRandomFemaleName(): string {
-  return `${pickRandom(surnames)} ${pickRandom(femaleNames)}`;
+  return `${pickRandom(femaleNames)} ${pickRandom(surnames)}`;
+}
+
+export function getRandomName(): string {
+  return roll(1, 2) === 1 ? getRandomMaleName() : getRandomFemaleName();
 }
 
 export function generateTraits(): string {
@@ -226,7 +230,6 @@ export function fillCharacterGear(character: CairnCharacter) {
 export function fillRandomCharacter(character: CairnCharacter) {
   character.background = pickRandom(backgrounds);
   character.traits = generateTraits();
-  character.name =
-    roll(1, 2) === 1 ? getRandomMaleName() : getRandomFemaleName();
+  character.name = getRandomName();
   fillCharacterGear(character);
 }

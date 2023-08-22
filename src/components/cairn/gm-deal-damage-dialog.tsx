@@ -1,4 +1,4 @@
-import { useCurrentGame, useLoggerContext } from "@/app/cairn/cairn-context";
+import { useCurrentGame, useLoggerContext } from "@/app/cairn-context";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { hurt } from "@/lib/game/cairn/utils";

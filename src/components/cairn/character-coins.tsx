@@ -1,4 +1,4 @@
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 import NumberField from "../ui/numberfield";
 
 export function CharacterCoins() {

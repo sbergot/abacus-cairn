@@ -5,7 +5,7 @@ import {
   CairnCharacter,
   CairnMessage,
 } from "@/lib/game/cairn/types";
-import { useGmConnectionContext } from "@/app/cairn/cairn-context";
+import { useGmConnectionContext } from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

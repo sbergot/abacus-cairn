@@ -1,4 +1,4 @@
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { UserSquare2Icon } from "lucide-react";
 import { Button } from "../ui/button";

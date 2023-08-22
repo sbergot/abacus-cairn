@@ -2,7 +2,7 @@ import { AbilityControl } from "./ability-control";
 import { HpControl } from "./hp-control";
 import { Checkbox } from "../ui/checkbox";
 import { getArmorValue } from "@/lib/game/cairn/utils";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 
 interface CharacterStatsProps {}
 

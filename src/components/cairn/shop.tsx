@@ -9,7 +9,7 @@ import {
 import {
   useCurrentCharacter,
   useLoggerContext,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import {
   Table,
   TableBody,

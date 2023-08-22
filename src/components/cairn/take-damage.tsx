@@ -3,7 +3,7 @@
 import {
   useCurrentCharacter,
   useLoggerContext,
-} from "@/app/cairn/cairn-context";
+} from "@/app/cairn-context";
 import { Button } from "../ui/button";
 import { hurt } from "@/lib/game/cairn/utils";
 

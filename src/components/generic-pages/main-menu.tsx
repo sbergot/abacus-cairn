@@ -50,7 +50,7 @@ export default function MainMenu<
           <Title>characters</Title>
           <div className="flex gap-2">
             <Button asChild>
-              <Link href={linker("create-character/stats")}>
+              <Link href={"create-character/stats"}>
                 <UserPlusIcon className="mr-2" />
                 new
               </Link>
@@ -158,7 +158,7 @@ function CharacterEntry({
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <SessionStartModal characterId={characterId} />
+        <SessionStartDialog characterId={characterId} />
         <DeleteAlert
           onConfirm={deleteCharacter}
           icon={
@@ -182,13 +182,12 @@ interface GameEntryProps {
 }
 
 function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
-  const linker = useRelativeLinker();
   return (
     <div className="flex justify-between items-center p-2 border border-input bg-background">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <Button size="icon-sm" variant="ghost" asChild>
-          <Link href={linker(`session/host?gameId=${gameId}`)}>
+          <Link href={`/session/host?gameId=${gameId}`}>
             <PlayIcon size={20} />
           </Link>
         </Button>
@@ -212,8 +211,7 @@ interface SessionStartProps {
   characterId: string;
 }
 
-export function SessionStartModal({ characterId }: SessionStartProps) {
-  const linker = useRelativeLinker();
+function SessionStartDialog({ characterId }: SessionStartProps) {
   const router = useRouter();
   const [tableId, setTableId] = useState("");
   return (
@@ -229,7 +227,7 @@ export function SessionStartModal({ characterId }: SessionStartProps) {
         </DialogHeader>
         <div className="flex flex-col gap-2">
           <Button asChild>
-            <Link href={linker(`session/solo?characterId=${characterId}`)}>
+            <Link href={`/session/solo?characterId=${characterId}`}>
               Start a solo session
             </Link>
           </Button>
@@ -246,7 +244,7 @@ export function SessionStartModal({ characterId }: SessionStartProps) {
             disabled={!tableId}
             onClick={() =>
               router.push(
-                linker(`session/table?tableId=${tableId}&characterId=${characterId}`)
+                `/session/table?tableId=${tableId}&characterId=${characterId}`
               )
             }
           >

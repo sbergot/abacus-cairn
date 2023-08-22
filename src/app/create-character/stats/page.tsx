@@ -28,7 +28,7 @@ export default function CreateCharacterStats() {
     setCharacters((repo) => {
       repo[newChar.id] = newChar;
     });
-    router.push("/cairn");
+    router.push("/");
   }
 
   useEffect(() => setCharacter(rollCharacterStats), []);

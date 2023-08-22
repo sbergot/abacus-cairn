@@ -8,7 +8,7 @@ import {
 import { BoxesIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 import { CharacterInventory } from "./character-inventory";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 

@@ -1,11 +1,12 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
+import ClientLayout from "./client-layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Abacus",
+  title: "Abacus - Cairn",
   description: "Mapless VTT",
 };
 
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NoSSR>{children}</NoSSR>
+        <NoSSR><ClientLayout>{children}</ClientLayout></NoSSR>
       </body>
     </html>
   );

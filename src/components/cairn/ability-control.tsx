@@ -2,7 +2,7 @@ import { AbilityType } from "@/lib/game/cairn/types";
 import { Button } from "../ui/button";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { AbilityCheckDialog } from "./ability-check-dialog";
-import { useCurrentCharacter } from "@/app/cairn/cairn-context";
+import { useCurrentCharacter } from "@/app/cairn-context";
 import { updateGauge } from "@/lib/game/cairn/utils";
 
 interface AbilityControlProps {
