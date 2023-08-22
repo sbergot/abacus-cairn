@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { Title } from "@/components/ui/typography";
 import Link from "next/link";
-import { CharacterStatsView } from "../character-stats-view";
+import { CharacterStatsView } from "../../../components/cairn/character-stats-view";
 
 
 export default function CreateCharacterStats() {

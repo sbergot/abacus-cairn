@@ -4,11 +4,8 @@ A mapless vtt
 
 ## todo
 
-- create url & configure https
-
 - release beta
 
-- character view for full random gen
 - hirelings
 - cart & horse slots (with hirelings?)
 - switch gear between two slots

@@ -1,4 +1,5 @@
 import { AbilityCheckDialog } from "@/components/cairn/ability-check-dialog";
+import { CharacterStatsView } from "@/components/cairn/character-stats-view";
 import { Title } from "@/components/ui/typography";
 import { CairnCharacter, AbilityType } from "@/lib/game/cairn/types";
 
@@ -10,20 +11,7 @@ export function CharacterEntry({ character }: CharacterEntryProps) {
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
       <Title>{character.name}</Title>
-      <div className="flex gap-12">
-        <div className="flex flex-col">
-          <AbilityShow type="strength" character={character} />
-          <AbilityShow type="dexterity" character={character} />
-          <AbilityShow type="willpower" character={character} />
-        </div>
-        <div className="flex flex-col">
-          <HpShow character={character} />
-          <div className="flex justify-between">
-            <div className="w-20">Armor</div>
-            <div>0</div>
-          </div>
-        </div>
-      </div>
+      <CharacterStatsView character={character} />
     </div>
   );
 }

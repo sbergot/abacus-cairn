@@ -8,7 +8,7 @@ export interface Gauge {
 
 export type AbilityType = "strength" | "dexterity" | "willpower";
 
-export interface CairnCharacter {
+interface CairnCharacterBase {
   id: string;
   name: string;
   age: number;
@@ -23,6 +23,15 @@ export interface CairnCharacter {
   copper: number;
   deprived: boolean;
   inventory: Slot[];
+}
+
+export interface CairnCharacter extends CairnCharacterBase {
+  hireLings: CairnCharacterBase[];
+}
+
+export interface CairnNpc extends CairnCharacterBase {
+  visibleToAll: boolean;
+  excludedFromRandomPick: boolean;
 }
 
 type TaggedUnion<T extends string, P> = { type: T } & P;
@@ -76,10 +85,6 @@ export type CairnMessage =
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 
-export interface CairnNpc extends CairnCharacter {
-  visibleToAll: boolean;
-  excludedFromRandomPick: boolean;
-}
 
 export interface CairnGame extends BaseGame<CairnMessage> {
   npcs: CairnNpc[];

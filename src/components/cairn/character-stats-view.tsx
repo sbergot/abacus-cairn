@@ -1,11 +1,13 @@
 import { Children } from "@/components/ui/types";
-import { Gauge } from "@/lib/game/cairn/types";
-import { useCharacterCreationContext } from "./character-creation-context";
+import { CairnCharacter, Gauge } from "@/lib/game/cairn/types";
+import { getArmorValue } from "@/lib/game/cairn/utils";
 
-export function CharacterStatsView() {
-  const { lens } = useCharacterCreationContext();
-  const { state: character } = lens;
+interface CharacterStatsViewProps {
+  character: CairnCharacter;
+}
 
+export function CharacterStatsView({ character }: CharacterStatsViewProps) {
+  const armor = getArmorValue(character);
   return (
     <div className="flex gap-8">
       <div className="max-w-min">
@@ -16,6 +18,7 @@ export function CharacterStatsView() {
       <div className="max-w-min">
         <AbilityField name="HP" value={character.hp} />
         <Field name="age">{character.age}</Field>
+        <Field name="armor">{armor}</Field>
       </div>
     </div>
   );
