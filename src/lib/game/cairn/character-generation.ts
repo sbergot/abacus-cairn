@@ -1,5 +1,12 @@
 import { clone, uuidv4 } from "@/lib/utils";
-import { CairnCharacter, CairnCharacterBase, Gauge, Gear, Slot, SlotState } from "./types";
+import {
+  CairnCharacter,
+  CairnCharacterBase,
+  Gauge,
+  Gear,
+  Slot,
+  SlotState,
+} from "./types";
 import { pickRandom, roll } from "@/lib/random";
 import {
   armors,
@@ -62,6 +69,7 @@ export function initBasicCharacter(): CairnCharacter {
     dexterity: { current: 10, max: 10 },
     willpower: { current: 10, max: 10 },
     name: getRandomName(),
+    traits: generateTraits(),
   };
   return newNpc;
 }

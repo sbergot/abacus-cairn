@@ -265,9 +265,9 @@ function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   );
 }
 
-function newNpc(): CairnNpc {
+function newNpc(char: CairnCharacter): CairnNpc {
   const newNpc: CairnNpc = {
-    ...initBasicCharacter(),
+    ...char,
     visibleToAll: false,
     excludedFromRandomPick: false,
   };

@@ -6,10 +6,11 @@ A mapless vtt
 
 - release beta
 
+- new npc dialog
+- cart & horse slots (with hirelings?)
 - private notes on gm content
 - tooltips on icons
 - pick random character, npc, custom entry
-- cart & horse slots (with hirelings?)
 - switch gear between two slots
 - timers
 - clocks

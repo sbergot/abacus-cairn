@@ -24,6 +24,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
   const { setState: setCharacter } = characterLens;
   const { characterId } = useUrlParams();
   const linker = useRelativeLinker();
+  const hirelingsLens = getSubLens(characterLens, "hireLings");
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
@@ -54,8 +55,8 @@ export function CharacterSheet({}: CharacterSheetProps) {
       />
       <CharacterCollection
         charType="hireling"
-        lens={getSubLens(characterLens, "hireLings")}
-        newChar={initBasicCharacter}
+        lens={hirelingsLens}
+        newChar={(c) => c}
         Tools={() => <></>}
       />
     </div>
