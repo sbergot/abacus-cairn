@@ -21,7 +21,11 @@ import {
   weapons,
 } from "./data";
 
-export function getEmptySlots(): Slot[] {
+export function getEmptySlots(n: number, type: string): Slot[] {
+  return [...Array(5)].map(() => ({ id: uuidv4(), type, state: { type: "empty" } }));
+}
+
+export function getEmptyCharacterSlots(): Slot[] {
   return [
     { id: uuidv4(), type: "hand", state: { type: "empty" } },
     { id: uuidv4(), type: "hand", state: { type: "empty" } },
@@ -51,7 +55,7 @@ export function initCharacterBase(): CairnCharacterBase {
     copper: 0,
     deprived: false,
     traits: "",
-    inventory: getEmptySlots(),
+    inventory: getEmptyCharacterSlots(),
   };
 }
 
@@ -59,6 +63,7 @@ export function initBlankCharacter(): CairnCharacter {
   return {
     ...initCharacterBase(),
     hireLings: [],
+    carryCapacities: [],
   };
 }
 

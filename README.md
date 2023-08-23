@@ -6,7 +6,6 @@ A mapless vtt
 
 - release beta
 
-- new npc dialog
 - cart & horse slots (with hirelings?)
 - private notes on gm content
 - tooltips on icons

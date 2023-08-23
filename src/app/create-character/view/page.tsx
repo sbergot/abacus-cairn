@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { useEffect } from "react";
-import { fillRandomCharacter, getEmptySlots, rollCharacterStats } from "@/lib/game/cairn/character-generation";
+import { fillRandomCharacter, getEmptyCharacterSlots, rollCharacterStats } from "@/lib/game/cairn/character-generation";
 import { CharacterInventoryView } from "../character-inventory-view";
 import { CharacterStatsView } from "../../../components/cairn/character-stats-view";
 import { Title, WeakEmph } from "@/components/ui/typography";
@@ -34,7 +34,7 @@ export default function RollGear() {
       <Button className="w-full" onClick={() => {
         setCharacter((d) => {
           rollCharacterStats(d);
-          d.inventory = getEmptySlots();
+          d.inventory = getEmptyCharacterSlots();
           fillRandomCharacter(d);
         });
       }}>

@@ -51,6 +51,20 @@ import { DiceSelect } from "@/components/cairn/dice-select";
 import { ArmorSelect } from "@/components/cairn/armor-select";
 import { Logger } from "@/lib/network/types";
 
+function findContainer(character: CairnCharacter, slotId: string): Slot[] {
+  if (character.inventory.find(s => s.id === slotId) !== undefined) {
+    return character.inventory;
+  }
+
+  for (const carryCapacity of character.carryCapacities) {
+    if (carryCapacity.inventory.find(s => s.id === slotId) !== undefined) {
+      return carryCapacity.inventory;
+    }
+  }
+
+  return [];
+}
+
 function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
   const siblingFreeSlot = inventory.find(
     (s) =>
@@ -108,8 +122,9 @@ function canGrab(
   gear: Gear,
   slotId: string
 ): boolean {
-  const currentSlot = character.inventory.find((s) => s.id === slotId)!;
-  const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
+  const currentContainer = findContainer(character, slotId);
+  const currentSlot = currentContainer.find((s) => s.id === slotId)!;
+  const siblingFreeSlot = findFreeSiblingSlot(currentContainer, currentSlot);
 
   if (currentSlot.state.type !== "empty") {
     return false;
@@ -128,14 +143,14 @@ function grab(
   slotId: string,
   log: Logger<CairnMessage>
 ) {
-  const currentSlot = character.inventory.find((s) => s.id === slotId)!;
-  const siblingFreeSlot = findFreeSiblingSlot(character.inventory, currentSlot);
-  const { inventory } = character;
+  const currentContainer = findContainer(character, slotId);
+  const currentSlot = currentContainer.find((s) => s.id === slotId)!;
+  const siblingFreeSlot = findFreeSiblingSlot(currentContainer, currentSlot);
 
-  const slot = inventory.find((s) => s.id === slotId)!;
+  const slot = currentContainer.find((s) => s.id === slotId)!;
   slot.state = { type: "gear", gear: clone(gear) };
   if (gear.bulky) {
-    const otherSlot = inventory.find((s) => s.id === siblingFreeSlot?.id)!;
+    const otherSlot = currentContainer.find((s) => s.id === siblingFreeSlot?.id)!;
     otherSlot.state = {
       type: "bulky",
       slotId,

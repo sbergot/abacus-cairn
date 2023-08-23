@@ -16,6 +16,8 @@ import {
 } from "@/lib/game/cairn/character-generation";
 import { CharacterCollection } from "./character-collection";
 import { getSubLens } from "@/lib/utils";
+import { CarryCapacityCollection } from "./carry-capacity-collection";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 interface CharacterSheetProps {}
 
@@ -28,7 +30,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
-      <CharacterName>
+      <CharacterName name={characterLens.state.name}>
         <EditCharStats />
         <GenericRolls />
         <CharacterDescriptionDialog />
@@ -48,17 +50,33 @@ export function CharacterSheet({}: CharacterSheetProps) {
       </CharacterName>
       <CharacterStats />
       <CharacterCoins />
-      <CharacterInventory
-        shopLink={(slotId) =>
-          linker(`shop?characterId=${characterId}&slotId=${slotId}`)
-        }
-      />
-      <CharacterCollection
-        charType="hireling"
-        lens={hirelingsLens}
-        newChar={(c) => c}
-        Tools={() => <></>}
-      />
+      <Tabs defaultValue="inventory" className="w-full">
+        <TabsList>
+          <TabsTrigger value="inventory">inventory</TabsTrigger>
+          <TabsTrigger value="hirelings">hirelings</TabsTrigger>
+          <TabsTrigger value="carry">carry capacity</TabsTrigger>
+        </TabsList>
+        <TabsContent value="inventory">
+          <CharacterInventory
+            shopLink={(slotId) =>
+              linker(`shop?characterId=${characterId}&slotId=${slotId}`)
+            }
+          />
+        </TabsContent>
+        <TabsContent value="hirelings">
+          <CharacterCollection
+            charType="hireling"
+            lens={hirelingsLens}
+            newChar={(c) => c}
+            Tools={() => <></>}
+          />
+        </TabsContent>
+        <TabsContent value="carry">
+          <CarryCapacityCollection
+            lens={getSubLens(characterLens, "carryCapacities")}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

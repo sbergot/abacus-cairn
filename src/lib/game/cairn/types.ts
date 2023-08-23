@@ -25,8 +25,17 @@ export interface CairnCharacterBase {
   inventory: Slot[];
 }
 
+export interface CarryCapacity {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  inventory: Slot[];
+}
+
 export interface CairnCharacter extends CairnCharacterBase {
   hireLings: CairnCharacter[];
+  carryCapacities: CarryCapacity[];
 }
 
 export interface CairnNpc extends CairnCharacter {
@@ -36,7 +45,7 @@ export interface CairnNpc extends CairnCharacter {
 
 type TaggedUnion<T extends string, P> = { type: T } & P;
 
-export type SlotType = "hand" | "body" | "backpack";
+export type SlotType = string;
 
 export type SlotState =
   | TaggedUnion<"empty", {}>

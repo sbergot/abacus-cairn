@@ -62,7 +62,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
           <CurrentCharacterContextProvider key={npc.id} value={charLens}>
             <Card>
               <CardHeader>
-                <CharacterName>
+                <CharacterName name={npc.name}>
                   <EditCharStats />
                   <CharacterDescriptionDialog />
                   <CharacterInventoryDialog />

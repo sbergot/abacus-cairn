@@ -1,17 +1,14 @@
 import { Title } from "../ui/typography";
-import { CairnCharacter } from "@/lib/game/cairn/types";
-import { ILens } from "@/lib/types";
 import { Children } from "../ui/types";
-import { useCurrentCharacter } from "@/app/cairn-context";
 
 interface Props extends Children {
+  name: string;
 }
 
-export function CharacterName({ children }: Props) {
-  const { state: character } = useCurrentCharacter();
+export function CharacterName({ name, children }: Props) {
   return (
     <div className="flex">
-      <Title>{character.name}</Title>
+      <Title>{name}</Title>
       {children}
     </div>
   );

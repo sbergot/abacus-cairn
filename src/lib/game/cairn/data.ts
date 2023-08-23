@@ -1,4 +1,5 @@
-import { Gear } from "./types";
+import { uuidv4 } from "@/lib/utils";
+import { CarryCapacity, Gear } from "./types";
 
 export const femaleNames: string[] = [
   "Agune",
@@ -600,3 +601,60 @@ export const traits = {
     "cautious",
   ],
 };
+
+export const carryCapacities: CarryCapacity[] = [
+  {
+    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    name: "cart",
+    description: "must be pulled with both hands",
+    price: 30,
+    inventory: [
+      { id: uuidv4(), state: { type: "empty" }, type: "cart" },
+      { id: uuidv4(), state: { type: "empty" }, type: "cart" },
+      { id: uuidv4(), state: { type: "empty" }, type: "cart" },
+      { id: uuidv4(), state: { type: "empty" }, type: "cart" },
+    ],
+  },
+  {
+    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    name: "horse",
+    description: "",
+    price: 75,
+    inventory: [
+      { id: uuidv4(), state: { type: "empty" }, type: "horse" },
+      { id: uuidv4(), state: { type: "empty" }, type: "horse" },
+      { id: uuidv4(), state: { type: "empty" }, type: "horse" },
+      { id: uuidv4(), state: { type: "empty" }, type: "horse" },
+    ],
+  },
+  {
+    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    name: "mule",
+    description: "slow",
+    price: 30,
+    inventory: [
+      { id: uuidv4(), state: { type: "empty" }, type: "mule" },
+      { id: uuidv4(), state: { type: "empty" }, type: "mule" },
+      { id: uuidv4(), state: { type: "empty" }, type: "mule" },
+      { id: uuidv4(), state: { type: "empty" }, type: "mule" },
+      { id: uuidv4(), state: { type: "empty" }, type: "mule" },
+      { id: uuidv4(), state: { type: "empty" }, type: "mule" },
+    ],
+  },
+  {
+    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    name: "wagon",
+    description: "heavy",
+    price: 200,
+    inventory: [
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+      { id: uuidv4(), state: { type: "empty" }, type: "wagon" },
+    ],
+  },
+];
