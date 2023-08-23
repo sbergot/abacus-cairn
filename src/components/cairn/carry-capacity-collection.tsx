@@ -43,7 +43,7 @@ export function CarryCapacityCollection({
       {lens.state.map((carryCapacity, idx) => {
         const carryLens: ILens<CarryCapacity> = getSubArrayLens(lens, idx);
         return (
-          <Card className="w-full">
+          <Card key={carryCapacity.id} className="w-full">
             <CardHeader>
               <CharacterName name={carryCapacity.name}>
                 <DeleteAlert
@@ -58,7 +58,8 @@ export function CarryCapacityCollection({
                     )
                   }
                 >
-                  This will permanently delete this carry capacity and all its content.
+                  This will permanently delete this carry capacity and all its
+                  content.
                 </DeleteAlert>
               </CharacterName>
               <WeakEmph>{carryCapacity.description}</WeakEmph>
@@ -97,6 +98,7 @@ function NewCarryCapacityDialog({ onPick }: NewCarryCapacityDialogProps) {
         </DialogHeader>
         {carryCapacities.map((cc) => (
           <Button
+            key={cc.id}
             onClick={() => {
               setOpen(false);
               const newCC = clone(cc);
