@@ -6,7 +6,6 @@ A mapless vtt
 
 - release beta
 
-- cart & horse slots (with hirelings?)
 - private notes on gm content
 - tooltips on icons
 - pick random character, npc, custom entry
