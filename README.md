@@ -15,5 +15,6 @@ A mapless vtt
 
 -- not sure about
 
+- npc -> hireling button
 - solo random tables
 - item details
