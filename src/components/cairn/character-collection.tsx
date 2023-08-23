@@ -2,11 +2,7 @@ import {
   useLoggerContext,
   CurrentCharacterContextProvider,
 } from "@/app/cairn-context";
-import {
-  initCharacter,
-  getRandomName,
-} from "@/lib/game/cairn/character-generation";
-import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
+import { CairnCharacter } from "@/lib/game/cairn/types";
 import { getDamages } from "@/lib/game/cairn/utils";
 import { roll } from "@/lib/random";
 import { ILens } from "@/lib/types";
@@ -24,12 +20,14 @@ import { EditCharStats } from "./edit-char-stats";
 import { Draft } from "immer";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
+  charType: string;
   lens: ILens<TChar[]>;
   newChar(): TChar;
   Tools({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
 }
 
 export function CharacterCollection<TChar extends CairnCharacter>({
+  charType,
   lens,
   Tools,
   newChar,
@@ -44,7 +42,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
           })
         }
       >
-        <UserPlusIcon className="mr-2" /> New npc
+        <UserPlusIcon className="mr-2" /> New {charType}
       </Button>
       {lens.state.map((npc, idx) => {
         const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
@@ -66,7 +64,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
                       lens.setState((d) => d.filter((n) => n.id !== npc.id))
                     }
                   >
-                    This will permanently delete this npc
+                    This will permanently delete this {charType}
                   </DeleteAlert>
                   <Tools characterLens={charLens} />
                 </CharacterName>

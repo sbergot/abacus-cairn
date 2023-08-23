@@ -6,7 +6,6 @@ A mapless vtt
 
 - release beta
 
-- hirelings
 - cart & horse slots (with hirelings?)
 - switch gear between two slots
 - pick random character, npc, custom entry

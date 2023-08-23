@@ -11,13 +11,17 @@ import { Button } from "../ui/button";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import {
   getRandomName,
-  initCharacter,
+  initBasicCharacter,
+  initBlankCharacter,
 } from "@/lib/game/cairn/character-generation";
+import { CharacterCollection } from "./character-collection";
+import { getSubLens } from "@/lib/utils";
 
 interface CharacterSheetProps {}
 
 export function CharacterSheet({}: CharacterSheetProps) {
-  const { setState: setCharacter } = useCurrentCharacter();
+  const characterLens = useCurrentCharacter();
+  const { setState: setCharacter } = characterLens;
   const { characterId } = useUrlParams();
   const linker = useRelativeLinker();
 
@@ -32,7 +36,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
           size="icon-sm"
           onClick={() =>
             setCharacter((d) => {
-              const hireling = initCharacter();
+              const hireling = initBlankCharacter();
               hireling.name = getRandomName();
               d.hireLings.push(hireling);
             })
@@ -47,6 +51,12 @@ export function CharacterSheet({}: CharacterSheetProps) {
         shopLink={(slotId) =>
           linker(`shop?characterId=${characterId}&slotId=${slotId}`)
         }
+      />
+      <CharacterCollection
+        charType="hireling"
+        lens={getSubLens(characterLens, "hireLings")}
+        newChar={initBasicCharacter}
+        Tools={() => <></>}
       />
     </div>
   );

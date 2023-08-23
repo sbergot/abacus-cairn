@@ -45,11 +45,22 @@ export function initCharacterBase(): CairnCharacterBase {
   };
 }
 
-export function initCharacter(): CairnCharacter {
+export function initBlankCharacter(): CairnCharacter {
   return {
     ...initCharacterBase(),
     hireLings: [],
   };
+}
+
+export function initBasicCharacter(): CairnCharacter {
+  const newNpc: CairnCharacter = {
+    ...initBlankCharacter(),
+    strength: { current: 10, max: 10 },
+    dexterity: { current: 10, max: 10 },
+    willpower: { current: 10, max: 10 },
+    name: getRandomName(),
+  };
+  return newNpc;
 }
 
 function newAttribute(val: number): Gauge {
