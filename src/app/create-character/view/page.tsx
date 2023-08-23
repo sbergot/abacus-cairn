@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { useEffect } from "react";
-import { fillRandomCharacter } from "@/lib/game/cairn/character-generation";
+import { fillRandomCharacter, getEmptySlots, rollCharacterStats } from "@/lib/game/cairn/character-generation";
 import { CharacterInventoryView } from "../character-inventory-view";
 import { CharacterStatsView } from "../../../components/cairn/character-stats-view";
 import { Title, WeakEmph } from "@/components/ui/typography";
@@ -31,6 +31,15 @@ export default function RollGear() {
 
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
+      <Button className="w-full" onClick={() => {
+        setCharacter((d) => {
+          rollCharacterStats(d);
+          d.inventory = getEmptySlots();
+          fillRandomCharacter(d);
+        });
+      }}>
+        Reroll
+      </Button>
       <Button className="w-full" onClick={() => {
         const newChar = clone(character);
         save(newChar);

@@ -1,5 +1,5 @@
 import { clone, uuidv4 } from "@/lib/utils";
-import { CairnCharacter, CairnCharacterBase, Gauge, Gear, SlotState } from "./types";
+import { CairnCharacter, CairnCharacterBase, Gauge, Gear, Slot, SlotState } from "./types";
 import { pickRandom, roll } from "@/lib/random";
 import {
   armors,
@@ -14,6 +14,20 @@ import {
   weapons,
 } from "./data";
 
+export function getEmptySlots(): Slot[] {
+  return [
+    { id: uuidv4(), type: "hand", state: { type: "empty" } },
+    { id: uuidv4(), type: "hand", state: { type: "empty" } },
+    { id: uuidv4(), type: "body", state: { type: "empty" } },
+    { id: uuidv4(), type: "body", state: { type: "empty" } },
+    { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+    { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+    { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+    { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+    { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+    { id: uuidv4(), type: "backpack", state: { type: "empty" } },
+  ];
+}
 
 export function initCharacterBase(): CairnCharacterBase {
   return {
@@ -30,18 +44,7 @@ export function initCharacterBase(): CairnCharacterBase {
     copper: 0,
     deprived: false,
     traits: "",
-    inventory: [
-      { id: uuidv4(), type: "hand", state: { type: "empty" } },
-      { id: uuidv4(), type: "hand", state: { type: "empty" } },
-      { id: uuidv4(), type: "body", state: { type: "empty" } },
-      { id: uuidv4(), type: "body", state: { type: "empty" } },
-      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
-      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
-      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
-      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
-      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
-      { id: uuidv4(), type: "backpack", state: { type: "empty" } },
-    ],
+    inventory: getEmptySlots(),
   };
 }
 
