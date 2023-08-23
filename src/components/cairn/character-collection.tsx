@@ -1,5 +1,11 @@
-import { useLoggerContext, CurrentCharacterContextProvider } from "@/app/cairn-context";
-import { initCharacter, getRandomName } from "@/lib/game/cairn/character-generation";
+import {
+  useLoggerContext,
+  CurrentCharacterContextProvider,
+} from "@/app/cairn-context";
+import {
+  initCharacter,
+  getRandomName,
+} from "@/lib/game/cairn/character-generation";
 import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
 import { getDamages } from "@/lib/game/cairn/utils";
 import { roll } from "@/lib/random";
@@ -15,14 +21,18 @@ import { CharacterInventoryDialog } from "./character-inventory-dialog";
 import { CharacterName } from "./character-name";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
+import { Draft } from "immer";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   lens: ILens<TChar[]>;
+  newChar(): TChar;
   Tools({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
 }
 
 export function CharacterCollection<TChar extends CairnCharacter>({
-  lens, Tools
+  lens,
+  Tools,
+  newChar,
 }: CharacterCollectionProps<TChar>) {
   const log = useLoggerContext();
   return (
@@ -30,25 +40,16 @@ export function CharacterCollection<TChar extends CairnCharacter>({
       <Button
         onClick={() =>
           lens.setState((d) => {
-            const newNpc: TChar = {
-              ...initCharacter(),
-              visibleToAll: false,
-              excludedFromRandomPick: false,
-            };
-            newNpc.strength = { current: 10, max: 10 };
-            newNpc.dexterity = { current: 10, max: 10 };
-            newNpc.willpower = { current: 10, max: 10 };
-            newNpc.name = getRandomName();
-            d.push(newNpc);
+            d.push(newChar() as Draft<TChar>);
           })
         }
       >
         <UserPlusIcon className="mr-2" /> New npc
       </Button>
       {lens.state.map((npc, idx) => {
-        const npcLens: ILens<CairnNpc> = getSubArrayLens(lens, idx);
+        const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
         return (
-          <CurrentCharacterContextProvider key={npc.id} value={npcLens}>
+          <CurrentCharacterContextProvider key={npc.id} value={charLens}>
             <Card>
               <CardHeader>
                 <CharacterName>
@@ -67,13 +68,13 @@ export function CharacterCollection<TChar extends CairnCharacter>({
                   >
                     This will permanently delete this npc
                   </DeleteAlert>
-                  <Tools characterLens={} />
+                  <Tools characterLens={charLens} />
                 </CharacterName>
               </CardHeader>
               <CardContent>
                 <CharacterStats />
                 <div>
-                  {npcLens.state.inventory.map((s) =>
+                  {charLens.state.inventory.map((s) =>
                     s.state.type === "gear" && s.state.gear.damage ? (
                       <Button
                         key={s.id}

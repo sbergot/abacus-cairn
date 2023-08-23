@@ -264,8 +264,27 @@ function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   );
 }
 
+function newNpc(): CairnNpc {
+  const newNpc: CairnNpc = {
+    ...initCharacter(),
+    visibleToAll: false,
+    excludedFromRandomPick: false,
+  };
+  newNpc.strength = { current: 10, max: 10 };
+  newNpc.dexterity = { current: 10, max: 10 };
+  newNpc.willpower = { current: 10, max: 10 };
+  newNpc.name = getRandomName();
+  return newNpc;
+}
+
 function AllNpcs() {
   const gameLens = useCurrentGame();
   const npcsLens = getSubLens(gameLens, "npcs");
-  return <CharacterCollection<CairnNpc> lens={npcsLens} Tools={NpcTools} />;
+  return (
+    <CharacterCollection<CairnNpc>
+      lens={npcsLens}
+      newChar={newNpc}
+      Tools={NpcTools}
+    />
+  );
 }
