@@ -1,5 +1,5 @@
 export interface Children {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export interface ClassName {

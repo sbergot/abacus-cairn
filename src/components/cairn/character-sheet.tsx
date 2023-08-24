@@ -67,7 +67,9 @@ export function CharacterSheet({}: CharacterSheetProps) {
             charType="hireling"
             lens={hirelingsLens}
             newChar={(c) => c}
-            Tools={() => <></>}
+            HeaderMenu={() => <></>}
+            Edit={() => <></>}
+            Details={() => <></>}
           />
         </TabsContent>
         <TabsContent value="carry">

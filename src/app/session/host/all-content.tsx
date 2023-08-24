@@ -13,10 +13,16 @@ import { DeleteAlert } from "@/components/ui/delete-alert";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import TextAreaField from "@/components/ui/textareafield";
 import { WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
-import { getSubArrayLens, getSubLens, getSubRecordLens, uuidv4 } from "@/lib/utils";
+import {
+  getSubArrayLens,
+  getSubLens,
+  getSubRecordLens,
+  uuidv4,
+} from "@/lib/utils";
 import {
   CheckCircle2Icon,
   EyeIcon,
@@ -102,7 +108,7 @@ export function AllContent() {
                             </CardTitle>
                             <EditCustomEntryDialog lens={entryLens} />
                             <Button
-                             variant="ghost"
+                              variant="ghost"
                               size="icon-sm"
                               onClick={() =>
                                 categoryLens.setState((d) => {
@@ -253,6 +259,23 @@ function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   );
 }
 
+function NpcEdit({ characterLens }: { characterLens: ILens<CairnNpc> }) {
+  return (
+    <div>
+      <div>Private notes</div>
+      <TextAreaField lens={characterLens} fieldName="privateNote" />
+    </div>
+  );
+}
+
+function NpcDetails({ characterLens }: { characterLens: ILens<CairnNpc> }) {
+  return (
+    <WeakEmph>
+      {characterLens.state.privateNote}
+    </WeakEmph>
+  );
+}
+
 function newNpc(char: CairnCharacter): CairnNpc {
   const newNpc: CairnNpc = {
     ...char,
@@ -271,7 +294,9 @@ function AllNpcs() {
       charType="npc"
       lens={npcsLens}
       newChar={newNpc}
-      Tools={NpcTools}
+      HeaderMenu={NpcTools}
+      Edit={NpcEdit}
+      Details={NpcDetails}
     />
   );
 }

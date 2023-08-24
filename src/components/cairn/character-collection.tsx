@@ -36,13 +36,17 @@ interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
   lens: ILens<TChar[]>;
   newChar(char: CairnCharacter): TChar;
-  Tools({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
+  HeaderMenu({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
+  Edit({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
+  Details({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
 }
 
 export function CharacterCollection<TChar extends CairnCharacter>({
   charType,
   lens,
-  Tools,
+  HeaderMenu,
+  Edit,
+  Details,
   newChar,
 }: CharacterCollectionProps<TChar>) {
   const log = useLoggerContext();
@@ -63,8 +67,12 @@ export function CharacterCollection<TChar extends CairnCharacter>({
             <Card>
               <CardHeader>
                 <CharacterName name={npc.name}>
-                  <EditCharStats />
-                  <CharacterDescriptionDialog />
+                  <EditCharStats>
+                    <Edit characterLens={charLens} />
+                  </EditCharStats>
+                  <CharacterDescriptionDialog>
+                    <Details characterLens={charLens} />
+                  </CharacterDescriptionDialog>
                   <CharacterInventoryDialog />
                   <DeleteAlert
                     icon={
@@ -78,7 +86,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
                   >
                     This will permanently delete this {charType}
                   </DeleteAlert>
-                  <Tools characterLens={charLens} />
+                  <HeaderMenu characterLens={charLens} />
                 </CharacterName>
               </CardHeader>
               <CardContent>
@@ -126,7 +134,9 @@ function NewCharacterDialog({ charType, onCreate }: NewCharacterDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button><UserPlusIcon className="mr-2" /> New {charType}</Button>
+        <Button>
+          <UserPlusIcon className="mr-2" /> New {charType}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

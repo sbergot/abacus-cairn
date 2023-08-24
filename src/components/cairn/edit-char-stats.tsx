@@ -12,10 +12,11 @@ import TextField from "../ui/textfield";
 import GaugeField from "./gaugefield";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import TextAreaField from "../ui/textareafield";
+import { Children } from "../ui/types";
 
-interface Props {}
+interface Props extends Children {}
 
-export function EditCharStats({}: Props) {
+export function EditCharStats({ children }: Props) {
   const [open, setOpen] = useState(false);
   const characterLens = useCurrentCharacter();
   return (
@@ -56,6 +57,7 @@ export function EditCharStats({}: Props) {
             <div>Description</div>
             <TextAreaField lens={characterLens} fieldName="description" />
           </div>
+          {children}
           <Button onClick={() => setOpen(false)} className="w-full">
             Save
           </Button>
