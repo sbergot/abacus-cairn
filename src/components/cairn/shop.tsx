@@ -25,6 +25,7 @@ import {
   armors,
   expeditionGear,
   otherItems,
+  spells,
   tools,
   trinkets,
   weapons,
@@ -90,6 +91,7 @@ export function Shop() {
           <TabsTrigger value="tools">Tools</TabsTrigger>
           <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
           <TabsTrigger value="others">Others</TabsTrigger>
+          <TabsTrigger value="spells">Spells</TabsTrigger>
         </TabsList>
         <TabsContent value="all">
           <ShopTable items={allItems} />
@@ -111,6 +113,9 @@ export function Shop() {
         </TabsContent>
         <TabsContent value="others">
           <ShopTable items={otherItems} />
+        </TabsContent>
+        <TabsContent value="spells">
+          <ShopTable items={spells} />
         </TabsContent>
       </Tabs>
     </>
@@ -177,7 +182,6 @@ function ShopTable({ items }: ShopTableProps) {
   const urlParams = useUrlParams();
   const { slotId } = urlParams;
   const router = useRouter();
-  const linker = useRelativeLinker();
   const [search, setSearch] = useState("");
   const log = useLoggerContext();
 

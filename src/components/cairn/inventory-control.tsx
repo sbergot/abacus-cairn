@@ -1,6 +1,6 @@
 import { useLoggerContext } from "@/app/cairn-context";
 import { Slot } from "@/lib/game/cairn/types";
-import { getDamages } from "@/lib/game/cairn/utils";
+import { clampGauge, getDamages } from "@/lib/game/cairn/utils";
 import { roll } from "@/lib/random";
 import {
   CircleSlashIcon,
@@ -8,6 +8,7 @@ import {
   CheckCircle2Icon,
   Trash2Icon,
   SwordIcon,
+  MinusIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { DeleteAlert } from "../ui/delete-alert";
@@ -22,6 +23,7 @@ import {
 import { ShowSlotState } from "./show-slot-state";
 import { ILens } from "@/lib/types";
 import Link from "next/link";
+import { GearDescriptionDialog } from "./gear-description-dialog";
 
 interface Props {
   shopLink(slotId: string): string;
@@ -53,7 +55,7 @@ export function InventoryControl({ shopLink, slotsLens }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {slotsLens.state.map((slot) => (
+        {slotsLens.state.map((slot, idx) => (
           <TableRow key={slot.id} className="h-10">
             <TableCell className="p-1">{slot.type}</TableCell>
             <TableCell className="p-1">
@@ -120,6 +122,49 @@ export function InventoryControl({ shopLink, slotsLens }: Props) {
                 >
                   <SwordIcon />
                 </Button>
+              )}
+              {slot.state.type === "gear" && slot.state.gear.charges && (
+                <>
+                  <Button
+                    size="icon-sm"
+                    onClick={() => {
+                      slotsLens.setState((d) => {
+                        const slotStateToUpdate = d[idx].state;
+                        if (
+                          slotStateToUpdate.type === "gear" &&
+                          slotStateToUpdate.gear.charges
+                        ) {
+                          const charges = slotStateToUpdate.gear.charges;
+                          charges.current += 1;
+                          clampGauge(charges);
+                        }
+                      });
+                    }}
+                  >
+                    <PlusIcon />
+                  </Button>
+                  <Button
+                    size="icon-sm"
+                    onClick={() => {
+                      slotsLens.setState((d) => {
+                        const slotStateToUpdate = d[idx].state;
+                        if (
+                          slotStateToUpdate.type === "gear" &&
+                          slotStateToUpdate.gear.charges
+                        ) {
+                          const charges = slotStateToUpdate.gear.charges;
+                          charges.current -= 1;
+                          clampGauge(charges);
+                        }
+                      });
+                    }}
+                  >
+                    <MinusIcon />
+                  </Button>
+                </>
+              )}
+              {slot.state.type === "gear" && slot.state.gear.description && (
+                <GearDescriptionDialog gear={slot.state.gear} />
               )}
             </TableCell>
           </TableRow>

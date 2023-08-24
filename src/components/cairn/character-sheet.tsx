@@ -5,7 +5,7 @@ import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
-import { CharacterDescriptionDialog } from "./character-description";
+import { CharacterDescriptionDialog } from "./character-description-dialog";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import { CharacterCollection } from "./character-collection";
 import { getSubLens } from "@/lib/utils";

@@ -54,6 +54,7 @@ export interface Slot {
 export interface Gear {
   id: string;
   name: string;
+  description?: string;
   bulky?: boolean;
   blast?: boolean;
   charges?: Gauge;

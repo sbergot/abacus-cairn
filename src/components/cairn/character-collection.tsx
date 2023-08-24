@@ -12,7 +12,7 @@ import { ReactNode } from "react";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { DeleteAlert } from "../ui/delete-alert";
-import { CharacterDescriptionDialog } from "./character-description";
+import { CharacterDescriptionDialog } from "./character-description-dialog";
 import { CharacterInventoryDialog } from "./character-inventory-dialog";
 import { CharacterName } from "./character-name";
 import { CharacterStats } from "./character-stats";
