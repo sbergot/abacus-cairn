@@ -17,6 +17,7 @@ import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
+import { CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
 import {
   getSubArrayLens,
@@ -103,84 +104,11 @@ export function AllContent() {
                       const entryLens = getSubArrayLens(categoryLens, idx);
                       return (
                         <Card key={entry.id}>
-                          <CardHeader className="flex justify-between flex-row items-center gap-0">
-                            <CardTitle className="flex-grow">
-                              {entry.name}
-                            </CardTitle>
-                            <TooltipShort name={`Edit ${category}`}>
-                              <EditCustomEntryDialog lens={entryLens} />
-                            </TooltipShort>
-                            <TooltipShort
-                              name={
-                                entryLens.state.visibleToAll
-                                  ? "Make invisible to players"
-                                  : "Make visible to players"
-                              }
-                            >
-                              <Button
-                                variant="ghost"
-                                size="icon-sm"
-                                onClick={() =>
-                                  categoryLens.setState((d) => {
-                                    const entryToEdit = d.find(
-                                      (e) => e.id === entry.id
-                                    )!;
-                                    entryToEdit.visibleToAll =
-                                      !entryToEdit.visibleToAll;
-                                  })
-                                }
-                              >
-                                {entry.visibleToAll ? (
-                                  <EyeIcon />
-                                ) : (
-                                  <EyeOffIcon />
-                                )}
-                              </Button>
-                            </TooltipShort>
-                            <TooltipShort
-                              name={
-                                entryLens.state.excludedFromRandomPick
-                                  ? "Include in random pick"
-                                  : "Exclude from random pick"
-                              }
-                            >
-                              <Button
-                                variant="ghost"
-                                size="icon-sm"
-                                onClick={() =>
-                                  categoryLens.setState((d) => {
-                                    const entryToEdit = d.find(
-                                      (e) => e.id === entry.id
-                                    )!;
-                                    entryToEdit.excludedFromRandomPick =
-                                      !entryToEdit.excludedFromRandomPick;
-                                  })
-                                }
-                              >
-                                {entryLens.state.excludedFromRandomPick ? (
-                                  <XCircle />
-                                ) : (
-                                  <CheckCircle2Icon />
-                                )}
-                              </Button>
-                            </TooltipShort>
-                            <TooltipShort name="Delete">
-                              <DeleteAlert
-                                icon={
-                                  <Button variant="ghost" size="icon-sm">
-                                    <Trash2Icon />
-                                  </Button>
-                                }
-                                onConfirm={() =>
-                                  categoryLens.setState((d) =>
-                                    d.filter((e) => e.id !== entry.id)
-                                  )
-                                }
-                              >
-                                This will permanently delete this entry
-                              </DeleteAlert>
-                            </TooltipShort>
-                          </CardHeader>
+                          <CustomEntryHeader
+                            categoryLens={categoryLens}
+                            entryLens={entryLens}
+                            category={category}
+                          />
                           <CardContent>
                             <div>{entry.description}</div>
                             <WeakEmph>{entry.privateNotes}</WeakEmph>
@@ -196,6 +124,83 @@ export function AllContent() {
         })}
       </Accordion>
     </div>
+  );
+}
+
+interface CustomEntryHeaderProps {
+  entryLens: ILens<CustomEntry>;
+  categoryLens: ILens<CustomEntry[]>;
+  category: string;
+}
+
+function CustomEntryHeader({
+  entryLens,
+  categoryLens,
+  category,
+}: CustomEntryHeaderProps) {
+  const entry = entryLens.state;
+  return (
+    <CardHeader className="flex justify-between flex-row items-center gap-0">
+      <CardTitle className="flex-grow">{entry.name}</CardTitle>
+      <TooltipShort name={`Edit ${category}`}>
+        <EditCustomEntryDialog lens={entryLens} />
+      </TooltipShort>
+      <TooltipShort
+        name={
+          entry.visibleToAll
+            ? "Make invisible to players"
+            : "Make visible to players"
+        }
+      >
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
+            })
+          }
+        >
+          {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+        </Button>
+      </TooltipShort>
+      <TooltipShort
+        name={
+          entry.excludedFromRandomPick
+            ? "Include in random pick"
+            : "Exclude from random pick"
+        }
+      >
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.excludedFromRandomPick =
+                !entryToEdit.excludedFromRandomPick;
+            })
+          }
+        >
+          {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
+        </Button>
+      </TooltipShort>
+      <TooltipShort name="Delete">
+        <DeleteAlert
+          icon={
+            <Button variant="ghost" size="icon-sm">
+              <Trash2Icon />
+            </Button>
+          }
+          onConfirm={() =>
+            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
+          }
+        >
+          This will permanently delete this entry
+        </DeleteAlert>
+      </TooltipShort>
+    </CardHeader>
   );
 }
 
