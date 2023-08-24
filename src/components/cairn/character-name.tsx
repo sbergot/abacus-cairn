@@ -7,9 +7,9 @@ interface Props extends Children {
 
 export function CharacterName({ name, children }: Props) {
   return (
-    <div className="flex">
+    <div className="flex justify-between items-start">
       <Title>{name}</Title>
-      {children}
+      <div className="flex">{children}</div>
     </div>
   );
 }

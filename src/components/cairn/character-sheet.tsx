@@ -11,7 +11,6 @@ import { Button } from "../ui/button";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import {
   getRandomName,
-  initBasicCharacter,
   initBlankCharacter,
 } from "@/lib/game/cairn/character-generation";
 import { CharacterCollection } from "./character-collection";
