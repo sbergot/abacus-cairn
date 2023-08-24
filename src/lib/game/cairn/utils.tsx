@@ -5,11 +5,11 @@ import {
   CairnCharacter,
   CairnGame,
   CairnMessage,
-  Gauge,
   Slot,
 } from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 import { AllChatMessage } from "@/lib/network/types";
+import { Gauge } from "../types";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
   const { abilityValue, mode } = check;
@@ -58,6 +58,7 @@ export function initGame(name: string): CairnGame {
     customEntries: {},
     timers: [],
     npcs: [],
+    clocks: [],
   };
 }
 

@@ -1,10 +1,5 @@
 import { ChatMessage } from "@/lib/network/types";
-import { BaseGame, GmContent } from "../types";
-
-export interface Gauge {
-  current: number;
-  max: number;
-}
+import { BaseGame, Gauge, GmContent } from "../types";
 
 export type AbilityType = "strength" | "dexterity" | "willpower";
 

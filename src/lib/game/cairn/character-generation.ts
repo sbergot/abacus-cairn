@@ -2,7 +2,6 @@ import { clone, uuidv4 } from "@/lib/utils";
 import {
   CairnCharacter,
   CairnCharacterBase,
-  Gauge,
   Gear,
   Slot,
   SlotState,
@@ -20,6 +19,7 @@ import {
   trinkets,
   weapons,
 } from "./data";
+import { Gauge } from "../types";
 
 export function getEmptySlots(n: number, type: string): Slot[] {
   return [...Array(5)].map(() => ({ id: uuidv4(), type, state: { type: "empty" } }));

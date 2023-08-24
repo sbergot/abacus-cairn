@@ -1,6 +1,7 @@
 import { Children } from "@/components/ui/types";
-import { CairnCharacter, Gauge } from "@/lib/game/cairn/types";
+import { CairnCharacter } from "@/lib/game/cairn/types";
 import { getArmorValue } from "@/lib/game/cairn/utils";
+import { Gauge } from "@/lib/game/types";
 
 interface CharacterStatsViewProps {
   character: CairnCharacter;

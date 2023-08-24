@@ -2,8 +2,8 @@ import { ILens, Setter } from "@/lib/types";
 import { Input } from "../ui/input";
 import { ClassName, KeyOfType } from "../ui/types";
 import { Draft } from "immer";
-import { Gauge } from "@/lib/game/cairn/types";
 import { clampGauge } from "@/lib/game/cairn/utils";
+import { Gauge } from "@/lib/game/types";
 
 interface Props<T> extends ClassName {
   lens: ILens<T>;
