@@ -25,7 +25,7 @@ export interface GmContent {
   description: string;
   visibleToAll: boolean;
   excludedFromRandomPick: boolean;
-  privateNote: string;
+  privateNotes: string;
 }
 
 export interface CustomEntry extends WithId, GmContent {

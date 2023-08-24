@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import TextAreaField from "@/components/ui/textareafield";
+import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
@@ -67,7 +68,7 @@ export function AllContent() {
                 <div className="flex flex-col items-start gap-2">
                   <div className="flex gap-2">
                     <NewEntryDialog
-                      onCreate={(name, description) =>
+                      onCreate={(name, description, privateNotes) =>
                         gameLens.setState((d) => {
                           d.customEntries[category].push({
                             id: uuidv4(),
@@ -76,7 +77,7 @@ export function AllContent() {
                             category,
                             excludedFromRandomPick: false,
                             visibleToAll: false,
-                            privateNote: "",
+                            privateNotes: privateNotes,
                           });
                         })
                       }
@@ -106,7 +107,9 @@ export function AllContent() {
                             <CardTitle className="flex-grow">
                               {entry.name}
                             </CardTitle>
-                            <EditCustomEntryDialog lens={entryLens} />
+                            <TooltipShort name={`Edit ${category}`}>
+                              <EditCustomEntryDialog lens={entryLens} />
+                            </TooltipShort>
                             <Button
                               variant="ghost"
                               size="icon-sm"
@@ -143,7 +146,7 @@ export function AllContent() {
                           </CardHeader>
                           <CardContent>
                             <div>{entry.description}</div>
-                            <WeakEmph>{entry.privateNote}</WeakEmph>
+                            <WeakEmph>{entry.privateNotes}</WeakEmph>
                           </CardContent>
                         </Card>
                       );
@@ -190,13 +193,14 @@ function NewCategoryDialog({ onCreate }: NewCategoryDialogProps) {
 }
 
 interface NewEntryDialogProps {
-  onCreate(name: string, description: string): void;
+  onCreate(name: string, description: string, privateNotes: string): void;
 }
 
 function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [privateNotes, setPrivateNotes] = useState("");
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
@@ -213,9 +217,14 @@ function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        <div>Private notes</div>
+        <Textarea
+          value={privateNotes}
+          onChange={(e) => setPrivateNotes(e.target.value)}
+        />
         <Button
           onClick={() => {
-            onCreate(name, description);
+            onCreate(name, description, privateNotes);
             setOpen(false);
           }}
         >
@@ -229,32 +238,48 @@ function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
 function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   return (
     <>
-      <Button
-        size="icon-sm"
-        variant="ghost"
-        onClick={() =>
-          characterLens.setState((d) => {
-            d.visibleToAll = !d.visibleToAll;
-          })
+      <TooltipShort
+        name={
+          characterLens.state.visibleToAll
+            ? "Make invisible to players"
+            : "Make visible to players"
         }
       >
-        {characterLens.state.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
-      </Button>
-      <Button
-        size="icon-sm"
-        variant="ghost"
-        onClick={() =>
-          characterLens.setState((d) => {
-            d.excludedFromRandomPick = !d.excludedFromRandomPick;
-          })
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          onClick={() =>
+            characterLens.setState((d) => {
+              d.visibleToAll = !d.visibleToAll;
+            })
+          }
+        >
+          {characterLens.state.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+        </Button>
+      </TooltipShort>
+      <TooltipShort
+        name={
+          characterLens.state.excludedFromRandomPick
+            ? "Include in random pick"
+            : "Exclude from random pick"
         }
       >
-        {characterLens.state.excludedFromRandomPick ? (
-          <XCircle />
-        ) : (
-          <CheckCircle2Icon />
-        )}
-      </Button>
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          onClick={() =>
+            characterLens.setState((d) => {
+              d.excludedFromRandomPick = !d.excludedFromRandomPick;
+            })
+          }
+        >
+          {characterLens.state.excludedFromRandomPick ? (
+            <XCircle />
+          ) : (
+            <CheckCircle2Icon />
+          )}
+        </Button>
+      </TooltipShort>
     </>
   );
 }
@@ -263,17 +288,13 @@ function NpcEdit({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   return (
     <div>
       <div>Private notes</div>
-      <TextAreaField lens={characterLens} fieldName="privateNote" />
+      <TextAreaField lens={characterLens} fieldName="privateNotes" />
     </div>
   );
 }
 
 function NpcDetails({ characterLens }: { characterLens: ILens<CairnNpc> }) {
-  return (
-    <WeakEmph>
-      {characterLens.state.privateNote}
-    </WeakEmph>
-  );
+  return <WeakEmph>{characterLens.state.privateNotes}</WeakEmph>;
 }
 
 function newNpc(char: CairnCharacter): CairnNpc {
@@ -281,7 +302,7 @@ function newNpc(char: CairnCharacter): CairnNpc {
     ...char,
     visibleToAll: false,
     excludedFromRandomPick: false,
-    privateNote: "",
+    privateNotes: "",
   };
   return newNpc;
 }

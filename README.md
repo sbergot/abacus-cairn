@@ -8,6 +8,7 @@ A mapless vtt
 
 - private notes on gm content
 - tooltips on icons
+- spells
 - pick random character, npc, custom entry
 - switch gear between two slots
 - timers

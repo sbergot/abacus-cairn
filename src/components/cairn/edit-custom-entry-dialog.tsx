@@ -43,7 +43,7 @@ export function EditCustomEntryDialog({ lens }: Props) {
           </div>
           <div>
             <div>Private notes</div>
-            <TextAreaField lens={lens} fieldName="privateNote" />
+            <TextAreaField lens={lens} fieldName="privateNotes" />
           </div>
           <Button onClick={() => setOpen(false)} className="w-full">
             Save

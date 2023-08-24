@@ -31,6 +31,8 @@ import {
   initBasicCharacter,
   rollCharacterStats,
 } from "@/lib/game/cairn/character-generation";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { TooltipShort } from "../ui/tooltip-short";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
@@ -67,25 +69,33 @@ export function CharacterCollection<TChar extends CairnCharacter>({
             <Card>
               <CardHeader>
                 <CharacterName name={npc.name}>
-                  <EditCharStats>
-                    <Edit characterLens={charLens} />
-                  </EditCharStats>
-                  <CharacterDescriptionDialog>
-                    <Details characterLens={charLens} />
-                  </CharacterDescriptionDialog>
-                  <CharacterInventoryDialog />
-                  <DeleteAlert
-                    icon={
-                      <Button variant="ghost" size="icon-sm">
-                        <Trash2Icon />
-                      </Button>
-                    }
-                    onConfirm={() =>
-                      lens.setState((d) => d.filter((n) => n.id !== npc.id))
-                    }
-                  >
-                    This will permanently delete this {charType}
-                  </DeleteAlert>
+                  <TooltipShort name="Edit stats">
+                    <EditCharStats>
+                      <Edit characterLens={charLens} />
+                    </EditCharStats>
+                  </TooltipShort>
+                  <TooltipShort name="View details">
+                    <CharacterDescriptionDialog>
+                      <Details characterLens={charLens} />
+                    </CharacterDescriptionDialog>
+                  </TooltipShort>
+                  <TooltipShort name="View inventory">
+                    <CharacterInventoryDialog />
+                  </TooltipShort>
+                  <TooltipShort name="Delete">
+                    <DeleteAlert
+                      icon={
+                        <Button variant="ghost" size="icon-sm">
+                          <Trash2Icon />
+                        </Button>
+                      }
+                      onConfirm={() =>
+                        lens.setState((d) => d.filter((n) => n.id !== npc.id))
+                      }
+                    >
+                      This will permanently delete this {charType}
+                    </DeleteAlert>
+                  </TooltipShort>
                   <HeaderMenu characterLens={charLens} />
                 </CharacterName>
               </CardHeader>

@@ -17,6 +17,7 @@ import { CharacterCollection } from "./character-collection";
 import { getSubLens } from "@/lib/utils";
 import { CarryCapacityCollection } from "./carry-capacity-collection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { TooltipShort } from "../ui/tooltip-short";
 
 interface CharacterSheetProps {}
 
@@ -30,22 +31,15 @@ export function CharacterSheet({}: CharacterSheetProps) {
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
       <CharacterName name={characterLens.state.name}>
-        <EditCharStats />
-        <GenericRolls />
-        <CharacterDescriptionDialog />
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() =>
-            setCharacter((d) => {
-              const hireling = initBlankCharacter();
-              hireling.name = getRandomName();
-              d.hireLings.push(hireling);
-            })
-          }
-        >
-          <UserPlusIcon className="mr-2" />
-        </Button>
+        <TooltipShort name="Edit stats">
+          <EditCharStats />
+        </TooltipShort>
+        <TooltipShort name="Generic rolls">
+          <GenericRolls />
+        </TooltipShort>
+        <TooltipShort name="View details">
+          <CharacterDescriptionDialog />
+        </TooltipShort>
       </CharacterName>
       <CharacterStats />
       <CharacterCoins />

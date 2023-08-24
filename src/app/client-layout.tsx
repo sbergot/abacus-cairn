@@ -1,10 +1,15 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { GameContextProvider } from "./cairn-context";
 import Link from "next/link";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <div className="mt-2 pl-4">
@@ -19,7 +24,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           href="https://github.com/sbergot/abacus/issues"
         />
       </div>
-      <GameContextProvider>{children}</GameContextProvider>
+      <TooltipProvider>
+        <GameContextProvider>{children}</GameContextProvider>
+      </TooltipProvider>
     </div>
   );
 }
