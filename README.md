@@ -4,18 +4,15 @@ A mapless vtt
 
 ## todo
 
-- release beta
-
-- private notes on gm content
-- tooltips on icons
-- spells
 - pick random character, npc, custom entry
+- spells
 - switch gear between two slots
 - timers
 - clocks
 
--- not sure about
+-- later?
 
 - npc -> hireling button
+- items as gm content category. Button to pick item for pc.
 - solo random tables
 - item details

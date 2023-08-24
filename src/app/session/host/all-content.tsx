@@ -1,6 +1,7 @@
 import { useCurrentGame } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
 import { EditCustomEntryDialog } from "@/components/cairn/edit-custom-entry-dialog";
+import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
 import {
   Accordion,
   AccordionContent,
@@ -10,14 +11,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DeleteAlert } from "@/components/ui/delete-alert";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
-import { CustomEntry } from "@/lib/game/types";
+import { CustomEntry, GmContent } from "@/lib/game/types";
+import { pickRandom } from "@/lib/random";
 import { ILens } from "@/lib/types";
 import {
   getSubArrayLens,
@@ -25,8 +33,10 @@ import {
   getSubRecordLens,
   uuidv4,
 } from "@/lib/utils";
+import { Draft } from "immer";
 import {
   CheckCircle2Icon,
+  DicesIcon,
   EyeIcon,
   EyeOffIcon,
   FolderPlusIcon,
@@ -83,6 +93,7 @@ export function AllContent() {
                         })
                       }
                     />
+                    <RandomEntryDialog lens={categoryLens} name={category} />
                     <DeleteAlert
                       icon={
                         <Button>
@@ -353,13 +364,63 @@ function AllNpcs() {
   const gameLens = useCurrentGame();
   const npcsLens = getSubLens(gameLens, "npcs");
   return (
-    <CharacterCollection<CairnNpc>
-      charType="npc"
-      lens={npcsLens}
-      newChar={newNpc}
-      HeaderMenu={NpcTools}
-      Edit={NpcEdit}
-      Details={NpcDetails}
-    />
+    <div className="flex flex-col gap-2 items-start">
+      <div className="flex gap-2">
+        <NewCharacterDialog
+          charType="npc"
+          onCreate={(c) => {
+            npcsLens.setState((d) => {
+              d.push(newNpc(c) as Draft<CairnNpc>);
+            });
+          }}
+        />
+        <RandomEntryDialog lens={npcsLens} name="npc" />
+      </div>
+      <CharacterCollection<CairnNpc>
+        charType="npc"
+        lens={npcsLens}
+        HeaderMenu={NpcTools}
+        Edit={NpcEdit}
+        Details={NpcDetails}
+      />
+    </div>
+  );
+}
+
+interface RandomEntryDialogProps {
+  lens: ILens<GmContent[]>;
+  name: string;
+}
+
+function RandomEntryDialog({ lens, name }: RandomEntryDialogProps) {
+  const [entry, setEntry] = useState<GmContent | undefined>(undefined);
+  return (
+    <Dialog
+      onOpenChange={(open) =>
+        open &&
+        setEntry(
+          pickRandom(lens.state.filter((e) => !e.excludedFromRandomPick))
+        )
+      }
+    >
+      <DialogTrigger>
+        <Button>
+          <DicesIcon /> Pick random {name}
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        {entry === undefined ? (
+          "no pickable entry"
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>{entry.name}</DialogTitle>
+            </DialogHeader>
+            {entry.description}
+            <WeakEmph>{entry.privateNotes}</WeakEmph>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

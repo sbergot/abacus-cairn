@@ -6,24 +6,18 @@ import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { CharacterDescriptionDialog } from "./character-description";
-import { UserPlusIcon } from "lucide-react";
-import { Button } from "../ui/button";
 import { useCurrentCharacter } from "@/app/cairn-context";
-import {
-  getRandomName,
-  initBlankCharacter,
-} from "@/lib/game/cairn/character-generation";
 import { CharacterCollection } from "./character-collection";
 import { getSubLens } from "@/lib/utils";
 import { CarryCapacityCollection } from "./carry-capacity-collection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { TooltipShort } from "../ui/tooltip-short";
+import { NewCharacterDialog } from "./new-character-dialog";
 
 interface CharacterSheetProps {}
 
 export function CharacterSheet({}: CharacterSheetProps) {
   const characterLens = useCurrentCharacter();
-  const { setState: setCharacter } = characterLens;
   const { characterId } = useUrlParams();
   const linker = useRelativeLinker();
   const hirelingsLens = getSubLens(characterLens, "hireLings");
@@ -57,14 +51,23 @@ export function CharacterSheet({}: CharacterSheetProps) {
           />
         </TabsContent>
         <TabsContent value="hirelings">
-          <CharacterCollection
-            charType="hireling"
-            lens={hirelingsLens}
-            newChar={(c) => c}
-            HeaderMenu={() => <></>}
-            Edit={() => <></>}
-            Details={() => <></>}
-          />
+          <div className="flex flex-col gap-2 items-start">
+            <NewCharacterDialog
+              charType="npc"
+              onCreate={(c) => {
+                hirelingsLens.setState((d) => {
+                  d.push(c);
+                });
+              }}
+            />
+            <CharacterCollection
+              charType="hireling"
+              lens={hirelingsLens}
+              HeaderMenu={() => <></>}
+              Edit={() => <></>}
+              Details={() => <></>}
+            />
+          </div>
         </TabsContent>
         <TabsContent value="carry">
           <CarryCapacityCollection
