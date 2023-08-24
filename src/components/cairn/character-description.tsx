@@ -9,7 +9,7 @@ export function CharacterDescriptionDialog() {
     <DialogTrigger><Button variant="ghost" size="icon-sm"><UserSquare2Icon /></Button></DialogTrigger>
     <DialogContent>
     <div>Description</div>
-    {characterLens.state.traits}
+    {characterLens.state.description}
     </DialogContent>
   </Dialog>
 }

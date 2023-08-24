@@ -1,5 +1,5 @@
 import { ChatMessage } from "@/lib/network/types";
-import { BaseGame } from "../types";
+import { BaseGame, GmContent } from "../types";
 
 export interface Gauge {
   current: number;
@@ -13,7 +13,7 @@ export interface CairnCharacterBase {
   name: string;
   age: number;
   background: string;
-  traits: string;
+  description: string;
   strength: Gauge;
   dexterity: Gauge;
   willpower: Gauge;
@@ -38,10 +38,7 @@ export interface CairnCharacter extends CairnCharacterBase {
   carryCapacities: CarryCapacity[];
 }
 
-export interface CairnNpc extends CairnCharacter {
-  visibleToAll: boolean;
-  excludedFromRandomPick: boolean;
-}
+export interface CairnNpc extends CairnCharacter, GmContent {}
 
 type TaggedUnion<T extends string, P> = { type: T } & P;
 
@@ -93,7 +90,6 @@ export type CairnMessage =
   | ChatMessage<"Scarred", {}>
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
-
 
 export interface CairnGame extends BaseGame<CairnMessage> {
   npcs: CairnNpc[];

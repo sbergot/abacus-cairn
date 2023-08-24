@@ -14,12 +14,17 @@ export interface BaseCharacter extends WithId {
   name: string;
 }
 
-export interface CustomEntry extends WithId {
+export interface GmContent {
+  id: string;
   name: string;
-  category: string;
   description: string;
   visibleToAll: boolean;
   excludedFromRandomPick: boolean;
+  privateNote: string;
+}
+
+export interface CustomEntry extends WithId, GmContent {
+  category: string;
 }
 
 export interface Timer extends WithId {

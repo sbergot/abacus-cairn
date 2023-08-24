@@ -48,7 +48,7 @@ export default function RollGear() {
       </Button>
       <Title>{character.name}</Title>
       <CharacterStatsView character={character} />
-      <WeakEmph>{character.traits}</WeakEmph>
+      <WeakEmph>{character.description}</WeakEmph>
       <CharacterInventoryView />
     </div>
   );

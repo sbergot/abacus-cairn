@@ -54,7 +54,7 @@ export function initCharacterBase(): CairnCharacterBase {
     silver: 0,
     copper: 0,
     deprived: false,
-    traits: "",
+    description: "",
     inventory: getEmptyCharacterSlots(),
   };
 }
@@ -74,7 +74,7 @@ export function initBasicCharacter(): CairnCharacter {
     dexterity: { current: 10, max: 10 },
     willpower: { current: 10, max: 10 },
     name: getRandomName(),
-    traits: generateTraits(),
+    description: generateTraits(),
   };
   return newNpc;
 }
@@ -264,7 +264,7 @@ export function fillCharacterGear(character: CairnCharacter) {
 
 export function fillRandomCharacter(character: CairnCharacter) {
   character.background = pickRandom(backgrounds);
-  character.traits = generateTraits();
+  character.description = generateTraits();
   character.name = getRandomName();
   fillCharacterGear(character);
 }

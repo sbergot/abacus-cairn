@@ -54,7 +54,7 @@ export function EditCharStats({}: Props) {
           </div>
           <div>
             <div>Description</div>
-            <TextAreaField lens={characterLens} fieldName="traits" />
+            <TextAreaField lens={characterLens} fieldName="description" />
           </div>
           <Button onClick={() => setOpen(false)} className="w-full">
             Save

@@ -56,12 +56,12 @@ export default function PickCharacterBackground() {
         </Dialog>
       </div>
       <div>Define your traits</div>
-      <TextAreaField lens={lens} fieldName="traits" className="resize-none" />
+      <TextAreaField lens={lens} fieldName="description" className="resize-none" />
       <Button
         className="w-full"
         onClick={() =>
           setCharacter((d) => {
-            d.traits = generateTraits();
+            d.description = generateTraits();
           })
         }
       >
@@ -69,7 +69,7 @@ export default function PickCharacterBackground() {
       </Button>
       <Button
         className="w-full"
-        disabled={!character.background || !character.traits}
+        disabled={!character.background || !character.description}
         onClick={() => router.push(linker("../gears"))}
       >
         Next

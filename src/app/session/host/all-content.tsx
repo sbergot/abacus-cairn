@@ -1,6 +1,4 @@
-import {
-  useCurrentGame,
-} from "@/app/cairn-context";
+import { useCurrentGame } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
 import {
   Accordion,
@@ -16,11 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
-import {
-  getSubLens,
-  getSubRecordLens,
-  uuidv4,
-} from "@/lib/utils";
+import { getSubLens, getSubRecordLens, uuidv4 } from "@/lib/utils";
 import {
   CheckCircle2Icon,
   EyeIcon,
@@ -70,6 +64,7 @@ export function AllContent() {
                           category,
                           excludedFromRandomPick: false,
                           visibleToAll: false,
+                          privateNote: "",
                         });
                       })
                     }
@@ -253,6 +248,7 @@ function newNpc(char: CairnCharacter): CairnNpc {
     ...char,
     visibleToAll: false,
     excludedFromRandomPick: false,
+    privateNote: "",
   };
   return newNpc;
 }
