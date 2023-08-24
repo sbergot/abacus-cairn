@@ -110,39 +110,76 @@ export function AllContent() {
                             <TooltipShort name={`Edit ${category}`}>
                               <EditCustomEntryDialog lens={entryLens} />
                             </TooltipShort>
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              onClick={() =>
-                                categoryLens.setState((d) => {
-                                  const entryToEdit = d.find(
-                                    (e) => e.id === entry.id
-                                  )!;
-                                  entryToEdit.visibleToAll =
-                                    !entryToEdit.visibleToAll;
-                                })
+                            <TooltipShort
+                              name={
+                                entryLens.state.visibleToAll
+                                  ? "Make invisible to players"
+                                  : "Make visible to players"
                               }
                             >
-                              {entry.visibleToAll ? (
-                                <EyeIcon />
-                              ) : (
-                                <EyeOffIcon />
-                              )}
-                            </Button>
-                            <DeleteAlert
-                              icon={
-                                <Button variant="ghost" size="icon-sm">
-                                  <Trash2Icon />
-                                </Button>
-                              }
-                              onConfirm={() =>
-                                categoryLens.setState((d) =>
-                                  d.filter((e) => e.id !== entry.id)
-                                )
+                              <Button
+                                variant="ghost"
+                                size="icon-sm"
+                                onClick={() =>
+                                  categoryLens.setState((d) => {
+                                    const entryToEdit = d.find(
+                                      (e) => e.id === entry.id
+                                    )!;
+                                    entryToEdit.visibleToAll =
+                                      !entryToEdit.visibleToAll;
+                                  })
+                                }
+                              >
+                                {entry.visibleToAll ? (
+                                  <EyeIcon />
+                                ) : (
+                                  <EyeOffIcon />
+                                )}
+                              </Button>
+                            </TooltipShort>
+                            <TooltipShort
+                              name={
+                                entryLens.state.excludedFromRandomPick
+                                  ? "Include in random pick"
+                                  : "Exclude from random pick"
                               }
                             >
-                              This will permanently delete this entry
-                            </DeleteAlert>
+                              <Button
+                                variant="ghost"
+                                size="icon-sm"
+                                onClick={() =>
+                                  categoryLens.setState((d) => {
+                                    const entryToEdit = d.find(
+                                      (e) => e.id === entry.id
+                                    )!;
+                                    entryToEdit.excludedFromRandomPick =
+                                      !entryToEdit.excludedFromRandomPick;
+                                  })
+                                }
+                              >
+                                {entryLens.state.excludedFromRandomPick ? (
+                                  <XCircle />
+                                ) : (
+                                  <CheckCircle2Icon />
+                                )}
+                              </Button>
+                            </TooltipShort>
+                            <TooltipShort name="Delete">
+                              <DeleteAlert
+                                icon={
+                                  <Button variant="ghost" size="icon-sm">
+                                    <Trash2Icon />
+                                  </Button>
+                                }
+                                onConfirm={() =>
+                                  categoryLens.setState((d) =>
+                                    d.filter((e) => e.id !== entry.id)
+                                  )
+                                }
+                              >
+                                This will permanently delete this entry
+                              </DeleteAlert>
+                            </TooltipShort>
                           </CardHeader>
                           <CardContent>
                             <div>{entry.description}</div>
