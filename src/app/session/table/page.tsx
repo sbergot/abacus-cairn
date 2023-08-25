@@ -1,7 +1,6 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { MessagePanel } from "@/components/generic-pages/message-panel";
 import { CairnMessage } from "@/lib/game/cairn/types";
 import {
   useCurrentCharacter,

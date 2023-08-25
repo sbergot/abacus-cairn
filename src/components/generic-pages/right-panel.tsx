@@ -24,7 +24,7 @@ export function RightPanel<TMessage extends UknownGameMessage>({
   messages,
   context,
   ShowCustomMessage,
-  elements
+  elements,
 }: Props<TMessage>) {
   return (
     <Tabs defaultValue="messages" className="h-full">
@@ -39,7 +39,9 @@ export function RightPanel<TMessage extends UknownGameMessage>({
           ShowCustomMessage={ShowCustomMessage}
         />
       </TabsContent>
-      <TabsContent value="revealed-elements"><RevealedElements elements={elements} /></TabsContent>
+      <TabsContent value="revealed-elements">
+        <RevealedElements elements={elements} />
+      </TabsContent>
     </Tabs>
   );
 }
