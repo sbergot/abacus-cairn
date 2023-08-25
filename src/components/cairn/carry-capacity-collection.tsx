@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { DeleteAlert } from "../ui/delete-alert";
-import { CharacterName } from "./character-name";
+import { TitleWithIcons } from "./title-with-icons";
 import { Draft } from "immer";
 import {
   Dialog,
@@ -45,7 +45,7 @@ export function CarryCapacityCollection({
         return (
           <Card key={carryCapacity.id} className="w-full">
             <CardHeader>
-              <CharacterName name={carryCapacity.name}>
+              <TitleWithIcons name={carryCapacity.name}>
                 <DeleteAlert
                   icon={
                     <Button variant="ghost" size="icon-sm">
@@ -61,7 +61,7 @@ export function CarryCapacityCollection({
                   This will permanently delete this carry capacity and all its
                   content.
                 </DeleteAlert>
-              </CharacterName>
+              </TitleWithIcons>
               <WeakEmph>{carryCapacity.description}</WeakEmph>
             </CardHeader>
             <CardContent>

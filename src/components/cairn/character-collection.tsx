@@ -14,7 +14,7 @@ import { Card, CardHeader, CardContent } from "../ui/card";
 import { DeleteAlert } from "../ui/delete-alert";
 import { CharacterDescriptionDialog } from "./character-description-dialog";
 import { CharacterInventoryDialog } from "./character-inventory-dialog";
-import { CharacterName } from "./character-name";
+import { TitleWithIcons } from "./title-with-icons";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { TooltipShort } from "../ui/tooltip-short";
@@ -43,7 +43,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
           <CurrentCharacterContextProvider key={npc.id} value={charLens}>
             <Card>
               <CardHeader>
-                <CharacterName name={npc.name}>
+                <TitleWithIcons name={npc.name}>
                   <TooltipShort name="Edit stats">
                     <EditCharStats>
                       <Edit characterLens={charLens} />
@@ -72,7 +72,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
                     </DeleteAlert>
                   </TooltipShort>
                   <HeaderMenu characterLens={charLens} />
-                </CharacterName>
+                </TitleWithIcons>
               </CardHeader>
               <CardContent>
                 <CharacterStats />

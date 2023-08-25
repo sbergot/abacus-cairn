@@ -111,7 +111,7 @@ function AllTimers() {
   const gameLens = useCurrentGame();
   const timersLens = getSubLens(gameLens, "timers");
   return (
-    <>
+    <div className="flex flex-col gap-2 items-start">
       <TimerEditDialog
         onCreate={(t) =>
           timersLens.setState((d) => {
@@ -119,7 +119,7 @@ function AllTimers() {
           })
         }
       />
-      <div>
+      <div className="flex flex-wrap gap-4">
         {timersLens.state.map((timer, idx) => (
           <Timer
             key={timer.id}
@@ -130,6 +130,6 @@ function AllTimers() {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }

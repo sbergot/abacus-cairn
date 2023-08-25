@@ -7,6 +7,7 @@ import { Button } from "./button";
 import { AlarmPlusIcon } from "lucide-react";
 import CheckboxField from "./checkboxfield";
 import NumberField from "./numberfield";
+import { useState } from "react";
 
 function initTimer(): Timer {
   return {
@@ -27,11 +28,14 @@ interface Props {
 
 export function TimerEditDialog({ onCreate }: Props) {
   const timerLens = useLens<Timer>(initTimer());
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>
-          <AlarmPlusIcon /> New timer
+        <Button asChild>
+          <div>
+            <AlarmPlusIcon /> New timer
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -69,6 +73,7 @@ export function TimerEditDialog({ onCreate }: Props) {
             onClick={() => {
               onCreate(timerLens.state);
               timerLens.setState(() => initTimer());
+              setOpen(false);
             }}
           >
             Save

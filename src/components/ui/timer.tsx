@@ -1,8 +1,11 @@
 import { Timer } from "@/lib/game/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { PauseIcon, PlayIcon, RefreshCwIcon } from "lucide-react";
+import { PauseIcon, PlayIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
 import { Button } from "./button";
 import { ILens } from "@/lib/types";
+import { TitleWithIcons } from "../cairn/title-with-icons";
+import { DeleteAlert } from "./delete-alert";
+import { Progress } from "./progress";
 
 function formatNbr(n: number) {
   return String(n).padStart(2, "0");
@@ -21,17 +24,31 @@ interface Props {
   onDelete(): void;
 }
 
-export function Timer({ timerLens }: Props) {
+export function Timer({ timerLens, onDelete }: Props) {
   const timer = timerLens.state;
+  const progressPercent = timer.currentTimeInMSec * 100 / (timer.intervalInSec * 1000)
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{timer.name}</CardTitle>
+        <TitleWithIcons name={timer.name}>
+          <DeleteAlert
+            icon={
+              <Button variant="ghost" size="icon-sm">
+                <Trash2Icon />
+              </Button>
+            }
+            onConfirm={onDelete}
+          >
+            This action cannot be undone. This will permanently delete the
+            timer.
+          </DeleteAlert>
+        </TitleWithIcons>
       </CardHeader>
       <CardContent>
-        <div>
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
+            size="icon-sm"
             onClick={() =>
               timerLens.setState((d) => {
                 d.isPaused = !d.isPaused;
@@ -42,7 +59,8 @@ export function Timer({ timerLens }: Props) {
           </Button>
           <Button
             variant="ghost"
-            disabled={timer.isPaused}
+            size="icon-sm"
+            disabled={!timer.isPaused}
             onClick={() =>
               timerLens.setState((d) => {
                 d.currentTimeInMSec = 0;
@@ -51,8 +69,9 @@ export function Timer({ timerLens }: Props) {
           >
             <RefreshCwIcon />
           </Button>
-          <div>{formatTime(timer.currentTimeInMSec)}</div>
+          <div className="w-20">{formatTime(timer.currentTimeInMSec)}</div>
         </div>
+        <Progress value={progressPercent} />
       </CardContent>
     </Card>
   );

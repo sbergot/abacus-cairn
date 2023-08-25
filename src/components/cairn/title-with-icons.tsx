@@ -5,7 +5,7 @@ interface Props extends Children {
   name: string;
 }
 
-export function CharacterName({ name, children }: Props) {
+export function TitleWithIcons({ name, children }: Props) {
   return (
     <div className="flex justify-between items-start">
       <Title>{name}</Title>

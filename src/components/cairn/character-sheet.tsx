@@ -1,6 +1,6 @@
 import { CharacterCoins } from "./character-coins";
 import { CharacterInventory } from "./character-inventory";
-import { CharacterName } from "./character-name";
+import { TitleWithIcons } from "./title-with-icons";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";
@@ -24,7 +24,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
 
   return (
     <div className="flex flex-col gap-4 max-w-full items-start">
-      <CharacterName name={characterLens.state.name}>
+      <TitleWithIcons name={characterLens.state.name}>
         <TooltipShort name="Edit stats">
           <EditCharStats />
         </TooltipShort>
@@ -34,7 +34,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
         <TooltipShort name="View details">
           <CharacterDescriptionDialog />
         </TooltipShort>
-      </CharacterName>
+      </TitleWithIcons>
       <CharacterStats />
       <CharacterCoins />
       <Tabs defaultValue="inventory" className="w-full">
