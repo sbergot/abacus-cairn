@@ -5,6 +5,8 @@ import { Draft, produce } from "immer";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCurrentGenericGame } from "./gameContext";
 import { useLoggerContext } from "@/app/cairn-context";
+import { useImmer } from "use-immer";
+import { ILens } from "./types";
 
 export function useBrowserId(): string {
   return useMemo(() => {
@@ -32,6 +34,11 @@ export function useImmerLocalStorage<T>(
     );
   }
   return [value, setImmerValue];
+}
+
+export function useLens<T>(defaultValue: T): ILens<T> {
+  const [state, setState] = useImmer(defaultValue);
+  return { state, setState };
 }
 
 export function useRelativeLinker() {

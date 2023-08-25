@@ -1,11 +1,8 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import {
-  CairnCharacter,
-  CairnMessage,
-} from "@/lib/game/cairn/types";
-import { useGmConnectionContext } from "@/app/cairn-context";
+import { CairnCharacter, CairnMessage } from "@/lib/game/cairn/types";
+import { useCurrentGame, useGmConnectionContext } from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +11,9 @@ import { CopyIcon } from "lucide-react";
 import { CharacterEntry } from "./character-entry";
 import { AllContent } from "./all-content";
 import { RightPanel } from "@/components/generic-pages/right-panel";
+import { TimerEditDialog } from "@/components/ui/timer-edit-dialog";
+import { getSubArrayLens, getSubLens } from "@/lib/utils";
+import { Timer } from "@/components/ui/timer";
 
 export default function Session() {
   const { messages, revealedElements } = useGmConnectionContext();
@@ -39,6 +39,7 @@ function GmTabs() {
         <TabsTrigger value="connections">connections</TabsTrigger>
         <TabsTrigger value="characters">characters</TabsTrigger>
         <TabsTrigger value="content">content</TabsTrigger>
+        <TabsTrigger value="timers">timers</TabsTrigger>
       </TabsList>
       <TabsContent value="characters">
         <AllCharacters />
@@ -48,6 +49,9 @@ function GmTabs() {
       </TabsContent>
       <TabsContent value="content">
         <AllContent />
+      </TabsContent>
+      <TabsContent value="timers">
+        <AllTimers />
       </TabsContent>
     </Tabs>
   );
@@ -99,6 +103,33 @@ function AllCharacters({}: AllCharactersProps) {
       {allCharacters.map((c) => (
         <CharacterEntry key={c.id} character={c} />
       ))}
+    </>
+  );
+}
+
+function AllTimers() {
+  const gameLens = useCurrentGame();
+  const timersLens = getSubLens(gameLens, "timers");
+  return (
+    <>
+      <TimerEditDialog
+        onCreate={(t) =>
+          timersLens.setState((d) => {
+            d.push(t);
+          })
+        }
+      />
+      <div>
+        {timersLens.state.map((timer, idx) => (
+          <Timer
+            key={timer.id}
+            timerLens={getSubArrayLens(timersLens, idx)}
+            onDelete={() =>
+              timersLens.setState((d) => d.filter((t) => t.id !== timer.id))
+            }
+          />
+        ))}
+      </div>
     </>
   );
 }
