@@ -1,4 +1,5 @@
 import { AllChatMessage, Stamped } from "../network/types";
+import { ILens } from "../types";
 
 export interface LibraryElement {
   name: string;
@@ -53,4 +54,8 @@ export interface BaseGame<TMessage> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   timers: Timer[];
   clocks: Clock[];
+}
+
+export interface CharacterProp<TChar> {
+  characterLens: ILens<TChar>;
 }

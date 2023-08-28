@@ -6,6 +6,7 @@ import { DiceRoll } from "../ui/dice-roll";
 import { TakeDamage } from "./take-damage";
 import { RollScar } from "./roll-scar";
 import { GmDealDamageDialog } from "./gm-deal-damage-dialog";
+import { InviteNpc } from "./invite-npc";
 
 export function ShowCustomMessage({
   m,
@@ -48,8 +49,9 @@ export function ShowCustomMessage({
     );
   }
   if (m.type === "NpcShare") {
-    <>
+    return <>
       <div>Npc shared: {m.props.npc.name}</div>
+      {ctx.contextType === "player" && <InviteNpc npc={m.props.npc} />}
     </>
   }
 }

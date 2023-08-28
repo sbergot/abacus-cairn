@@ -18,13 +18,14 @@ import { TitleWithIcons } from "./title-with-icons";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { TooltipShort } from "../ui/tooltip-short";
+import { CharacterProp } from "@/lib/game/types";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
   lens: ILens<TChar[]>;
-  HeaderMenu({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
-  Edit({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
-  Details({ characterLens }: { characterLens: ILens<TChar> }): ReactNode;
+  HeaderMenu({ characterLens }: CharacterProp<TChar>): ReactNode;
+  Edit({ characterLens }: CharacterProp<TChar>): ReactNode;
+  Details({ characterLens }: CharacterProp<TChar>): ReactNode;
 }
 
 export function CharacterCollection<TChar extends CairnCharacter>({
