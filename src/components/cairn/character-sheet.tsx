@@ -6,13 +6,19 @@ import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { CharacterDescriptionDialog } from "./character-description-dialog";
-import { useCurrentCharacter } from "@/app/cairn-context";
+import { useCurrentCharacter, useGameContext } from "@/app/cairn-context";
 import { CharacterCollection } from "./character-collection";
-import { getSubLens } from "@/lib/utils";
+import { getSubLens, getSubRecordLens } from "@/lib/utils";
 import { CarryCapacityCollection } from "./carry-capacity-collection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { TooltipShort } from "../ui/tooltip-short";
 import { NewCharacterDialog } from "./new-character-dialog";
+import { Button } from "../ui/button";
+import { ArrowUpDownIcon } from "lucide-react";
+import { ILens } from "@/lib/types";
+import { CairnCharacter } from "@/lib/game/cairn/types";
+import { useParams } from "next/navigation";
+import { switchHirelingToMainCharacter } from "@/lib/game/cairn/utils";
 
 interface CharacterSheetProps {}
 
@@ -63,7 +69,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
             <CharacterCollection
               charType="hireling"
               lens={hirelingsLens}
-              HeaderMenu={() => <></>}
+              HeaderMenu={SwitchAsMain}
               Edit={() => <></>}
               Details={() => <></>}
             />
@@ -76,5 +82,29 @@ export function CharacterSheet({}: CharacterSheetProps) {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function SwitchAsMain({
+  characterLens: hirelingsLens,
+}: {
+  characterLens: ILens<CairnCharacter>;
+}) {
+  const { characterId } = useUrlParams();
+  const { characterRepo } = useGameContext();
+  const hirelingId = hirelingsLens.state.id;
+  const mainCharacterLens = getSubRecordLens(characterRepo, characterId);
+  return (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      onClick={() => {
+        mainCharacterLens.setState((d) =>
+          switchHirelingToMainCharacter(d, hirelingId)
+        );
+      }}
+    >
+      <ArrowUpDownIcon />
+    </Button>
   );
 }

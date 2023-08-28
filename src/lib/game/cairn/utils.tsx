@@ -1,4 +1,4 @@
-import { uuidv4 } from "@/lib/utils";
+import { clone, uuidv4 } from "@/lib/utils";
 import {
   AbilityCheck,
   AbilityRollAnalysis,
@@ -129,4 +129,21 @@ export function getDamages(slot: Slot) {
   return slot.state.type === "gear" && slot.state.gear.damage !== undefined
     ? slot.state.gear.damage
     : 0;
+}
+
+export function switchHirelingToMainCharacter(
+  character: CairnCharacter,
+  hireLingId: string
+) {
+  const newMain = clone(
+    character.hireLings.find((h) => h.id === hireLingId)!
+  );
+  newMain.id = character.id;
+  newMain.hireLings = character.hireLings.filter(h => h.id !== hireLingId);
+  newMain.carryCapacities = character.carryCapacities;
+  character.id = uuidv4();
+  character.hireLings = [];
+  character.carryCapacities = [];
+  newMain.hireLings.push(character);
+  return newMain;
 }
