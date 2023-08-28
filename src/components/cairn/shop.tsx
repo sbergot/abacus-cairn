@@ -1,15 +1,7 @@
 "use client";
 
-import {
-  CairnCharacter,
-  CairnMessage,
-  Gear,
-  Slot,
-} from "@/lib/game/cairn/types";
-import {
-  useCurrentCharacter,
-  useLoggerContext,
-} from "@/app/cairn-context";
+import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
+import { useCurrentCharacter, useLoggerContext } from "@/app/cairn-context";
 import {
   Table,
   TableBody,
@@ -19,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PackagePlusIcon, PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
+import { PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
 import {
   allItems,
   armors,
@@ -31,57 +23,35 @@ import {
   weapons,
 } from "@/lib/game/cairn/data";
 import { useRouter } from "next/navigation";
-import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
+import { useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
-import { clone, uuidv4 } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useImmer } from "use-immer";
-import TextField from "@/components/ui/textfield";
-import { ILens } from "@/lib/types";
-import CheckboxField from "@/components/ui/checkboxfield";
-import NumberField from "@/components/ui/numberfield";
-import { DiceSelect } from "@/components/cairn/dice-select";
-import { ArmorSelect } from "@/components/cairn/armor-select";
-import { Logger } from "@/lib/network/types";
-
-function findContainer(character: CairnCharacter, slotId: string): Slot[] {
-  if (character.inventory.find(s => s.id === slotId) !== undefined) {
-    return character.inventory;
-  }
-
-  for (const carryCapacity of character.carryCapacities) {
-    if (carryCapacity.inventory.find(s => s.id === slotId) !== undefined) {
-      return carryCapacity.inventory;
-    }
-  }
-
-  return [];
-}
-
-function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
-  const siblingFreeSlot = inventory.find(
-    (s) =>
-      s.type === currentSlot.type &&
-      s.state.type === "empty" &&
-      s.id !== currentSlot.id
-  );
-  return siblingFreeSlot;
-}
+  findContainer,
+  findFreeSiblingSlot,
+  grabItem,
+} from "@/lib/game/cairn/utils";
+import { NewItemDialog } from "./new-item-dialog";
 
 export function Shop() {
+  const { setState: setCharacter } = useCurrentCharacter();
   const router = useRouter();
+  const log = useLoggerContext();
+  const urlParams = useUrlParams();
+  const { slotId } = urlParams;
   return (
     <>
-      <Button onClick={() => router.back()} className="mr-2"><Undo2Icon /> Back</Button>
-      <NewItemDialog />
+      <Button onClick={() => router.back()} className="mr-2">
+        <Undo2Icon /> Back
+      </Button>
+      <NewItemDialog
+        onCreate={(g) => {
+          setCharacter((d) => grabItem(d, g, slotId, log));
+          router.back();
+        }}
+      />
       <Tabs className="mt-2" defaultValue="all">
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
@@ -142,37 +112,6 @@ function canGrab(
   return true;
 }
 
-function grab(
-  character: CairnCharacter,
-  gear: Gear,
-  slotId: string,
-  log: Logger<CairnMessage>
-) {
-  const currentContainer = findContainer(character, slotId);
-  const currentSlot = currentContainer.find((s) => s.id === slotId)!;
-  const siblingFreeSlot = findFreeSiblingSlot(currentContainer, currentSlot);
-
-  const slot = currentContainer.find((s) => s.id === slotId)!;
-  slot.state = { type: "gear", gear: clone(gear) };
-  if (gear.bulky) {
-    const otherSlot = currentContainer.find((s) => s.id === siblingFreeSlot?.id)!;
-    otherSlot.state = {
-      type: "bulky",
-      slotId,
-      name: gear.name,
-    };
-  }
-
-  if (character.inventory.every((s) => s.state.type !== "empty")) {
-    log({
-      kind: "chat-common",
-      type: "BasicMessage",
-      title: "Overburdened",
-      props: { content: "reduce your HP to 0" },
-    });
-  }
-}
-
 interface ShopTableProps {
   items: Gear[];
 }
@@ -217,7 +156,7 @@ function ShopTable({ items }: ShopTableProps) {
                   {canGrab(character, g, slotId) && (
                     <Button
                       onClick={() => {
-                        setCharacter((d) => grab(d, g, slotId, log));
+                        setCharacter((d) => grabItem(d, g, slotId, log));
                         router.back();
                       }}
                       size="icon-sm"
@@ -231,80 +170,5 @@ function ShopTable({ items }: ShopTableProps) {
         </TableBody>
       </Table>
     </div>
-  );
-}
-
-function NewItemDialog() {
-  const urlParams = useUrlParams();
-  const { slotId } = urlParams;
-  const { state: character, setState: setCharacter } = useCurrentCharacter();
-  const [open, setOpen] = useState(false);
-  const [state, setState] = useImmer<Gear>({ id: uuidv4(), name: "" });
-  const lens: ILens<Gear> = { state, setState };
-  const router = useRouter();
-  const linker = useRelativeLinker();
-  const log = useLoggerContext();
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button>
-          <PackagePlusIcon /> Custom item
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogTitle>Custom item</DialogTitle>
-        <div className="flex flex-col gap-2">
-          <div>
-            <div>Name</div>
-            <TextField lens={lens} fieldName="name" />
-          </div>
-          <div className="flex gap-2">
-            <div>
-              <DiceSelect
-                allowNoAttack
-                dice={state.damage}
-                setDice={(v) =>
-                  setState((d) => {
-                    d.damage = v;
-                  })
-                }
-              />
-            </div>
-            <div>
-              <ArmorSelect
-                allowNoArmor
-                armor={state.armor}
-                setArmor={(v) =>
-                  setState((d) => {
-                    d.armor = v;
-                  })
-                }
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <div>bulky</div> <CheckboxField lens={lens} fieldName="bulky" />
-            </div>
-            <div className="flex items-center gap-2">
-              <div>blast</div> <CheckboxField lens={lens} fieldName="blast" />
-            </div>
-          </div>
-          <div className="flex gap-2"></div>
-          <div>
-            <div>Price</div>
-            <NumberField lens={lens} fieldName="price" />
-          </div>
-        </div>
-        <Button
-          onClick={() => {
-            setCharacter((d) => grab(d, state, slotId, log));
-            router.back();
-          }}
-          disabled={!state.name}
-        >
-          Save
-        </Button>
-      </DialogContent>
-    </Dialog>
   );
 }

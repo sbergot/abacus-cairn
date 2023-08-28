@@ -2,6 +2,8 @@ import { useCurrentGame, useLoggerContext } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
 import { EditCustomEntryDialog } from "@/components/cairn/edit-custom-entry-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
+import { NewCustomEntryDialog } from "@/components/cairn/new-custom-entry-dialog";
+import { NewItemDialog } from "@/components/cairn/new-item-dialog";
 import {
   Accordion,
   AccordionContent,
@@ -63,12 +65,22 @@ export function AllContent() {
       <Accordion
         type="multiple"
         className="w-full"
-        defaultValue={["npcs", ...Object.keys(gameLens.state.customEntries)]}
+        defaultValue={[
+          "npcs",
+          "items",
+          ...Object.keys(gameLens.state.customEntries),
+        ]}
       >
         <AccordionItem value="npcs">
           <AccordionTrigger>NPCs</AccordionTrigger>
           <AccordionContent>
             <AllNpcs />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="items">
+          <AccordionTrigger>items</AccordionTrigger>
+          <AccordionContent>
+            <AllItems />
           </AccordionContent>
         </AccordionItem>
         {Object.keys(customEntriesLens.state).map((category) => {
@@ -79,18 +91,10 @@ export function AllContent() {
               <AccordionContent>
                 <div className="flex flex-col items-start gap-2">
                   <div className="flex gap-2">
-                    <NewEntryDialog
-                      onCreate={(name, description, privateNotes) =>
+                    <NewCustomEntryDialog
+                      onCreate={(ce) =>
                         gameLens.setState((d) => {
-                          d.customEntries[category].push({
-                            id: uuidv4(),
-                            name,
-                            description,
-                            category,
-                            excludedFromRandomPick: false,
-                            visibleToAll: false,
-                            privateNotes: privateNotes,
-                          });
+                          d.customEntries[category].push(ce);
                         })
                       }
                     />
@@ -246,49 +250,6 @@ function NewCategoryDialog({ onCreate }: NewCategoryDialogProps) {
   );
 }
 
-interface NewEntryDialogProps {
-  onCreate(name: string, description: string, privateNotes: string): void;
-}
-
-function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [privateNotes, setPrivateNotes] = useState("");
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button>
-          <PlusIcon size={20} />
-          New entry
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <div>Name</div>
-        <Input value={name} onChange={(e) => setName(e.target.value)} />
-        <div>Description</div>
-        <Textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <div>Private notes</div>
-        <Textarea
-          value={privateNotes}
-          onChange={(e) => setPrivateNotes(e.target.value)}
-        />
-        <Button
-          onClick={() => {
-            onCreate(name, description, privateNotes);
-            setOpen(false);
-          }}
-        >
-          create
-        </Button>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
 function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   const log = useLoggerContext();
   return (
@@ -400,6 +361,49 @@ function AllNpcs() {
         Edit={NpcEdit}
         Details={NpcDetails}
       />
+    </div>
+  );
+}
+
+function AllItems() {
+  const gameLens = useCurrentGame();
+  const itemsLens = getSubLens(gameLens, "items");
+
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <div className="flex gap-2">
+        <NewItemDialog
+          onCreate={(g) => {
+            gameLens.setState((d) => {
+              d.items.push({
+                ...g,
+                excludedFromRandomPick: false,
+                privateNotes: "",
+                visibleToAll: false,
+              });
+            });
+          }}
+        />
+        <RandomEntryDialog lens={itemsLens} name="item" />
+      </div>
+      <div>
+        {itemsLens.state.map((item, idx) => {
+          const itemLens = getSubArrayLens(itemsLens, idx);
+          return (
+            <>
+              <CustomEntryHeader
+                categoryLens={itemsLens}
+                entryLens={itemLens}
+                category="items"
+              />
+              <CardContent>
+                <div>{item.description}</div>
+                <WeakEmph>{item.privateNotes}</WeakEmph>
+              </CardContent>
+            </>
+          );
+        })}
+      </div>
     </div>
   );
 }

@@ -29,9 +29,7 @@ export interface GmContent {
   privateNotes: string;
 }
 
-export interface CustomEntry extends WithId, GmContent {
-  category: string;
-}
+export interface CustomEntry extends WithId, GmContent {}
 
 export interface Timer extends WithId {
   name: string;

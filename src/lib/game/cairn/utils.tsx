@@ -5,10 +5,11 @@ import {
   CairnCharacter,
   CairnGame,
   CairnMessage,
+  Gear,
   Slot,
 } from "./types";
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
-import { AllChatMessage } from "@/lib/network/types";
+import { AllChatMessage, Logger } from "@/lib/network/types";
 import { Gauge } from "../types";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
@@ -58,6 +59,7 @@ export function initGame(name: string): CairnGame {
     customEntries: {},
     timers: [],
     npcs: [],
+    items: [],
     clocks: [],
   };
 }
@@ -146,4 +148,59 @@ export function switchHirelingToMainCharacter(
   character.carryCapacities = [];
   newMain.hireLings.push(character);
   return newMain;
+}
+
+export function grabItem(
+  character: CairnCharacter,
+  gear: Gear,
+  slotId: string,
+  log: Logger<CairnMessage>
+) {
+  const currentContainer = findContainer(character, slotId);
+  const currentSlot = currentContainer.find((s) => s.id === slotId)!;
+  const siblingFreeSlot = findFreeSiblingSlot(currentContainer, currentSlot);
+
+  const slot = currentContainer.find((s) => s.id === slotId)!;
+  slot.state = { type: "gear", gear: clone(gear) };
+  if (gear.bulky) {
+    const otherSlot = currentContainer.find((s) => s.id === siblingFreeSlot?.id)!;
+    otherSlot.state = {
+      type: "bulky",
+      slotId,
+      name: gear.name,
+    };
+  }
+
+  if (character.inventory.every((s) => s.state.type !== "empty")) {
+    log({
+      kind: "chat-common",
+      type: "BasicMessage",
+      title: "Overburdened",
+      props: { content: "reduce your HP to 0" },
+    });
+  }
+}
+
+export function findContainer(character: CairnCharacter, slotId: string): Slot[] {
+  if (character.inventory.find(s => s.id === slotId) !== undefined) {
+    return character.inventory;
+  }
+
+  for (const carryCapacity of character.carryCapacities) {
+    if (carryCapacity.inventory.find(s => s.id === slotId) !== undefined) {
+      return carryCapacity.inventory;
+    }
+  }
+
+  return [];
+}
+
+export function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
+  const siblingFreeSlot = inventory.find(
+    (s) =>
+      s.type === currentSlot.type &&
+      s.state.type === "empty" &&
+      s.id !== currentSlot.id
+  );
+  return siblingFreeSlot;
 }

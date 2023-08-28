@@ -35,6 +35,8 @@ export interface CairnCharacter extends CairnCharacterBase {
 
 export interface CairnNpc extends CairnCharacter, GmContent {}
 
+export interface GearContent extends Gear, GmContent {}
+
 type TaggedUnion<T extends string, P> = { type: T } & P;
 
 export type SlotType = string;
@@ -54,7 +56,7 @@ export interface Slot {
 export interface Gear {
   id: string;
   name: string;
-  description?: string;
+  description: string;
   bulky?: boolean;
   blast?: boolean;
   charges?: Gauge;
@@ -90,4 +92,5 @@ export type CairnMessage =
 
 export interface CairnGame extends BaseGame<CairnMessage> {
   npcs: CairnNpc[];
+  items: GearContent[];
 }
