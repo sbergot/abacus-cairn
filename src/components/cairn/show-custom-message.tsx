@@ -47,5 +47,10 @@ export function ShowCustomMessage({
       </>
     );
   }
+  if (m.type === "NpcShare") {
+    <>
+      <div>Npc shared: {m.props.npc.name}</div>
+    </>
+  }
 }
 

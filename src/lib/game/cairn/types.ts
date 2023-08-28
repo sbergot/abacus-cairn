@@ -84,6 +84,7 @@ export interface AttackRollResult {
 
 export type CairnMessage =
   | ChatMessage<"Scarred", {}>
+  | ChatMessage<"NpcShare", { npc: CairnCharacter }>
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 

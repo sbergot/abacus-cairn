@@ -1,4 +1,4 @@
-import { useCurrentGame } from "@/app/cairn-context";
+import { useCurrentGame, useLoggerContext } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
 import { EditCustomEntryDialog } from "@/components/cairn/edit-custom-entry-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
@@ -41,6 +41,7 @@ import {
   EyeOffIcon,
   FolderPlusIcon,
   PlusIcon,
+  Share2Icon,
   Trash2Icon,
   XCircle,
 } from "lucide-react";
@@ -289,6 +290,7 @@ function NewEntryDialog({ onCreate }: NewEntryDialogProps) {
 }
 
 function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
+  const log = useLoggerContext();
   return (
     <>
       <TooltipShort
@@ -331,6 +333,21 @@ function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
           ) : (
             <CheckCircle2Icon />
           )}
+        </Button>
+      </TooltipShort>
+      <TooltipShort name="share">
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          onClick={() =>
+            log({
+              kind: "chat-custom",
+              type: "NpcShare",
+              props: { npc: characterLens.state },
+            })
+          }
+        >
+          <Share2Icon />
         </Button>
       </TooltipShort>
     </>
