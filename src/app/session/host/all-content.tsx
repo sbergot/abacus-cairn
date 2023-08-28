@@ -1,6 +1,7 @@
 import { useCurrentGame, useLoggerContext } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
 import { EditCustomEntryDialog } from "@/components/cairn/edit-custom-entry-dialog";
+import { EditGameItemDialog } from "@/components/cairn/edit-game-item-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
 import { NewCustomEntryDialog } from "@/components/cairn/new-custom-entry-dialog";
 import { NewGameItemDialog } from "@/components/cairn/new-game-item-dialog";
@@ -26,7 +27,7 @@ import { Textarea } from "@/components/ui/textarea";
 import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
-import { CairnCharacter, CairnNpc } from "@/lib/game/cairn/types";
+import { CairnCharacter, CairnNpc, GearContent } from "@/lib/game/cairn/types";
 import { CustomEntry, GmContent } from "@/lib/game/types";
 import { pickRandom } from "@/lib/random";
 import { ILens } from "@/lib/types";
@@ -366,6 +367,81 @@ function AllNpcs() {
   );
 }
 
+interface GameItemHeaderProps {
+  entryLens: ILens<GearContent>;
+  categoryLens: ILens<GearContent[]>;
+}
+
+function GameItemHeader({ entryLens, categoryLens }: GameItemHeaderProps) {
+  const entry = entryLens.state;
+  return (
+    <CardHeader className="flex justify-between flex-row items-center gap-0">
+      <CardTitle className="flex-grow">{entry.name}</CardTitle>
+      <TooltipShort name="Edit item">
+        <EditGameItemDialog
+          initialValue={entryLens.state}
+          onSave={(g) => entryLens.setState(() => g)}
+        />
+      </TooltipShort>
+      <TooltipShort
+        name={
+          entry.visibleToAll
+            ? "Make invisible to players"
+            : "Make visible to players"
+        }
+      >
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
+            })
+          }
+        >
+          {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+        </Button>
+      </TooltipShort>
+      <TooltipShort
+        name={
+          entry.excludedFromRandomPick
+            ? "Include in random pick"
+            : "Exclude from random pick"
+        }
+      >
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.excludedFromRandomPick =
+                !entryToEdit.excludedFromRandomPick;
+            })
+          }
+        >
+          {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
+        </Button>
+      </TooltipShort>
+      <TooltipShort name="Delete">
+        <DeleteAlert
+          icon={
+            <Button variant="ghost" size="icon-sm">
+              <Trash2Icon />
+            </Button>
+          }
+          onConfirm={() =>
+            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
+          }
+        >
+          This will permanently delete this entry
+        </DeleteAlert>
+      </TooltipShort>
+    </CardHeader>
+  );
+}
+
 function AllItems() {
   const gameLens = useCurrentGame();
   const itemsLens = getSubLens(gameLens, "items");
@@ -391,17 +467,13 @@ function AllItems() {
         {itemsLens.state.map((item, idx) => {
           const itemLens = getSubArrayLens(itemsLens, idx);
           return (
-            <>
-              <CustomEntryHeader
-                categoryLens={itemsLens}
-                entryLens={itemLens}
-                category="items"
-              />
+            <Card>
+              <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
               <CardContent>
                 <div>{item.description}</div>
                 <WeakEmph>{item.privateNotes}</WeakEmph>
               </CardContent>
-            </>
+            </Card>
           );
         })}
       </div>
