@@ -90,7 +90,6 @@ function getAllRevealedElements(game: CairnGame) {
       result[k] = entries.map((e) => ({
         name: e.name,
         description: e.description,
-        category: e.category,
       }));
     }
   });

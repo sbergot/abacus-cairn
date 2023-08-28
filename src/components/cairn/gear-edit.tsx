@@ -12,7 +12,7 @@ interface GearEditProps {
 
 export function GearEdit({ lens }: GearEditProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <div>
         <div>Name</div>
         <TextField lens={lens} fieldName="name" />
@@ -47,7 +47,6 @@ export function GearEdit({ lens }: GearEditProps) {
           <div>blast</div> <CheckboxField lens={lens} fieldName="blast" />
         </div>
       </div>
-      <div className="flex gap-2"></div>
       <div>
         <div>Price</div>
         <NumberField lens={lens} fieldName="price" />

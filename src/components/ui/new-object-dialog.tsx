@@ -5,8 +5,8 @@ import { Button } from "./button";
 import { useLens } from "@/lib/hooks";
 
 interface Props<T> {
-  icon: ReactNode;
-  title: string;
+  trigger: ReactNode;
+  title?: string;
   initialValue: T;
   validate(o: T): boolean;
   onCreate(o: T): void;
@@ -14,7 +14,7 @@ interface Props<T> {
 }
 
 export function NewObjectDialog<T>({
-  icon,
+  trigger,
   title,
   initialValue,
   validate,
@@ -26,9 +26,7 @@ export function NewObjectDialog<T>({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>
-          {icon} {title}
-        </Button>
+          {trigger}
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>{title}</DialogTitle>

@@ -4,7 +4,6 @@ import { ILens } from "../types";
 export interface LibraryElement {
   name: string;
   description: string;
-  category: string;
 }
 
 export interface WithId {

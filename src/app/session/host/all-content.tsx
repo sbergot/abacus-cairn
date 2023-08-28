@@ -3,6 +3,7 @@ import { CharacterCollection } from "@/components/cairn/character-collection";
 import { EditCustomEntryDialog } from "@/components/cairn/edit-custom-entry-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
 import { NewCustomEntryDialog } from "@/components/cairn/new-custom-entry-dialog";
+import { NewGameItemDialog } from "@/components/cairn/new-game-item-dialog";
 import { NewItemDialog } from "@/components/cairn/new-item-dialog";
 import {
   Accordion,
@@ -372,7 +373,7 @@ function AllItems() {
   return (
     <div className="flex flex-col gap-2 items-start">
       <div className="flex gap-2">
-        <NewItemDialog
+        <NewGameItemDialog
           onCreate={(g) => {
             gameLens.setState((d) => {
               d.items.push({

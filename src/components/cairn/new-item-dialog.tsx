@@ -3,6 +3,7 @@ import { uuidv4 } from "@/lib/utils";
 import { PackagePlusIcon } from "lucide-react";
 import { NewObjectDialog } from "../ui/new-object-dialog";
 import { GearEdit } from "./gear-edit";
+import { ButtonLike } from "../ui/button-like";
 
 interface Props {
   onCreate(g: Gear): void;
@@ -11,7 +12,7 @@ interface Props {
 export function NewItemDialog({ onCreate }: Props) {
   return (
     <NewObjectDialog<Gear>
-      icon={<PackagePlusIcon />}
+      trigger={<ButtonLike><PackagePlusIcon /> New item</ButtonLike>}
       initialValue={{
         id: uuidv4(),
         name: "",

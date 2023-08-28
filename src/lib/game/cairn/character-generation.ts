@@ -22,7 +22,11 @@ import {
 import { Gauge } from "../types";
 
 export function getEmptySlots(n: number, type: string): Slot[] {
-  return [...Array(5)].map(() => ({ id: uuidv4(), type, state: { type: "empty" } }));
+  return [...Array(5)].map(() => ({
+    id: uuidv4(),
+    type,
+    state: { type: "empty" },
+  }));
 }
 
 export function getEmptyCharacterSlots(): Slot[] {
@@ -232,11 +236,16 @@ export function fillCharacterGear(character: CairnCharacter) {
   character.gold = roll(3, 6);
   character.inventory[4].state = {
     type: "gear",
-    gear: { id: uuidv4(), name: "rations", charges: { current: 3, max: 3 } },
+    gear: {
+      id: uuidv4(),
+      description: "",
+      name: "rations",
+      charges: { current: 3, max: 3 },
+    },
   };
   character.inventory[5].state = {
     type: "gear",
-    gear: { id: uuidv4(), name: "torch" },
+    gear: { id: uuidv4(), description: "", name: "torch" },
   };
   const armor = rollStartingArmor();
   character.inventory[2].state = armor;
