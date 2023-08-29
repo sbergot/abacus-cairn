@@ -102,7 +102,7 @@ export function countBy<T>(list: T[], select: (o: T) => string): Record<string, 
       if (result[key] === undefined) {
           result[key] = 0;
       }
-      result[key] += 0;
+      result[key] += 1;
   }
   return result;
 }
