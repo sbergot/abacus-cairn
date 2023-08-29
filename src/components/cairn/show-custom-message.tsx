@@ -8,6 +8,7 @@ import { RollScar } from "./roll-scar";
 import { GmDealDamageDialog } from "./gm-deal-damage-dialog";
 import { InviteNpc } from "./invite-npc";
 import { TakeItemDialog } from "./take-item-dialog";
+import { RemoveMessage } from "./remove-message";
 
 export function ShowCustomMessage({
   m,
@@ -54,6 +55,15 @@ export function ShowCustomMessage({
       <>
         <div>Npc shared: {m.props.npc.name}</div>
         {ctx.contextType === "player" && <InviteNpc npc={m.props.npc} />}
+        {ctx.contextType === "gm" && (
+          <RemoveMessage
+            filter={(m2) =>
+              m2.kind === "chat-custom" &&
+              m2.type === "NpcShare" &&
+              m2.props.npc.id === m.props.npc.id
+            }
+          />
+        )}
       </>
     );
   }
@@ -62,6 +72,15 @@ export function ShowCustomMessage({
       <>
         <div>Item shared: {m.props.item.name}</div>
         {ctx.contextType === "player" && <TakeItemDialog item={m.props.item} />}
+        {ctx.contextType === "gm" && (
+          <RemoveMessage
+            filter={(m2) =>
+              m2.kind === "chat-custom" &&
+              m2.type === "ItemShare" &&
+              m2.props.item.id === m.props.item.id
+            }
+          />
+        )}
       </>
     );
   }

@@ -29,6 +29,7 @@ export interface GmConnection<TMessage, TGame, TChar> {
   connections: ConnectionInfo<TChar>[];
   revealedElements: Record<string, LibraryElement[]>;
   log: Logger<TMessage>;
+  removeMessage(filter: (m: AllChatMessage<TMessage>) => boolean): void;
 }
 
 function rotateArray<T>(arr: T[], limit: number): T[] {
@@ -208,6 +209,29 @@ export function useGmConnection<
     storeAndSendAll(stamped);
   }
 
+  function removeMessage(
+    filter: (m: AllChatMessage<TMessage>) => boolean
+  ): void {
+    function removeFilter(m: AnyMessage<TChar, TMessage>): boolean {
+      if (m.kind === "sync") {
+        return true;
+      }
+      return !filter(m);
+    }
+    setTransientMessages((messages) => messages.filter(removeFilter));
+    setGame((g) => {
+      g.messages = g.messages.filter(removeFilter);
+    });
+    sendAllSync({
+      type: "MessageHistoryResponse",
+      props: {
+        messages: messagesRef.current.filter(
+          (m) => !m.gmOnly && removeFilter(m)
+        ),
+      },
+    });
+  }
+
   function updateRevealedElements(c: TGame) {
     const response: AllSyncMessageForPlayer<TMessage> = {
       type: "RevealedElementsResponse",
@@ -222,7 +246,7 @@ export function useGmConnection<
 
   useEffect(() => {
     updateRevealedElements(game as TGame);
-  }, [game])
+  }, [game]);
 
   return {
     sessionCode,
@@ -230,5 +254,6 @@ export function useGmConnection<
     log,
     messages: transientMessages,
     revealedElements,
+    removeMessage,
   };
 }
