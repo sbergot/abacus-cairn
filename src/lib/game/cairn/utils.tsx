@@ -137,17 +137,26 @@ export function switchHirelingToMainCharacter(
   character: CairnCharacter,
   hireLingId: string
 ) {
-  const newMain = clone(
-    character.hireLings.find((h) => h.id === hireLingId)!
-  );
+  const newMain = clone(character.hireLings.find((h) => h.id === hireLingId)!);
   newMain.id = character.id;
-  newMain.hireLings = character.hireLings.filter(h => h.id !== hireLingId);
+  newMain.hireLings = character.hireLings.filter((h) => h.id !== hireLingId);
   newMain.carryCapacities = character.carryCapacities;
   character.id = uuidv4();
   character.hireLings = [];
   character.carryCapacities = [];
   newMain.hireLings.push(character);
   return newMain;
+}
+
+export function dropItem(inventory: Slot[], slotId: string) {
+  const slotToEmpty = inventory.find((s) => s.id === slotId)!;
+  slotToEmpty.state = { type: "empty" };
+  const otherSlot = inventory.find(
+    (s) => s.state.type === "bulky" && s.state.slotId === slotToEmpty.id
+  );
+  if (otherSlot !== undefined) {
+    otherSlot.state = { type: "empty" };
+  }
 }
 
 export function grabItem(
@@ -163,7 +172,9 @@ export function grabItem(
   const slot = currentContainer.find((s) => s.id === slotId)!;
   slot.state = { type: "gear", gear: clone(gear) };
   if (gear.bulky) {
-    const otherSlot = currentContainer.find((s) => s.id === siblingFreeSlot?.id)!;
+    const otherSlot = currentContainer.find(
+      (s) => s.id === siblingFreeSlot?.id
+    )!;
     otherSlot.state = {
       type: "bulky",
       slotId,
@@ -181,13 +192,16 @@ export function grabItem(
   }
 }
 
-export function findContainer(character: CairnCharacter, slotId: string): Slot[] {
-  if (character.inventory.find(s => s.id === slotId) !== undefined) {
+export function findContainer(
+  character: CairnCharacter,
+  slotId: string
+): Slot[] {
+  if (character.inventory.find((s) => s.id === slotId) !== undefined) {
     return character.inventory;
   }
 
   for (const carryCapacity of character.carryCapacities) {
-    if (carryCapacity.inventory.find(s => s.id === slotId) !== undefined) {
+    if (carryCapacity.inventory.find((s) => s.id === slotId) !== undefined) {
       return carryCapacity.inventory;
     }
   }

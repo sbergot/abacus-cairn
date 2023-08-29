@@ -1,6 +1,6 @@
 import { useLoggerContext } from "@/app/cairn-context";
 import { Slot } from "@/lib/game/cairn/types";
-import { clampGauge, getDamages } from "@/lib/game/cairn/utils";
+import { clampGauge, dropItem, getDamages } from "@/lib/game/cairn/utils";
 import { roll } from "@/lib/random";
 import {
   CircleSlashIcon,
@@ -24,6 +24,7 @@ import { ShowSlotState } from "./show-slot-state";
 import { ILens } from "@/lib/types";
 import Link from "next/link";
 import { GearDescriptionDialog } from "./gear-description-dialog";
+import { SwitchSlotDialog } from "./switch-slot-dialog";
 
 interface Props {
   shopLink(slotId: string): string;
@@ -35,14 +36,7 @@ export function InventoryControl({ shopLink, slotsLens }: Props) {
 
   function removeItem(slot: Slot) {
     slotsLens.setState((d) => {
-      const slotToEmpty = d.find((s) => s.id === slot.id)!;
-      slotToEmpty.state = { type: "empty" };
-      const otherSlot = d.find(
-        (s) => s.state.type === "bulky" && s.state.slotId === slotToEmpty.id
-      );
-      if (otherSlot !== undefined) {
-        otherSlot.state = { type: "empty" };
-      }
+      dropItem(d, slot.id);
     });
   }
   return (
@@ -96,16 +90,19 @@ export function InventoryControl({ shopLink, slotsLens }: Props) {
                 </Button>
               )}
               {slot.state.type === "gear" && (
-                <DeleteAlert
-                  onConfirm={() => removeItem(slot)}
-                  icon={
-                    <Button size="icon-sm">
-                      <Trash2Icon />
-                    </Button>
-                  }
-                >
-                  This will permanently delete your item
-                </DeleteAlert>
+                <>
+                  <DeleteAlert
+                    onConfirm={() => removeItem(slot)}
+                    icon={
+                      <Button size="icon-sm">
+                        <Trash2Icon />
+                      </Button>
+                    }
+                  >
+                    This will permanently delete your item
+                  </DeleteAlert>
+                  <SwitchSlotDialog slot={slot} />
+                </>
               )}
               {getDamages(slot) > 0 && slot.type === "hand" && (
                 <Button
