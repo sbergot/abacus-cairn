@@ -49,9 +49,9 @@ export default function CharacterName() {
         />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <ButtonLike size="icon-sm" variant="ghost">
+            <Button size="icon-sm" variant="ghost">
               <DicesIcon size={30} />
-            </ButtonLike>
+            </Button>
           </PopoverTrigger>
           <PopoverContent className="max-w-xl w-full" side="right">
             <div className="flex gap-1">
