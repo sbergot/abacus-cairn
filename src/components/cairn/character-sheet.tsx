@@ -77,7 +77,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
         </TabsContent>
         <TabsContent value="carry">
           <CarryCapacityCollection
-            lens={getSubLens(characterLens, "carryCapacities")}
+            characterLens={characterLens}
           />
         </TabsContent>
       </Tabs>

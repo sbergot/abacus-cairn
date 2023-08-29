@@ -22,7 +22,7 @@ import {
 import { Gauge } from "../types";
 
 export function getEmptySlots(n: number, type: string): Slot[] {
-  return [...Array(5)].map(() => ({
+  return [...Array(n)].map(() => ({
     id: uuidv4(),
     type,
     state: { type: "empty" },

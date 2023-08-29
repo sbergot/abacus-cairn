@@ -6,11 +6,11 @@ import { useCharacterCreationContext } from "../character-creation-context";
 import Link from "next/link";
 import { useEffect } from "react";
 import { fillCharacterGear } from "@/lib/game/cairn/character-generation";
-import { CharacterInventoryView } from "../character-inventory-view";
+import { InventoryView } from "../../../components/cairn/inventory-view";
 
 export default function RollGear() {
   const { lens } = useCharacterCreationContext();
-  const { setState: setCharacter } = lens;
+  const { setState: setCharacter, state: character } = lens;
   const linker = useRelativeLinker();
   useEffect(() => setCharacter(fillCharacterGear), []);
 
@@ -19,7 +19,7 @@ export default function RollGear() {
       <Button className="w-full" asChild>
         <Link href={linker("../name")}>Next</Link>
       </Button>
-      <CharacterInventoryView />
+      <InventoryView inventory={character.inventory} />
     </div>
   );
 }

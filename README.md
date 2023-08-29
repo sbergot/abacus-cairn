@@ -4,10 +4,9 @@ A mapless vtt
 
 ## todo
 
-- switch gear between two slots
 - clocks
+- icons array -> menus in cards
 
 -- later?
 
-- icons array -> menus in cards
 - solo random tables

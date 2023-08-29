@@ -7,11 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useCharacterCreationContext } from "./character-creation-context";
+import { Slot } from "@/lib/game/cairn/types";
 
-export function CharacterInventoryView() {
-  const { lens } = useCharacterCreationContext();
-  const { state: character } = lens;
+interface Props {
+  inventory: Slot[];
+}
+
+export function InventoryView({ inventory }: Props) {
   return (
     <Table>
       <TableHeader>
@@ -21,7 +23,7 @@ export function CharacterInventoryView() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {character.inventory.map((slot) => (
+        {inventory.map((slot) => (
           <TableRow key={slot.id}>
             <TableCell className="p-1">{slot.type}</TableCell>
             <TableCell className="p-1">

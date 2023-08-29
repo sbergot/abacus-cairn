@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { useEffect } from "react";
 import { fillRandomCharacter, getEmptyCharacterSlots, rollCharacterStats } from "@/lib/game/cairn/character-generation";
-import { CharacterInventoryView } from "../character-inventory-view";
+import { InventoryView } from "../../../components/cairn/inventory-view";
 import { CharacterStatsView } from "../../../components/cairn/character-stats-view";
 import { Title, WeakEmph } from "@/components/ui/typography";
 import { useGameContext } from "@/app/cairn-context";
@@ -49,7 +49,7 @@ export default function RollGear() {
       <Title>{character.name}</Title>
       <CharacterStatsView character={character} />
       <WeakEmph>{character.description}</WeakEmph>
-      <CharacterInventoryView />
+      <InventoryView inventory={character.inventory} />
     </div>
   );
 }
