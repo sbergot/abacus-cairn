@@ -58,17 +58,21 @@ export function InventoryControl({ shopLink, slotsLens }: Props) {
             <TableCell className="p-1 flex gap-1">
               {slot.state.type === "empty" && (
                 <>
-                  <Button
-                    size="icon-sm"
-                    onClick={() =>
-                      slotsLens.setState((d) => {
-                        const targetSlot = d.find((s) => s.id === slot.id)!;
-                        targetSlot.state = { type: "fatigue" };
-                      })
-                    }
-                  >
-                    <CircleSlashIcon />
-                  </Button>
+                  {(slot.type === "hand" ||
+                    slot.type === "body" ||
+                    slot.type === "backpack") && (
+                    <Button
+                      size="icon-sm"
+                      onClick={() =>
+                        slotsLens.setState((d) => {
+                          const targetSlot = d.find((s) => s.id === slot.id)!;
+                          targetSlot.state = { type: "fatigue" };
+                        })
+                      }
+                    >
+                      <CircleSlashIcon />
+                    </Button>
+                  )}
                   <Button size="icon-sm" asChild>
                     <Link href={shopLink(slot.id)}>
                       <PlusIcon />
