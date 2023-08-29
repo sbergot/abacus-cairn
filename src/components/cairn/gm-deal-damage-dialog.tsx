@@ -15,7 +15,7 @@ export function GmDealDamageDialog({ damages }: Props) {
   const log = useLoggerContext();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike>Deal damage</ButtonLike>
       </DialogTrigger>
       <DialogContent>

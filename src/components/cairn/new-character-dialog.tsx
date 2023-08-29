@@ -18,7 +18,7 @@ export function NewCharacterDialog({ charType, onCreate }: NewCharacterDialogPro
   const [randomizeGear, setRandomizeGear] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike>
           <UserPlusIcon className="mr-2" /> New {charType}
         </ButtonLike>

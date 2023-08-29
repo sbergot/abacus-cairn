@@ -21,7 +21,7 @@ export function CharacterInventoryDialog({}: Props) {
   const characterLens = useCurrentCharacter();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike variant="ghost" size="icon-sm">
           <BoxesIcon size={20} />
         </ButtonLike>

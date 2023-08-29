@@ -31,7 +31,7 @@ export function TimerEditDialog({ onCreate }: Props) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button asChild>
           <div>
             <AlarmPlusIcon /> New timer

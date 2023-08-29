@@ -25,7 +25,7 @@ export function TakeItemDialog({ item }: Props) {
   );
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike>Take</ButtonLike>
       </DialogTrigger>
       <DialogContent>

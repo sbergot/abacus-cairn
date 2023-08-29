@@ -228,7 +228,7 @@ function NewCategoryDialog({ onCreate }: NewCategoryDialogProps) {
   const [name, setName] = useState("");
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike>
           <FolderPlusIcon className="mr-2" /> New category
         </ButtonLike>
@@ -510,7 +510,7 @@ function RandomEntryDialog({ lens, name }: RandomEntryDialogProps) {
         )
       }
     >
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike>
           <DicesIcon /> Pick random {name}
         </ButtonLike>

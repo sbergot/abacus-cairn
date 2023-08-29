@@ -5,7 +5,7 @@ interface Props extends ButtonProps, Children {}
 
 export function ButtonLike({ children, ...props }: Props) {
   return (
-    <Button variant={props.variant} size={props.size}>
+    <Button {...props} asChild={true}>
       <span className="flex items-center">{children}</span>
     </Button>
   );

@@ -16,7 +16,7 @@ interface Props {
 export function GearDescriptionDialog({ gear }: Props) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike size="icon-sm">
           <SearchIcon />
         </ButtonLike>

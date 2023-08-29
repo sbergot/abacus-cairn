@@ -8,7 +8,7 @@ export function CharacterDescriptionDialog({ children }: Children) {
   const characterLens = useCurrentCharacter();
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike variant="ghost" size="icon-sm">
           <UserSquare2Icon />
         </ButtonLike>

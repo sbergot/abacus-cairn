@@ -20,7 +20,7 @@ export function GenericRolls() {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <ButtonLike variant="ghost" size="icon-sm">
           <DicesIcon size={20} />
         </ButtonLike>

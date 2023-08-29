@@ -25,7 +25,7 @@ export function NewObjectDialog<T>({
   const lens = useLens<T>(initialValue);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
           {trigger}
       </DialogTrigger>
       <DialogContent>
