@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { CairnMessage } from "@/lib/game/cairn/types";
 import { ShowCustomMessageProps } from "../generic-pages/message-panel";
@@ -7,6 +7,7 @@ import { TakeDamage } from "./take-damage";
 import { RollScar } from "./roll-scar";
 import { GmDealDamageDialog } from "./gm-deal-damage-dialog";
 import { InviteNpc } from "./invite-npc";
+import { TakeItemDialog } from "./take-item-dialog";
 
 export function ShowCustomMessage({
   m,
@@ -28,7 +29,9 @@ export function ShowCustomMessage({
   if (m.type === "AttackRoll") {
     return (
       <>
-        <div>1d{m.props.dice} → {m.props.result}</div>
+        <div>
+          1d{m.props.dice} → {m.props.result}
+        </div>
         {ctx.contextType === "player" && (
           <TakeDamage damages={m.props.result} />
         )}
@@ -42,17 +45,24 @@ export function ShowCustomMessage({
     return (
       <>
         <div>Please roll on the scars table</div>
-        {ctx.contextType === "player" && (
-          <RollScar />
-        )}
+        {ctx.contextType === "player" && <RollScar />}
       </>
     );
   }
   if (m.type === "NpcShare") {
-    return <>
-      <div>Npc shared: {m.props.npc.name}</div>
-      {ctx.contextType === "player" && <InviteNpc npc={m.props.npc} />}
-    </>
+    return (
+      <>
+        <div>Npc shared: {m.props.npc.name}</div>
+        {ctx.contextType === "player" && <InviteNpc npc={m.props.npc} />}
+      </>
+    );
+  }
+  if (m.type === "ItemShare") {
+    return (
+      <>
+        <div>Item shared: {m.props.item.name}</div>
+        {ctx.contextType === "player" && <TakeItemDialog item={m.props.item} />}
+      </>
+    );
   }
 }
-

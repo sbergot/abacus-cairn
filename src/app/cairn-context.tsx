@@ -99,7 +99,14 @@ function getAllRevealedElements(game: CairnGame) {
     result["npcs"] = npcs.map((e) => ({
       name: e.name,
       description: e.description,
-      category: "npcs",
+    }));
+  }
+
+  const items = game.items.filter((e) => e.visibleToAll);
+  if (items.length > 0) {
+    result["items"] = items.map((e) => ({
+      name: e.name,
+      description: e.description,
     }));
   }
 

@@ -94,3 +94,15 @@ export function getSubRecordLens<T>(
     }),
   };
 }
+
+export function countBy<T>(list: T[], select: (o: T) => string): Record<string, number> {
+  const result: Record<string, number> = {};
+  for (const o of list) {
+      const key = select(o);
+      if (result[key] === undefined) {
+          result[key] = 0;
+      }
+      result[key] += 0;
+  }
+  return result;
+}

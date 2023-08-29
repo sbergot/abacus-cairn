@@ -373,6 +373,7 @@ interface GameItemHeaderProps {
 }
 
 function GameItemHeader({ entryLens, categoryLens }: GameItemHeaderProps) {
+  const log = useLoggerContext();
   const entry = entryLens.state;
   return (
     <CardHeader className="flex justify-between flex-row items-center gap-0">
@@ -382,6 +383,21 @@ function GameItemHeader({ entryLens, categoryLens }: GameItemHeaderProps) {
           initialValue={entryLens.state}
           onSave={(g) => entryLens.setState(() => g)}
         />
+      </TooltipShort>
+      <TooltipShort name="share">
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          onClick={() =>
+            log({
+              kind: "chat-custom",
+              type: "ItemShare",
+              props: { item: entryLens.state },
+            })
+          }
+        >
+          <Share2Icon />
+        </Button>
       </TooltipShort>
       <TooltipShort
         name={
@@ -463,11 +479,11 @@ function AllItems() {
         />
         <RandomEntryDialog lens={itemsLens} name="item" />
       </div>
-      <div>
+      <div className="flex flex-wrap gap-2">
         {itemsLens.state.map((item, idx) => {
           const itemLens = getSubArrayLens(itemsLens, idx);
           return (
-            <Card>
+            <Card key={item.id}>
               <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
               <CardContent>
                 <div>{item.description}</div>
