@@ -14,6 +14,8 @@ import { RightPanel } from "@/components/generic-pages/right-panel";
 import { TimerEditDialog } from "@/components/ui/timer-edit-dialog";
 import { getSubArrayLens, getSubLens } from "@/lib/utils";
 import { Timer } from "@/components/ui/timer";
+import { ClockEditDialog } from "@/components/ui/clocks-edit-dialog";
+import { Clock } from "@/components/ui/clock";
 
 export default function Session() {
   const { messages, revealedElements } = useGmConnectionContext();
@@ -40,6 +42,7 @@ function GmTabs() {
         <TabsTrigger value="characters">characters</TabsTrigger>
         <TabsTrigger value="content">content</TabsTrigger>
         <TabsTrigger value="timers">timers</TabsTrigger>
+        <TabsTrigger value="clocks">clocks</TabsTrigger>
       </TabsList>
       <TabsContent value="characters">
         <AllCharacters />
@@ -52,6 +55,9 @@ function GmTabs() {
       </TabsContent>
       <TabsContent value="timers">
         <AllTimers />
+      </TabsContent>
+      <TabsContent value="clocks">
+        <AllClocks />
       </TabsContent>
     </Tabs>
   );
@@ -126,6 +132,33 @@ function AllTimers() {
             timerLens={getSubArrayLens(timersLens, idx)}
             onDelete={() =>
               timersLens.setState((d) => d.filter((t) => t.id !== timer.id))
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AllClocks() {
+  const gameLens = useCurrentGame();
+  const clocksLens = getSubLens(gameLens, "clocks");
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <ClockEditDialog
+        onCreate={(t) =>
+          clocksLens.setState((d) => {
+            d.push(t);
+          })
+        }
+      />
+      <div className="flex flex-wrap gap-4">
+        {clocksLens.state.map((clock, idx) => (
+          <Clock
+            key={clock.id}
+            clockLens={getSubArrayLens(clocksLens, idx)}
+            onDelete={() =>
+              clocksLens.setState((d) => d.filter((t) => t.id !== clock.id))
             }
           />
         ))}
