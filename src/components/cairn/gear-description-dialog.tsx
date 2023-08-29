@@ -6,8 +6,8 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { SearchIcon } from "lucide-react";
-import { Button } from "../ui/button";
 import { Gear } from "@/lib/game/cairn/types";
+import { ButtonLike } from "../ui/button-like";
 
 interface Props {
   gear: Gear;
@@ -17,9 +17,9 @@ export function GearDescriptionDialog({ gear }: Props) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button size="icon-sm">
+        <ButtonLike size="icon-sm">
           <SearchIcon />
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

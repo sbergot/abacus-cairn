@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { DicesIcon } from "lucide-react";
 import { abilityCheck } from "@/lib/game/cairn/utils";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { ButtonLike } from "../ui/button-like";
 
 interface AbilityCheckModalProps {
   type: AbilityType;
@@ -32,9 +33,9 @@ export function AbilityCheckDialog({ type, character }: AbilityCheckModalProps) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="icon-xs" variant="ghost">
+        <ButtonLike size="icon-xs" variant="ghost">
           <DicesIcon size={20} />
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <div className="flex flex-col gap-1 max-w-xs">

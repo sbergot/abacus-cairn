@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { hurt } from "@/lib/game/cairn/utils";
 import { useState } from "react";
+import { ButtonLike } from "../ui/button-like";
 
 interface Props {
   damages: number;
@@ -15,7 +16,7 @@ export function GmDealDamageDialog({ damages }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>Deal damage</Button>
+        <ButtonLike>Deal damage</ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

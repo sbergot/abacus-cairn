@@ -98,7 +98,7 @@ function ShowStampedMessage({
   const stamp = `${m.author} - ${showLocalTime(m.time)}`;
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-2">
         <WeakEmph>{stamp}</WeakEmph>
         {m.title && <CardTitle>{m.title}</CardTitle>}
       </CardHeader>

@@ -9,4 +9,5 @@ A mapless vtt
 
 -- later?
 
+- icons array -> menus in cards
 - solo random tables

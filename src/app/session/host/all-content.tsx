@@ -5,7 +5,6 @@ import { EditGameItemDialog } from "@/components/cairn/edit-game-item-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
 import { NewCustomEntryDialog } from "@/components/cairn/new-custom-entry-dialog";
 import { NewGameItemDialog } from "@/components/cairn/new-game-item-dialog";
-import { NewItemDialog } from "@/components/cairn/new-item-dialog";
 import {
   Accordion,
   AccordionContent,
@@ -13,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { ButtonLike } from "@/components/ui/button-like";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DeleteAlert } from "@/components/ui/delete-alert";
 import {
@@ -23,7 +23,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
@@ -35,7 +34,6 @@ import {
   getSubArrayLens,
   getSubLens,
   getSubRecordLens,
-  uuidv4,
 } from "@/lib/utils";
 import { Draft } from "immer";
 import {
@@ -44,7 +42,6 @@ import {
   EyeIcon,
   EyeOffIcon,
   FolderPlusIcon,
-  PlusIcon,
   Share2Icon,
   Trash2Icon,
   XCircle,
@@ -232,9 +229,9 @@ function NewCategoryDialog({ onCreate }: NewCategoryDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>
+        <ButtonLike>
           <FolderPlusIcon className="mr-2" /> New category
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <div>Name</div>
@@ -483,7 +480,7 @@ function AllItems() {
         {itemsLens.state.map((item, idx) => {
           const itemLens = getSubArrayLens(itemsLens, idx);
           return (
-            <Card key={item.id}>
+            <Card key={item.id} className="max-w-xs">
               <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
               <CardContent>
                 <div>{item.description}</div>
@@ -514,9 +511,9 @@ function RandomEntryDialog({ lens, name }: RandomEntryDialogProps) {
       }
     >
       <DialogTrigger>
-        <Button>
+        <ButtonLike>
           <DicesIcon /> Pick random {name}
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         {entry === undefined ? (

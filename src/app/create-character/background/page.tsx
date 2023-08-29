@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import TextField from "@/components/ui/textfield";
 import TextAreaField from "@/components/ui/textareafield";
 import { generateTraits } from "@/lib/game/cairn/character-generation";
+import { ButtonLike } from "@/components/ui/button-like";
 
 export default function PickCharacterBackground() {
   const { lens } = useCharacterCreationContext();
@@ -48,7 +49,7 @@ export default function PickCharacterBackground() {
         <div>Or</div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger className="flex-grow">
-            <Button className="w-full">Select from list</Button>
+            <ButtonLike className="w-full">Select from list</ButtonLike>
           </DialogTrigger>
           <DialogContent className="max-h-[36rem] overflow-y-scroll">
             <BackgroundsTable close={() => setOpen(false)} />

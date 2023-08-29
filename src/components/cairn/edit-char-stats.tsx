@@ -13,6 +13,7 @@ import GaugeField from "./gaugefield";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import TextAreaField from "../ui/textareafield";
 import { Children } from "../ui/types";
+import { ButtonLike } from "../ui/button-like";
 
 interface Props extends Children {}
 
@@ -22,9 +23,9 @@ export function EditCharStats({ children }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button variant="ghost" size="icon-sm">
+        <ButtonLike variant="ghost" size="icon-sm">
           <PencilIcon size={20} />
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

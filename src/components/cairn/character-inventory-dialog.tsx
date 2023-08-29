@@ -6,11 +6,11 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { BoxesIcon } from "lucide-react";
-import { Button } from "../ui/button";
 import { useState } from "react";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import { CharacterInventory } from "./character-inventory";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
+import { ButtonLike } from "../ui/button-like";
 
 interface Props {}
 
@@ -22,9 +22,9 @@ export function CharacterInventoryDialog({}: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button variant="ghost" size="icon-sm">
+        <ButtonLike variant="ghost" size="icon-sm">
           <BoxesIcon size={20} />
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

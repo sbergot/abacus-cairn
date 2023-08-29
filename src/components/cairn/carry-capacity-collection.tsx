@@ -20,6 +20,7 @@ import { carryCapacities } from "@/lib/game/cairn/data";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { getEmptySlots } from "@/lib/game/cairn/character-generation";
 import { WeakEmph } from "../ui/typography";
+import { ButtonLike } from "../ui/button-like";
 
 interface CarryCapacityCollectionProps {
   lens: ILens<CarryCapacity[]>;
@@ -48,9 +49,9 @@ export function CarryCapacityCollection({
               <TitleWithIcons name={carryCapacity.name}>
                 <DeleteAlert
                   icon={
-                    <Button variant="ghost" size="icon-sm">
+                    <ButtonLike variant="ghost" size="icon-sm">
                       <Trash2Icon />
-                    </Button>
+                    </ButtonLike>
                   }
                   onConfirm={() =>
                     lens.setState((d) =>

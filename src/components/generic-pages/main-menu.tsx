@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { BaseCharacter, BaseGame } from "@/lib/game/types";
-import { useRelativeLinker } from "@/lib/hooks";
 import {
   Dialog,
   DialogTrigger,
@@ -29,6 +28,7 @@ import { UknownGameMessage } from "@/lib/network/types";
 import { useState } from "react";
 import { initGame } from "@/lib/game/cairn/utils";
 import { useRouter } from "next/navigation";
+import { ButtonLike } from "../ui/button-like";
 
 interface MainMenuProps {}
 
@@ -216,9 +216,9 @@ function SessionStartDialog({ characterId }: SessionStartProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="icon-sm" variant="ghost">
+        <ButtonLike size="icon-sm" variant="ghost">
           <PlayIcon size={20} />
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -265,9 +265,9 @@ export function NewGameModal({ onCreate }: NewGameModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <ButtonLike>
           <FilePlus2Icon size={20} className="mr-2" /> new
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

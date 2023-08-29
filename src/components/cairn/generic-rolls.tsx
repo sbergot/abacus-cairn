@@ -14,15 +14,16 @@ import { pickRandom, roll } from "@/lib/random";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { scars } from "@/lib/game/cairn/data";
 import { DiceSelect } from "./dice-select";
+import { ButtonLike } from "../ui/button-like";
 
 export function GenericRolls() {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button variant="ghost" size="icon-sm">
+        <ButtonLike variant="ghost" size="icon-sm">
           <DicesIcon size={20} />
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <Tabs defaultValue="attack">

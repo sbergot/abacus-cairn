@@ -7,7 +7,6 @@ import {
   getRandomFemaleName,
 } from "@/lib/game/cairn/character-generation";
 import { CairnCharacter } from "@/lib/game/cairn/types";
-import { useRelativeLinker } from "@/lib/hooks";
 import { DicesIcon } from "lucide-react";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { Title } from "@/components/ui/typography";
@@ -20,6 +19,7 @@ import { useState } from "react";
 import { useGameContext } from "../../cairn-context";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
+import { ButtonLike } from "@/components/ui/button-like";
 
 export default function CharacterName() {
   const { lens } = useCharacterCreationContext();
@@ -49,9 +49,9 @@ export default function CharacterName() {
         />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button size="icon-sm" variant="ghost">
+            <ButtonLike size="icon-sm" variant="ghost">
               <DicesIcon size={30} />
-            </Button>
+            </ButtonLike>
           </PopoverTrigger>
           <PopoverContent className="max-w-xl w-full" side="right">
             <div className="flex gap-1">

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Checkbox } from "../ui/checkbox";
+import { ButtonLike } from "../ui/button-like";
 
 interface NewCharacterDialogProps {
   charType: string;
@@ -18,9 +19,9 @@ export function NewCharacterDialog({ charType, onCreate }: NewCharacterDialogPro
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>
+        <ButtonLike>
           <UserPlusIcon className="mr-2" /> New {charType}
-        </Button>
+        </ButtonLike>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
