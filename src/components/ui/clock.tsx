@@ -16,7 +16,7 @@ export function Clock({ clockLens, onDelete }: Props) {
   const clock = clockLens.state;
   const progressPercent = (clock.gauge.current * 100) / clock.gauge.max;
   return (
-    <Card className="w-48">
+    <Card className="w-52">
       <CardHeader>
         <TitleWithIcons name={clock.name}>
           <DeleteAlert
