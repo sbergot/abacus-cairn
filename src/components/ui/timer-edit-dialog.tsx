@@ -19,6 +19,9 @@ function initTimer(): Timer {
     isRecurring: false,
     name: "",
     description: "",
+    visibleToAll: false,
+    excludedFromRandomPick: false,
+    privateNotes: ""
   };
 }
 
