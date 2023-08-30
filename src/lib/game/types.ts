@@ -4,6 +4,7 @@ import { ILens } from "../types";
 export interface LibraryElement {
   name: string;
   description: string;
+  gauge?: Gauge;
 }
 
 export interface WithId {
@@ -30,9 +31,7 @@ export interface GmContent {
 
 export interface CustomEntry extends WithId, GmContent {}
 
-export interface Timer extends WithId {
-  name: string;
-  description: string;
+export interface Timer extends WithId, GmContent {
   intervalInSec: number;
   currentTimeInMSec: number;
   isRecurring: boolean;

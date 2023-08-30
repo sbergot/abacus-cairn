@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Progress } from "../ui/progress";
 
 interface Props {
   elements: Record<string, LibraryElement[]>;
@@ -25,7 +26,14 @@ export function RevealedElements({ elements }: Props) {
                     <CardHeader className="flex justify-between flex-row items-center gap-2">
                       <CardTitle className="flex-grow">{entry.name}</CardTitle>
                     </CardHeader>
-                    <CardContent>{entry.description}</CardContent>
+                    <CardContent>
+                      <div>{entry.description}</div>
+                      {entry.gauge !== undefined && (
+                        <Progress
+                          value={(entry.gauge.current * 100) / entry.gauge.max}
+                        />
+                      )}
+                    </CardContent>
                   </Card>
                 );
               })}

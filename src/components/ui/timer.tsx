@@ -1,11 +1,19 @@
 import { Timer } from "@/lib/game/types";
-import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { PauseIcon, PlayIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import { Card, CardContent, CardHeader } from "./card";
+import {
+  EyeIcon,
+  EyeOffIcon,
+  PauseIcon,
+  PlayIcon,
+  RefreshCwIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { Button } from "./button";
 import { ILens } from "@/lib/types";
 import { TitleWithIcons } from "../cairn/title-with-icons";
 import { DeleteAlert } from "./delete-alert";
 import { Progress } from "./progress";
+import { TooltipShort } from "./tooltip-short";
 
 function formatNbr(n: number) {
   return String(n).padStart(2, "0");
@@ -26,11 +34,31 @@ interface Props {
 
 export function Timer({ timerLens, onDelete }: Props) {
   const timer = timerLens.state;
-  const progressPercent = timer.currentTimeInMSec * 100 / (timer.intervalInSec * 1000)
+  const progressPercent =
+    (timer.currentTimeInMSec * 100) / (timer.intervalInSec * 1000);
   return (
     <Card>
       <CardHeader>
         <TitleWithIcons name={timer.name}>
+          <TooltipShort
+            name={
+              timer.visibleToAll
+                ? "Make invisible to players"
+                : "Make visible to players"
+            }
+          >
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() =>
+                timerLens.setState((d) => {
+                  d.visibleToAll = !d.visibleToAll;
+                })
+              }
+            >
+              {timer.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+            </Button>
+          </TooltipShort>
           <DeleteAlert
             icon={
               <Button variant="ghost" size="icon-sm">

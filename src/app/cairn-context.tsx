@@ -110,6 +110,24 @@ function getAllRevealedElements(game: CairnGame) {
     }));
   }
 
+  const clocks = game.clocks.filter((e) => e.visibleToAll);
+  if (clocks.length > 0) {
+    result["clocks"] = clocks.map((e) => ({
+      name: e.name,
+      description: e.description,
+      gauge: e.gauge,
+    }));
+  }
+
+  const timers = game.timers.filter((e) => e.visibleToAll);
+  if (timers.length > 0) {
+    result["timers"] = timers.map((e) => ({
+      name: e.name,
+      description: e.description,
+      gauge: { current: e.currentTimeInMSec, max: e.intervalInSec * 1000 },
+    }));
+  }
+
   return result;
 }
 

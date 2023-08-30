@@ -1,11 +1,20 @@
 import { Clock } from "@/lib/game/types";
 import { Card, CardContent, CardHeader } from "./card";
-import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  CheckCircle2Icon,
+  EyeIcon,
+  EyeOffIcon,
+  MinusIcon,
+  PlusIcon,
+  Trash2Icon,
+  XCircle,
+} from "lucide-react";
 import { Button } from "./button";
 import { ILens } from "@/lib/types";
 import { TitleWithIcons } from "../cairn/title-with-icons";
 import { DeleteAlert } from "./delete-alert";
 import { Progress } from "./progress";
+import { TooltipShort } from "./tooltip-short";
 
 interface Props {
   clockLens: ILens<Clock>;
@@ -19,6 +28,25 @@ export function Clock({ clockLens, onDelete }: Props) {
     <Card className="w-52">
       <CardHeader>
         <TitleWithIcons name={clock.name}>
+          <TooltipShort
+            name={
+              clock.visibleToAll
+                ? "Make invisible to players"
+                : "Make visible to players"
+            }
+          >
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() =>
+                clockLens.setState((d) => {
+                  d.visibleToAll = !d.visibleToAll;
+                })
+              }
+            >
+              {clock.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+            </Button>
+          </TooltipShort>
           <DeleteAlert
             icon={
               <Button variant="ghost" size="icon-sm">
