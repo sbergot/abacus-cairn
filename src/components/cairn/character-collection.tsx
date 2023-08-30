@@ -17,8 +17,9 @@ import { CharacterInventoryDialog } from "./character-inventory-dialog";
 import { TitleWithIcons } from "./title-with-icons";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
-import { TooltipShort } from "../ui/tooltip-short";
 import { CharacterProp } from "@/lib/game/types";
+import { CardMenu } from "../ui/card-menu";
+import { MenuEntry } from "../ui/menu-entry";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
@@ -45,34 +46,41 @@ export function CharacterCollection<TChar extends CairnCharacter>({
             <Card>
               <CardHeader>
                 <TitleWithIcons name={npc.name}>
-                  <TooltipShort name="Edit stats">
-                    <EditCharStats>
-                      <Edit characterLens={charLens} />
-                    </EditCharStats>
-                  </TooltipShort>
-                  <TooltipShort name="View details">
-                    <CharacterDescriptionDialog>
-                      <Details characterLens={charLens} />
-                    </CharacterDescriptionDialog>
-                  </TooltipShort>
-                  <TooltipShort name="View inventory">
-                    <CharacterInventoryDialog />
-                  </TooltipShort>
-                  <TooltipShort name="Delete">
-                    <DeleteAlert
-                      icon={
-                        <Button variant="ghost" size="icon-sm">
-                          <Trash2Icon />
-                        </Button>
-                      }
-                      onConfirm={() =>
-                        lens.setState((d) => d.filter((n) => n.id !== npc.id))
-                      }
-                    >
-                      This will permanently delete this {charType}
-                    </DeleteAlert>
-                  </TooltipShort>
-                  <HeaderMenu characterLens={charLens} />
+                  <CardMenu>
+                    <MenuEntry>
+                      <EditCharStats>
+                        <Edit characterLens={charLens} />
+                      </EditCharStats>
+                    </MenuEntry>
+                    <MenuEntry>
+                      <CharacterDescriptionDialog>
+                        <Details characterLens={charLens} />
+                      </CharacterDescriptionDialog>
+                    </MenuEntry>
+                    <MenuEntry>
+                      <CharacterInventoryDialog />
+                    </MenuEntry>
+                    <MenuEntry>
+                      <DeleteAlert
+                        icon={
+                          <Button
+                            variant="ghost"
+                            size="xs"
+                            className="flex gap-2 w-full"
+                          >
+                            <Trash2Icon />
+                            <div className="flex-grow text-left">Delete</div>
+                          </Button>
+                        }
+                        onConfirm={() =>
+                          lens.setState((d) => d.filter((n) => n.id !== npc.id))
+                        }
+                      >
+                        This will permanently delete this {charType}
+                      </DeleteAlert>
+                    </MenuEntry>
+                    <HeaderMenu characterLens={charLens} />
+                  </CardMenu>
                 </TitleWithIcons>
               </CardHeader>
               <CardContent>

@@ -162,7 +162,7 @@ function CharacterEntry({
           onConfirm={deleteCharacter}
           icon={
             <Button size="icon-sm" variant="ghost">
-              <Trash2Icon size={20} />
+              <Trash2Icon  />
             </Button>
           }
         >
@@ -187,14 +187,14 @@ function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
       <div className="flex gap-2">
         <Button size="icon-sm" variant="ghost" asChild>
           <Link href={`/session/host?gameId=${gameId}`}>
-            <PlayIcon size={20} />
+            <PlayIcon  />
           </Link>
         </Button>
         <DeleteAlert
           onConfirm={deleteGame}
           icon={
             <Button size="icon-sm" variant="ghost">
-              <Trash2Icon size={20} />
+              <Trash2Icon  />
             </Button>
           }
         >
@@ -217,7 +217,7 @@ function SessionStartDialog({ characterId }: SessionStartProps) {
     <Dialog>
       <DialogTrigger asChild>
         <ButtonLike size="icon-sm" variant="ghost">
-          <PlayIcon size={20} />
+          <PlayIcon  />
         </ButtonLike>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -266,7 +266,7 @@ export function NewGameModal({ onCreate }: NewGameModalProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ButtonLike>
-          <FilePlus2Icon size={20} className="mr-2" /> new
+          <FilePlus2Icon  className="mr-2" /> new
         </ButtonLike>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -21,8 +21,8 @@ export function GenericRolls() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <ButtonLike variant="ghost" size="icon-sm">
-          <DicesIcon size={20} />
+        <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
+          <DicesIcon  /><div className="flex-grow">Generic rolls</div>
         </ButtonLike>
       </DialogTrigger>
       <DialogContent>

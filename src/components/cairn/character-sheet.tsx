@@ -19,6 +19,8 @@ import { ILens } from "@/lib/types";
 import { CairnCharacter } from "@/lib/game/cairn/types";
 import { useParams } from "next/navigation";
 import { switchHirelingToMainCharacter } from "@/lib/game/cairn/utils";
+import { MenuEntry } from "../ui/menu-entry";
+import { CardMenu } from "../ui/card-menu";
 
 interface CharacterSheetProps {}
 
@@ -29,20 +31,24 @@ export function CharacterSheet({}: CharacterSheetProps) {
   const hirelingsLens = getSubLens(characterLens, "hireLings");
 
   return (
-    <div className="flex flex-col gap-4 max-w-full items-start">
-      <TitleWithIcons name={characterLens.state.name}>
-        <TooltipShort name="Edit stats">
-          <EditCharStats />
-        </TooltipShort>
-        <TooltipShort name="Generic rolls">
-          <GenericRolls />
-        </TooltipShort>
-        <TooltipShort name="View details">
-          <CharacterDescriptionDialog />
-        </TooltipShort>
-      </TitleWithIcons>
-      <CharacterStats />
-      <CharacterCoins />
+    <div className="flex flex-col gap-4 items-start">
+      <div className="flex flex-col items-stretch gap-4 max-w-md w-full">
+        <TitleWithIcons name={characterLens.state.name}>
+          <CardMenu>
+            <MenuEntry>
+              <EditCharStats />
+            </MenuEntry>
+            <MenuEntry>
+              <CharacterDescriptionDialog />
+            </MenuEntry>
+            <MenuEntry>
+              <GenericRolls />
+            </MenuEntry>
+          </CardMenu>
+        </TitleWithIcons>
+        <CharacterStats />
+        <CharacterCoins />
+      </div>
       <Tabs defaultValue="inventory" className="w-full">
         <TabsList>
           <TabsTrigger value="inventory">inventory</TabsTrigger>
@@ -76,9 +82,7 @@ export function CharacterSheet({}: CharacterSheetProps) {
           </div>
         </TabsContent>
         <TabsContent value="carry">
-          <CarryCapacityCollection
-            characterLens={characterLens}
-          />
+          <CarryCapacityCollection characterLens={characterLens} />
         </TabsContent>
       </Tabs>
     </div>
@@ -95,16 +99,19 @@ function SwitchAsMain({
   const hirelingId = hirelingsLens.state.id;
   const mainCharacterLens = getSubRecordLens(characterRepo, characterId);
   return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      onClick={() => {
-        mainCharacterLens.setState((d) =>
-          switchHirelingToMainCharacter(d, hirelingId)
-        );
-      }}
-    >
-      <ArrowUpDownIcon />
-    </Button>
+    <MenuEntry>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className="flex gap-2 w-full"
+        onClick={() => {
+          mainCharacterLens.setState((d) =>
+            switchHirelingToMainCharacter(d, hirelingId)
+          );
+        }}
+      >
+        <ArrowUpDownIcon /> <div className="flex-grow">Switch as main</div>
+      </Button>
+    </MenuEntry>
   );
 }

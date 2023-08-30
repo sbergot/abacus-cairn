@@ -36,7 +36,7 @@ export default function Session() {
 
 function GmTabs() {
   return (
-    <Tabs defaultValue="connections">
+    <Tabs defaultValue="characters">
       <TabsList>
         <TabsTrigger value="characters">characters</TabsTrigger>
         <TabsTrigger value="content">content</TabsTrigger>
@@ -74,7 +74,7 @@ function AllConnections() {
             global.navigator.clipboard.writeText(sessionCode);
           }}
         >
-          <CopyIcon size={20} />
+          <CopyIcon  />
         </Button>
       </div>
       <div>

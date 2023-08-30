@@ -12,7 +12,7 @@ export function CharacterStats({}: CharacterStatsProps) {
   const armor = getArmorValue(character);
 
   return (
-    <div className="flex flex-col gap-4 max-w-full items-start">
+    <div className="flex flex-col gap-4 max-w-full items-start w-full">
       <div className="flex gap-x-12 flex-wrap">
         <div className="flex flex-col">
           <AbilityControl type="strength" />

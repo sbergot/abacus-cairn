@@ -9,8 +9,9 @@ export function CharacterDescriptionDialog({ children }: Children) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <ButtonLike variant="ghost" size="icon-sm">
+        <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
           <UserSquare2Icon />
+          <div className="flex-grow">View details</div>
         </ButtonLike>
       </DialogTrigger>
       <DialogContent>

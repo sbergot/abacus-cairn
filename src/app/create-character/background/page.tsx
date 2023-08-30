@@ -112,7 +112,7 @@ function BackgroundsTable({ close }: CloseProps) {
                   close();
                 }}
               >
-                <PlusCircleIcon size={20} />
+                <PlusCircleIcon  />
               </Button>
             </TableCell>
           </TableRow>

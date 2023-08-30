@@ -34,7 +34,7 @@ export function AbilityCheckDialog({ type, character }: AbilityCheckModalProps) 
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ButtonLike size="icon-xs" variant="ghost">
-          <DicesIcon size={20} />
+          <DicesIcon  />
         </ButtonLike>
       </DialogTrigger>
       <DialogContent className="max-w-sm">

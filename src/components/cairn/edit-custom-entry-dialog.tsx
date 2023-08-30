@@ -17,7 +17,7 @@ export function EditCustomEntryDialog({ lens, title }: Props) {
       trigger={
         <div className="flex items-center w-full">
         <ButtonLike variant="ghost" size="icon-sm">
-          <PencilIcon size={20} />
+          <PencilIcon  />
         </ButtonLike>
         {title}
         </div>

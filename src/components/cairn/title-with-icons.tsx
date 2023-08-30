@@ -1,5 +1,5 @@
-import { Title } from "../ui/typography";
 import { Children } from "../ui/types";
+import { CardTitle } from "../ui/card";
 
 interface Props extends Children {
   name: string;
@@ -7,8 +7,8 @@ interface Props extends Children {
 
 export function TitleWithIcons({ name, children }: Props) {
   return (
-    <div className="flex justify-between items-start">
-      <Title>{name}</Title>
+    <div className="flex justify-between items-start w-full">
+      <CardTitle>{name}</CardTitle>
       <div className="flex">{children}</div>
     </div>
   );

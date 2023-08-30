@@ -22,8 +22,13 @@ export function CharacterInventoryDialog({}: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <ButtonLike variant="ghost" size="icon-sm">
-          <BoxesIcon size={20} />
+        <ButtonLike
+          variant="ghost"
+          size="xs"
+          className="flex gap-2 w-full"
+        >
+          <BoxesIcon  />
+          <div className="flex-grow">View inventory</div>
         </ButtonLike>
       </DialogTrigger>
       <DialogContent>
@@ -32,7 +37,9 @@ export function CharacterInventoryDialog({}: Props) {
         </DialogHeader>
         <CharacterInventory
           shopLink={(slotId) =>
-            linker(`shop?gameId=${gameId}&npcId=${characterLens.state.id}&slotId=${slotId}`)
+            linker(
+              `shop?gameId=${gameId}&npcId=${characterLens.state.id}&slotId=${slotId}`
+            )
           }
         />
       </DialogContent>
