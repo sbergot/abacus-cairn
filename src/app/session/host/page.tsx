@@ -38,26 +38,24 @@ function GmTabs() {
   return (
     <Tabs defaultValue="connections">
       <TabsList>
-        <TabsTrigger value="connections">connections</TabsTrigger>
         <TabsTrigger value="characters">characters</TabsTrigger>
         <TabsTrigger value="content">content</TabsTrigger>
         <TabsTrigger value="timers">timers</TabsTrigger>
-        <TabsTrigger value="clocks">clocks</TabsTrigger>
       </TabsList>
       <TabsContent value="characters">
-        <AllCharacters />
-      </TabsContent>
-      <TabsContent value="connections">
-        <AllConnections />
+        <div className="flex flex-col gap-4">
+          <AllConnections />
+          <AllCharacters />
+        </div>
       </TabsContent>
       <TabsContent value="content">
         <AllContent />
       </TabsContent>
       <TabsContent value="timers">
-        <AllTimers />
-      </TabsContent>
-      <TabsContent value="clocks">
-        <AllClocks />
+        <div className="flex flex-col gap-4">
+          <AllTimers />
+          <AllClocks />
+        </div>
       </TabsContent>
     </Tabs>
   );

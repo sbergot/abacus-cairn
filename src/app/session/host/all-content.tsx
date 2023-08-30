@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ButtonLike } from "@/components/ui/button-like";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardMenu } from "@/components/ui/card-menu";
 import { DeleteAlert } from "@/components/ui/delete-alert";
 import {
   Dialog,
@@ -22,6 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
@@ -30,11 +32,7 @@ import { CairnCharacter, CairnNpc, GearContent } from "@/lib/game/cairn/types";
 import { CustomEntry, GmContent } from "@/lib/game/types";
 import { pickRandom } from "@/lib/random";
 import { ILens } from "@/lib/types";
-import {
-  getSubArrayLens,
-  getSubLens,
-  getSubRecordLens,
-} from "@/lib/utils";
+import { getSubArrayLens, getSubLens, getSubRecordLens } from "@/lib/utils";
 import { Draft } from "immer";
 import {
   CheckCircle2Icon,
@@ -89,7 +87,7 @@ export function AllContent() {
               <AccordionTrigger>{category}</AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col items-start gap-2">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <NewCustomEntryDialog
                       onCreate={(ce) =>
                         gameLens.setState((d) => {
@@ -157,64 +155,63 @@ function CustomEntryHeader({
   return (
     <CardHeader className="flex justify-between flex-row items-center gap-0">
       <CardTitle className="flex-grow">{entry.name}</CardTitle>
-      <TooltipShort name={`Edit ${category}`}>
-        <EditCustomEntryDialog lens={entryLens} />
-      </TooltipShort>
-      <TooltipShort
-        name={
-          entry.visibleToAll
+      <CardMenu>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <EditCustomEntryDialog lens={entryLens} title={`Edit ${category}`} />
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() =>
+              categoryLens.setState((d) => {
+                const entryToEdit = d.find((e) => e.id === entry.id)!;
+                entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
+              })
+            }
+          >
+            {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+          </Button>
+          {entry.visibleToAll
             ? "Make invisible to players"
-            : "Make visible to players"
-        }
-      >
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() =>
-            categoryLens.setState((d) => {
-              const entryToEdit = d.find((e) => e.id === entry.id)!;
-              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
-            })
-          }
-        >
-          {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
-        </Button>
-      </TooltipShort>
-      <TooltipShort
-        name={
-          entry.excludedFromRandomPick
+            : "Make visible to players"}
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() =>
+              categoryLens.setState((d) => {
+                const entryToEdit = d.find((e) => e.id === entry.id)!;
+                entryToEdit.excludedFromRandomPick =
+                  !entryToEdit.excludedFromRandomPick;
+              })
+            }
+          >
+            {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
+          </Button>
+          {entry.excludedFromRandomPick
             ? "Include in random pick"
-            : "Exclude from random pick"
-        }
-      >
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() =>
-            categoryLens.setState((d) => {
-              const entryToEdit = d.find((e) => e.id === entry.id)!;
-              entryToEdit.excludedFromRandomPick =
-                !entryToEdit.excludedFromRandomPick;
-            })
-          }
-        >
-          {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
-        </Button>
-      </TooltipShort>
-      <TooltipShort name="Delete">
-        <DeleteAlert
-          icon={
-            <Button variant="ghost" size="icon-sm">
-              <Trash2Icon />
-            </Button>
-          }
-          onConfirm={() =>
-            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
-          }
-        >
-          This will permanently delete this entry
-        </DeleteAlert>
-      </TooltipShort>
+            : "Exclude from random pick"}
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <span>
+            <DeleteAlert
+              icon={
+                <Button variant="ghost" size="icon-sm">
+                  <Trash2Icon />
+                </Button>
+              }
+              onConfirm={() =>
+                categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
+              }
+            >
+              This will permanently delete this entry
+            </DeleteAlert>
+            Delete
+          </span>
+        </DropdownMenuItem>
+      </CardMenu>
     </CardHeader>
   );
 }
