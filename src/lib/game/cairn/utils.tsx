@@ -54,7 +54,7 @@ export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
 export function initGame(name: string): CairnGame {
   return {
     id: uuidv4(),
-    title: name,
+    name,
     messages: [],
     customEntries: {},
     timers: [],

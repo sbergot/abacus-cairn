@@ -45,7 +45,7 @@ export interface Clock extends GmContent {
 
 export interface BaseGame<TMessage> {
   id: string;
-  title: string;
+  name: string;
   customEntries: Record<string, CustomEntry[]>;
   messages: Stamped<AllChatMessage<TMessage>>[];
   timers: Timer[];

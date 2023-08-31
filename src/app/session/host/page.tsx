@@ -1,10 +1,10 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { CairnCharacter, CairnMessage } from "@/lib/game/cairn/types";
+import { CairnMessage } from "@/lib/game/cairn/types";
 import { useCurrentGame, useGmConnectionContext } from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
-import { WeakEmph } from "@/components/ui/typography";
+import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CopyIcon } from "lucide-react";
@@ -17,6 +17,7 @@ import { Timer } from "@/components/ui/timer";
 import { ClockEditDialog } from "@/components/ui/clocks-edit-dialog";
 import { Clock } from "@/components/ui/clock";
 import { useToast } from "@/components/ui/use-toast";
+import { useRelativeLinker } from "@/lib/hooks";
 
 export default function Session() {
   const { messages, revealedElements } = useGmConnectionContext();
@@ -63,12 +64,19 @@ function GmTabs() {
 }
 
 function InviteLinks() {
-  const { connections, sessionCode } = useGmConnectionContext();
+  const { sessionCode } = useGmConnectionContext();
   const { toast } = useToast();
+  const linker = useRelativeLinker();
+  const joinLink = new URL(
+    linker(`../../invitation?tableId=${sessionCode}`),
+    document.baseURI
+  ).href;
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <span className="align-text-bottom">table id: {sessionCode} </span>
+        <span className="align-text-bottom">
+          table id: <WeakEmph>{sessionCode}</WeakEmph>{" "}
+        </span>
         <Button
           variant="ghost"
           size="icon-sm"
@@ -81,8 +89,24 @@ function InviteLinks() {
         </Button>
       </div>
       <div>
-        Provide this id to the player to let them join this table. Refreshing
-        this page will create a new id.
+        <span className="align-text-bottom">
+          table link: <WeakEmph>{joinLink}</WeakEmph>{" "}
+        </span>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() => {
+            global.navigator.clipboard.writeText(joinLink);
+            toast({ title: "table link copied", description: joinLink });
+          }}
+        >
+          <CopyIcon />
+        </Button>
+      </div>
+      <div>
+        Provide this link or id to the player to let them join this table.{" "}
+        <StrongEmph>Warning</StrongEmph>: refreshing this page will create a new
+        id.
       </div>
     </div>
   );
@@ -97,19 +121,22 @@ function AllCharacters({}: AllCharactersProps) {
     return <div>No player connected</div>;
   }
   return (
-    <>
+    <div>
       <div>Connected players:</div>
-      {connections.map((c) => (
-        <>
-          <div key={c.id}>
-            <WeakEmph>{c.id}</WeakEmph> - {c.character?.name ?? "??"} -{" "}
-            {c.state}
+      <div className="flex flex-col gap-4">
+        {connections.map((c) => (
+          <div>
+            <div key={c.id}>
+              <WeakEmph>{c.id}</WeakEmph> - {c.state}
+            </div>
+            {c.character && (
+              <CharacterEntry key={c.id} character={c.character} />
+            )}
+            {!c.character && <div>no character received</div>}
           </div>
-          {c.character && <CharacterEntry key={c.id} character={c.character} />}
-          {!c.character && <div>no character received</div>}
-        </>
-      ))}
-    </>
+        ))}
+      </div>
+    </div>
   );
 }
 

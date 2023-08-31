@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BaseCharacter, BaseGame } from "@/lib/game/types";
+import { BaseCharacter } from "@/lib/game/types";
 import {
   Dialog,
   DialogTrigger,
@@ -13,22 +13,18 @@ import {
   FilePlus2Icon,
   PlayIcon,
   Trash2Icon,
-  UploadIcon,
   UserPlusIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { DeleteAlert } from "@/components/ui/delete-alert";
-import { OrSeparator } from "@/components/ui/or-separator";
-import { FileImport } from "../ui/file-import";
 import { useGenericGameContext } from "@/lib/gameContext";
-import { download } from "@/lib/utils";
-import { Title } from "../ui/typography";
-import { UknownGameMessage } from "@/lib/network/types";
 import { useState } from "react";
-import { initGame } from "@/lib/game/cairn/utils";
-import { useRouter } from "next/navigation";
 import { ButtonLike } from "../ui/button-like";
+import { GenericMenu } from "../ui/generic-menu";
+import { OrSeparator } from "../ui/or-separator";
+import { useRouter } from "next/navigation";
+import { initGame } from "@/lib/game/cairn/utils";
 
 interface MainMenuProps {}
 
@@ -36,111 +32,39 @@ export default function MainMenu<
   TChar extends BaseCharacter,
   TGame
 >({}: MainMenuProps) {
-  const {
-    characterRepo: { state: characters, setState: setCharacters },
-    gameRepo: { state: games, setState: setGames },
-    gameName,
-  } = useGenericGameContext();
+  const { characterRepo, gameRepo } = useGenericGameContext();
 
   return (
     <main className="p-4 max-w-6xl flex flex-col">
       <div className="flex flex-wrap gap-8">
-        <div className="flex flex-col gap-2 max-w-lg w-full items-start">
-          <Title>characters</Title>
-          <div className="flex gap-2">
+        <GenericMenu
+          title="character"
+          lens={characterRepo}
+          Entry={CharacterEntry}
+          Create={() =>
             <Button asChild>
               <Link href={"create-character/stats"}>
                 <UserPlusIcon className="mr-2" />
                 new
               </Link>
             </Button>
-            <FileImport
-              variant="secondary"
-              label="import"
-              onUpLoad={(body) => {
-                setCharacters((d) => {
-                  const newData = JSON.parse(body) as Record<
-                    string,
-                    BaseCharacter
-                  >;
-                  Object.values(newData).forEach((c) => (d[c.id] = c));
-                });
-              }}
-            />
-            <Button
-              variant="secondary"
-              onClick={() => download(`${gameName}-characters`)}
-            >
-              <UploadIcon className="mr-2" />
-              export
-            </Button>
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            {Object.values(characters).length === 0 && (
-              <div>No character found</div>
-            )}
-            {Object.values(characters).map((c) => (
-              <CharacterEntry
-                key={c.id}
-                name={c.name}
-                characterId={c.id}
-                deleteCharacter={() =>
-                  setCharacters((repo) => {
-                    delete repo[c.id];
-                  })
-                }
-              />
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 items-start max-w-lg w-full">
-          <Title>games</Title>
-          <div className="flex gap-2">
+          }
+        />
+        <GenericMenu
+          title="game"
+          lens={gameRepo}
+          Entry={GameEntry}
+          Create={() =>
             <NewGameModal
               onCreate={(name) => {
-                setGames((d) => {
+                gameRepo.setState((d) => {
                   const newGame = initGame(name);
                   d[newGame.id] = newGame;
                 });
               }}
             />
-            <FileImport
-              variant="secondary"
-              label="import"
-              onUpLoad={(body) => {
-                setGames((d) => {
-                  const newData = JSON.parse(body) as Record<
-                    string,
-                    BaseGame<UknownGameMessage>
-                  >;
-                  Object.values(newData).forEach((c) => (d[c.id] = c));
-                });
-              }}
-            />
-            <Button
-              variant="secondary"
-              onClick={() => download(`${gameName}-games`)}
-            >
-              <UploadIcon className="mr-2" />
-              export
-            </Button>
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            {Object.values(games).length === 0 && <div>No game found</div>}
-            {Object.values(games).map((c) => (
-              <GameEntry
-                key={c.id}
-                name={c.title}
-                gameId={c.id}
-                deleteGame={() =>
-                  setGames((repo) => {
-                    delete repo[c.id];
-                  })
-                }
-              />
-            ))}
-          </div>
-        </div>
+          }
+        />
       </div>
     </main>
   );
@@ -148,22 +72,18 @@ export default function MainMenu<
 
 interface CharacterEntryProps {
   name: string;
-  characterId: string;
-  deleteCharacter(): void;
+  id: string;
+  deleteObj(): void;
 }
 
-function CharacterEntry({
-  characterId,
-  name,
-  deleteCharacter,
-}: CharacterEntryProps) {
+function CharacterEntry({ id, name, deleteObj }: CharacterEntryProps) {
   return (
     <div className="flex justify-between items-center p-2 border border-input bg-background max-w-sm">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
-        <SessionStartDialog characterId={characterId} />
+        <SessionStartDialog characterId={id} />
         <DeleteAlert
-          onConfirm={deleteCharacter}
+          onConfirm={deleteObj}
           icon={
             <Button size="icon-sm" variant="ghost">
               <Trash2Icon />
@@ -172,38 +92,6 @@ function CharacterEntry({
         >
           This action cannot be undone. This will permanently delete your
           character named <span className="font-bold">{name}</span>.
-        </DeleteAlert>
-      </div>
-    </div>
-  );
-}
-
-interface GameEntryProps {
-  name: string;
-  gameId: string;
-  deleteGame(): void;
-}
-
-function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
-  return (
-    <div className="flex justify-between items-center p-2 border border-input bg-background max-w-sm">
-      <div className="text-lg">{name}</div>
-      <div className="flex gap-2">
-        <Button size="icon-sm" variant="ghost" asChild>
-          <Link href={`/session/host?gameId=${gameId}`}>
-            <PlayIcon />
-          </Link>
-        </Button>
-        <DeleteAlert
-          onConfirm={deleteGame}
-          icon={
-            <Button size="icon-sm" variant="ghost">
-              <Trash2Icon />
-            </Button>
-          }
-        >
-          This action cannot be undone. This will permanently delete your game
-          titled <span className="font-bold">{name}</span>.
         </DeleteAlert>
       </div>
     </div>
@@ -256,6 +144,38 @@ function SessionStartDialog({ characterId }: SessionStartProps) {
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface GameEntryProps {
+  name: string;
+  id: string;
+  deleteObj(): void;
+}
+
+function GameEntry({ id, name, deleteObj }: GameEntryProps) {
+  return (
+    <div className="flex justify-between items-center p-2 border border-input bg-background max-w-sm">
+      <div className="text-lg">{name}</div>
+      <div className="flex gap-2">
+        <Button size="icon-sm" variant="ghost" asChild>
+          <Link href={`/session/host?gameId=${id}`}>
+            <PlayIcon />
+          </Link>
+        </Button>
+        <DeleteAlert
+          onConfirm={deleteObj}
+          icon={
+            <Button size="icon-sm" variant="ghost">
+              <Trash2Icon />
+            </Button>
+          }
+        >
+          This action cannot be undone. This will permanently delete your game
+          titled <span className="font-bold">{name}</span>.
+        </DeleteAlert>
+      </div>
+    </div>
   );
 }
 

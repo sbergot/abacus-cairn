@@ -4,7 +4,7 @@ A mapless vtt
 
 ## todo
 
-- link to join table
+- custom shop items
 
 -- later?
 - solo random tables
