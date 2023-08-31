@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { GameContextProvider } from "./cairn-context";
 import Link from "next/link";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function ClientLayout({
   children,
@@ -27,6 +28,7 @@ export default function ClientLayout({
       <TooltipProvider>
         <GameContextProvider>{children}</GameContextProvider>
       </TooltipProvider>
+      <Toaster />
     </div>
   );
 }

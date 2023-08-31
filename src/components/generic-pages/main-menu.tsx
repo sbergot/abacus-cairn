@@ -45,7 +45,7 @@ export default function MainMenu<
   return (
     <main className="p-4 max-w-6xl flex flex-col">
       <div className="flex flex-wrap gap-8">
-        <div className="flex flex-col gap-2 max-w-lg w-full">
+        <div className="flex flex-col gap-2 max-w-lg w-full items-start">
           <Title>characters</Title>
           <div className="flex gap-2">
             <Button asChild>
@@ -75,7 +75,10 @@ export default function MainMenu<
               export
             </Button>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full">
+            {Object.values(characters).length === 0 && (
+              <div>No character found</div>
+            )}
             {Object.values(characters).map((c) => (
               <CharacterEntry
                 key={c.id}
@@ -90,7 +93,7 @@ export default function MainMenu<
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-2 max-w-lg w-full">
+        <div className="flex flex-col gap-2 items-start max-w-lg w-full">
           <Title>games</Title>
           <div className="flex gap-2">
             <NewGameModal
@@ -122,7 +125,8 @@ export default function MainMenu<
               export
             </Button>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full">
+            {Object.values(games).length === 0 && <div>No game found</div>}
             {Object.values(games).map((c) => (
               <GameEntry
                 key={c.id}
@@ -154,7 +158,7 @@ function CharacterEntry({
   deleteCharacter,
 }: CharacterEntryProps) {
   return (
-    <div className="flex justify-between items-center p-2 border border-input bg-background">
+    <div className="flex justify-between items-center p-2 border border-input bg-background max-w-sm">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <SessionStartDialog characterId={characterId} />
@@ -162,7 +166,7 @@ function CharacterEntry({
           onConfirm={deleteCharacter}
           icon={
             <Button size="icon-sm" variant="ghost">
-              <Trash2Icon  />
+              <Trash2Icon />
             </Button>
           }
         >
@@ -182,19 +186,19 @@ interface GameEntryProps {
 
 function GameEntry({ gameId, name, deleteGame }: GameEntryProps) {
   return (
-    <div className="flex justify-between items-center p-2 border border-input bg-background">
+    <div className="flex justify-between items-center p-2 border border-input bg-background max-w-sm">
       <div className="text-lg">{name}</div>
       <div className="flex gap-2">
         <Button size="icon-sm" variant="ghost" asChild>
           <Link href={`/session/host?gameId=${gameId}`}>
-            <PlayIcon  />
+            <PlayIcon />
           </Link>
         </Button>
         <DeleteAlert
           onConfirm={deleteGame}
           icon={
             <Button size="icon-sm" variant="ghost">
-              <Trash2Icon  />
+              <Trash2Icon />
             </Button>
           }
         >
@@ -217,7 +221,7 @@ function SessionStartDialog({ characterId }: SessionStartProps) {
     <Dialog>
       <DialogTrigger asChild>
         <ButtonLike size="icon-sm" variant="ghost">
-          <PlayIcon  />
+          <PlayIcon />
         </ButtonLike>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -266,7 +270,7 @@ export function NewGameModal({ onCreate }: NewGameModalProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ButtonLike>
-          <FilePlus2Icon  className="mr-2" /> new
+          <FilePlus2Icon className="mr-2" /> new
         </ButtonLike>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -24,7 +24,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { MenuEntry } from "@/components/ui/menu-entry";
 import TextAreaField from "@/components/ui/textareafield";
@@ -77,7 +76,7 @@ export function AllContent() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="items">
-          <AccordionTrigger>items</AccordionTrigger>
+          <AccordionTrigger>Items</AccordionTrigger>
           <AccordionContent>
             <AllItems />
           </AccordionContent>
@@ -355,13 +354,14 @@ function AllNpcs() {
         />
         <RandomEntryDialog lens={npcsLens} name="npc" />
       </div>
-      <CharacterCollection<CairnNpc>
+      {npcsLens.state.length === 0 && <div>No NPC defined</div>}
+      {npcsLens.state.length > 0 && <CharacterCollection<CairnNpc>
         charType="npc"
         lens={npcsLens}
         HeaderMenu={NpcTools}
         Edit={NpcEdit}
         Details={NpcDetails}
-      />
+      />}
     </div>
   );
 }
@@ -490,7 +490,8 @@ function AllItems() {
         />
         <RandomEntryDialog lens={itemsLens} name="item" />
       </div>
-      <div className="grid grid-cols-2 w-full gap-2">
+      {itemsLens.state.length === 0 && <div>No item defined</div>}
+      {itemsLens.state.length > 0 && <div className="grid grid-cols-2 w-full gap-2">
         {itemsLens.state.map((item, idx) => {
           const itemLens = getSubArrayLens(itemsLens, idx);
           return (
@@ -503,7 +504,7 @@ function AllItems() {
             </Card>
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 }

@@ -16,6 +16,7 @@ import { getSubArrayLens, getSubLens } from "@/lib/utils";
 import { Timer } from "@/components/ui/timer";
 import { ClockEditDialog } from "@/components/ui/clocks-edit-dialog";
 import { Clock } from "@/components/ui/clock";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Session() {
   const { messages, revealedElements } = useGmConnectionContext();
@@ -44,7 +45,7 @@ function GmTabs() {
       </TabsList>
       <TabsContent value="characters">
         <div className="flex flex-col gap-4">
-          <AllConnections />
+          <InviteLinks />
           <AllCharacters />
         </div>
       </TabsContent>
@@ -61,8 +62,9 @@ function GmTabs() {
   );
 }
 
-function AllConnections() {
+function InviteLinks() {
   const { connections, sessionCode } = useGmConnectionContext();
+  const { toast } = useToast();
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -72,23 +74,15 @@ function AllConnections() {
           size="icon-sm"
           onClick={() => {
             global.navigator.clipboard.writeText(sessionCode);
+            toast({ title: "table id copied", description: sessionCode });
           }}
         >
-          <CopyIcon  />
+          <CopyIcon />
         </Button>
       </div>
       <div>
         Provide this id to the player to let them join this table. Refreshing
         this page will create a new id.
-      </div>
-      <div>
-        <div>Connected players:</div>
-        {connections.map((c) => (
-          <div key={c.id}>
-            <WeakEmph>{c.id}</WeakEmph> - {c.character?.name ?? "??"} -{" "}
-            {c.state}
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -98,14 +92,22 @@ interface AllCharactersProps {}
 
 function AllCharacters({}: AllCharactersProps) {
   const { connections } = useGmConnectionContext();
-  const allCharacters = connections
-    .map((conn) => conn.character)
-    .filter((c) => !!c) as CairnCharacter[];
 
+  if (connections.length === 0) {
+    return <div>No player connected</div>;
+  }
   return (
     <>
-      {allCharacters.map((c) => (
-        <CharacterEntry key={c.id} character={c} />
+      <div>Connected players:</div>
+      {connections.map((c) => (
+        <>
+          <div key={c.id}>
+            <WeakEmph>{c.id}</WeakEmph> - {c.character?.name ?? "??"} -{" "}
+            {c.state}
+          </div>
+          {c.character && <CharacterEntry key={c.id} character={c.character} />}
+          {!c.character && <div>no character received</div>}
+        </>
       ))}
     </>
   );
@@ -123,6 +125,7 @@ function AllTimers() {
           })
         }
       />
+      {timersLens.state.length === 0 && <div>No timer defined</div>}
       <div className="flex flex-wrap gap-4">
         {timersLens.state.map((timer, idx) => (
           <Timer
@@ -150,6 +153,7 @@ function AllClocks() {
           })
         }
       />
+      {clocksLens.state.length === 0 && <div>No clock defined</div>}
       <div className="flex flex-wrap gap-4">
         {clocksLens.state.map((clock, idx) => (
           <Clock

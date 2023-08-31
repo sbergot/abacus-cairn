@@ -88,7 +88,6 @@ export function Timer({ timerLens, onDelete }: Props) {
           <Button
             variant="ghost"
             size="icon-sm"
-            disabled={!timer.isPaused}
             onClick={() =>
               timerLens.setState((d) => {
                 d.currentTimeInMSec = 0;

@@ -14,7 +14,7 @@ export function WeakEmph({ children, className }: Children & ClassName) {
   return <span className={cn(className, "text-sm text-muted-foreground")}>{children}</span>;
 }
 
-const titleVariants = cva("text-center text-xl", {
+const titleVariants = cva("text-center text-2xl font-bold", {
   variants: {
     variant: {
       primary: "text-secondary-foreground",
