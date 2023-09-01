@@ -125,12 +125,12 @@ function AllCharacters({}: AllCharactersProps) {
       <div>Connected players:</div>
       <div className="flex flex-col gap-4">
         {connections.map((c) => (
-          <div>
-            <div key={c.id}>
+          <div key={c.id}>
+            <div>
               <WeakEmph>{c.id}</WeakEmph> - {c.state}
             </div>
             {c.character && (
-              <CharacterEntry key={c.id} character={c.character} />
+              <CharacterEntry character={c.character} />
             )}
             {!c.character && <div>no character received</div>}
           </div>

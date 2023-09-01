@@ -47,14 +47,14 @@ export function Shop() {
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
           {Object.keys(itemsByCategory).map((category) => (
-            <TabsTrigger value={category}>{category}</TabsTrigger>
+            <TabsTrigger key={category} value={category}>{category}</TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="all">
           <ShopTable items={allItems} />
         </TabsContent>
         {Object.keys(itemsByCategory).map((category) => (
-          <TabsContent value={category}>
+          <TabsContent key={category} value={category}>
             <ShopTable
               items={itemsByCategory[category as keyof typeof itemsByCategory]}
             />
