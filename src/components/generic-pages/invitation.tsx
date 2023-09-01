@@ -4,7 +4,7 @@ import { PlayIcon, Trash2Icon, UserPlusIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { GenericMenu } from "../ui/generic-menu";
 import Link from "next/link";
-import { useGenericGameContext } from "@/lib/gameContext";
+import { useGenericGameContext } from "@/lib/game-context";
 import { DeleteAlert } from "../ui/delete-alert";
 import { ButtonLike } from "../ui/button-like";
 import { useUrlParams } from "@/lib/hooks";

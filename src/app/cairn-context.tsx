@@ -5,9 +5,10 @@ import {
   CairnCharacter,
   CairnGame,
   CairnMessage,
+  Gear,
 } from "@/lib/game/cairn/types";
 import { LibraryElement } from "@/lib/game/types";
-import { createGameContext } from "@/lib/gameContext";
+import { createGameContext } from "@/lib/game-context";
 import { GmConnection, useGmConnection } from "@/lib/network/gmConnection";
 import {
   PlayerConnection,
@@ -16,6 +17,15 @@ import {
 } from "@/lib/network/playerConnection";
 import { Logger } from "@/lib/network/types";
 import { createContext, useContext } from "react";
+import { itemsByCategory } from "@/lib/game/cairn/items-data";
+
+type ShopItems = Record<string, Gear[]>;
+
+const ShopItemsContext = createContext<ShopItems>(itemsByCategory);
+
+export function useShopItemsContext() {
+  return useContext(ShopItemsContext);
+}
 
 const LoggerContext = createContext<Logger<CairnMessage> | null>(null);
 

@@ -5,7 +5,7 @@ import { Button } from "./button";
 import { FileImport } from "./file-import";
 import { Title } from "./typography";
 import Link from "next/link";
-import { useGenericGameContext } from "@/lib/gameContext";
+import { useGenericGameContext } from "@/lib/game-context";
 import { ILens } from "@/lib/types";
 import { Draft } from "immer";
 import { ReactNode } from "react";

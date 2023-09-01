@@ -12,7 +12,7 @@ import {
 import Peer, { DataConnection } from "peerjs";
 import { stamp, useLog } from "./utils";
 import { BaseCharacter, LibraryElement } from "../game/types";
-import { useGenericGameContext } from "../gameContext";
+import { useGenericGameContext } from "../game-context";
 
 type ConnectionStatus =
   | "connecting"

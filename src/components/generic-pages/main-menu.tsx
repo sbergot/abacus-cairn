@@ -18,7 +18,7 @@ import {
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { DeleteAlert } from "@/components/ui/delete-alert";
-import { useGenericGameContext } from "@/lib/gameContext";
+import { useGenericGameContext } from "@/lib/game-context";
 import { useState } from "react";
 import { ButtonLike } from "../ui/button-like";
 import { GenericMenu } from "../ui/generic-menu";

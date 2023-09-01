@@ -11,7 +11,7 @@ import {
 import Peer, { DataConnection } from "peerjs";
 import { stamp } from "./utils";
 import { BaseCharacter, BaseGame, LibraryElement } from "../game/types";
-import { useCurrentGenericGame } from "../gameContext";
+import { useCurrentGenericGame } from "../game-context";
 
 type ConnectionState = "connected" | "closed" | "error";
 

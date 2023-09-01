@@ -3,7 +3,7 @@ import { getSubLens, uuidv4 } from "./utils";
 import useLocalStorage from "use-local-storage";
 import { Draft, produce } from "immer";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useCurrentGenericGame } from "./gameContext";
+import { useCurrentGenericGame } from "./game-context";
 import { useLoggerContext } from "@/app/cairn-context";
 import { useImmer } from "use-immer";
 import { ILens } from "./types";

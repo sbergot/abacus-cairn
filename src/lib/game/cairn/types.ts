@@ -94,4 +94,5 @@ export type CairnMessage =
 export interface CairnGame extends BaseGame<CairnMessage> {
   npcs: CairnNpc[];
   items: GearContent[];
+  customItemsByCategory?: Record<string, Gear[]>;
 }
