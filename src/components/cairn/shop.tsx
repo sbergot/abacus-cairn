@@ -12,16 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
-import {
-  allItems,
-  armors,
-  expeditionGear,
-  otherItems,
-  spells,
-  tools,
-  trinkets,
-  weapons,
-} from "@/lib/game/cairn/items-data";
+import { allItems, itemsByCategory } from "@/lib/game/cairn/items-data";
 import { useRouter } from "next/navigation";
 import { useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
@@ -55,38 +46,20 @@ export function Shop() {
       <Tabs className="mt-2" defaultValue="all">
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="weapons">Weapons</TabsTrigger>
-          <TabsTrigger value="armors">Armors</TabsTrigger>
-          <TabsTrigger value="expeditionGear">Expedition Gear</TabsTrigger>
-          <TabsTrigger value="tools">Tools</TabsTrigger>
-          <TabsTrigger value="trinkets">Trinkets</TabsTrigger>
-          <TabsTrigger value="others">Others</TabsTrigger>
-          <TabsTrigger value="spells">Spells</TabsTrigger>
+          {Object.keys(itemsByCategory).map((category) => (
+            <TabsTrigger value={category}>{category}</TabsTrigger>
+          ))}
         </TabsList>
         <TabsContent value="all">
           <ShopTable items={allItems} />
         </TabsContent>
-        <TabsContent value="weapons">
-          <ShopTable items={weapons} />
-        </TabsContent>
-        <TabsContent value="armors">
-          <ShopTable items={armors} />
-        </TabsContent>
-        <TabsContent value="expeditionGear">
-          <ShopTable items={expeditionGear} />
-        </TabsContent>
-        <TabsContent value="tools">
-          <ShopTable items={tools} />
-        </TabsContent>
-        <TabsContent value="trinkets">
-          <ShopTable items={trinkets} />
-        </TabsContent>
-        <TabsContent value="others">
-          <ShopTable items={otherItems} />
-        </TabsContent>
-        <TabsContent value="spells">
-          <ShopTable items={spells} />
-        </TabsContent>
+        {Object.keys(itemsByCategory).map((category) => (
+          <TabsContent value={category}>
+            <ShopTable
+              items={itemsByCategory[category as keyof typeof itemsByCategory]}
+            />
+          </TabsContent>
+        ))}
       </Tabs>
     </>
   );

@@ -14,13 +14,7 @@ import {
   surnames,
   traits,
 } from "./character-generation-data";
-import {
-  armors,
-  expeditionGear,
-  tools,
-  trinkets,
-  weapons,
-} from "./items-data";
+import { allItems, itemsByCategory } from "./items-data";
 import { Gauge } from "../types";
 
 export function getEmptySlots(n: number, type: string): Slot[] {
@@ -136,19 +130,19 @@ function rollStartingArmor(): SlotState {
   if (armorRoll <= 14) {
     return {
       type: "gear",
-      gear: clone(armors.find((g) => g.name === "Brigandine")!),
+      gear: clone(allItems.find((g) => g.name === "Brigandine")!),
     };
   }
   if (armorRoll <= 19) {
     return {
       type: "gear",
-      gear: clone(armors.find((g) => g.name === "Chainmail")!),
+      gear: clone(allItems.find((g) => g.name === "Chainmail")!),
     };
   }
   if (armorRoll <= 20) {
     return {
       type: "gear",
-      gear: clone(armors.find((g) => g.name === "Plate Mail")!),
+      gear: clone(allItems.find((g) => g.name === "Plate Mail")!),
     };
   }
   throw new Error();
@@ -160,35 +154,35 @@ function rollStartingWeapon(): SlotState {
     const weaponName = pickRandom(["Dagger", "Cudgel", "Staff"]);
     return {
       type: "gear",
-      gear: clone(weapons.find((g) => g.name === weaponName)!),
+      gear: clone(allItems.find((g) => g.name === weaponName)!),
     };
   }
   if (weaponRoll <= 14) {
     const weaponName = pickRandom(["Sword", "Mace", "Axe"]);
     return {
       type: "gear",
-      gear: clone(weapons.find((g) => g.name === weaponName)!),
+      gear: clone(allItems.find((g) => g.name === weaponName)!),
     };
   }
   if (weaponRoll <= 19) {
     const weaponName = pickRandom(["Bow", "Crossbow", "Sling"]);
     return {
       type: "gear",
-      gear: clone(weapons.find((g) => g.name === weaponName)!),
+      gear: clone(allItems.find((g) => g.name === weaponName)!),
     };
   }
   if (weaponRoll <= 20) {
     const weaponName = pickRandom(["Halberd", "War Hammer", "Long Sword"]);
     return {
       type: "gear",
-      gear: clone(weapons.find((g) => g.name === weaponName)!),
+      gear: clone(allItems.find((g) => g.name === weaponName)!),
     };
   }
   throw new Error();
 }
 
 function giveHelmet(character: CairnCharacter) {
-  const helmet = clone(armors.find((g) => g.name === "Kettle Helm")!);
+  const helmet = clone(allItems.find((g) => g.name === "Kettle Helm")!);
   if (character.inventory[3].state.type === "empty") {
     character.inventory[3].state = { type: "gear", gear: helmet };
   } else {
@@ -197,7 +191,7 @@ function giveHelmet(character: CairnCharacter) {
 }
 
 function giveShield(character: CairnCharacter) {
-  const shield = clone(armors.find((g) => g.name === "Shield")!);
+  const shield = clone(allItems.find((g) => g.name === "Shield")!);
   if (character.inventory[1].state.type === "empty") {
     character.inventory[1].state = { type: "gear", gear: shield };
   } else {
@@ -268,9 +262,9 @@ export function fillCharacterGear(character: CairnCharacter) {
     };
   }
   fillHelmetAndShield(character);
-  tryAddItem(character, pickRandom(expeditionGear));
-  tryAddItem(character, pickRandom(tools));
-  tryAddItem(character, pickRandom(trinkets));
+  tryAddItem(character, pickRandom(itemsByCategory["expedition gears"]));
+  tryAddItem(character, pickRandom(itemsByCategory.tools));
+  tryAddItem(character, pickRandom(itemsByCategory.trinkets));
 }
 
 export function fillRandomCharacter(character: CairnCharacter) {
