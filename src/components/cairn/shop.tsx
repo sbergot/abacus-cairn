@@ -21,7 +21,7 @@ import {
   tools,
   trinkets,
   weapons,
-} from "@/lib/game/cairn/data";
+} from "@/lib/game/cairn/items-data";
 import { useRouter } from "next/navigation";
 import { useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";

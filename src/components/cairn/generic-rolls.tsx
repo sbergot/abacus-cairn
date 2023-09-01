@@ -12,7 +12,7 @@ import {
 } from "../ui/select";
 import { pickRandom, roll } from "@/lib/random";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { scars } from "@/lib/game/cairn/data";
+import { scars } from "@/lib/game/cairn/other-data";
 import { DiceSelect } from "./dice-select";
 import { ButtonLike } from "../ui/button-like";
 

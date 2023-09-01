@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { backgrounds } from "@/lib/game/cairn/data";
+import { backgrounds } from "@/lib/game/cairn/character-generation-data";
 import { PlusCircleIcon } from "lucide-react";
 import { pickRandom } from "@/lib/random";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";

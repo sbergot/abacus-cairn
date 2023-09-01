@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { InventoryControl } from "./inventory-control";
-import { carryCapacities } from "@/lib/game/cairn/data";
+import { carryCapacities } from "@/lib/game/cairn/other-data";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { getEmptySlots } from "@/lib/game/cairn/character-generation";
 import { WeakEmph } from "../ui/typography";

@@ -8,17 +8,19 @@ import {
 } from "./types";
 import { pickRandom, roll } from "@/lib/random";
 import {
-  armors,
   backgrounds,
-  expeditionGear,
   femaleNames,
   maleNames,
   surnames,
-  tools,
   traits,
+} from "./character-generation-data";
+import {
+  armors,
+  expeditionGear,
+  tools,
   trinkets,
   weapons,
-} from "./data";
+} from "./items-data";
 import { Gauge } from "../types";
 
 export function getEmptySlots(n: number, type: string): Slot[] {

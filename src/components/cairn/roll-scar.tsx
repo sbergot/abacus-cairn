@@ -1,7 +1,7 @@
 import { useLoggerContext } from "@/app/cairn-context";
 import { Button } from "../ui/button";
 import { pickRandom } from "@/lib/random";
-import { scars } from "@/lib/game/cairn/data";
+import { scars } from "@/lib/game/cairn/other-data";
 
 export function RollScar() {
     const log = useLoggerContext();
