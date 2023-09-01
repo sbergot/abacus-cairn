@@ -39,7 +39,8 @@ function rotateArray<T>(arr: T[], limit: number): T[] {
 export function useGmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
-  TGame extends BaseGame<TMessage>
+  TGame extends BaseGame<TMessage, TCustomData>,
+  TCustomData
 >(
   getAllRevealedElements: (g: TGame) => Record<string, LibraryElement[]>
 ): GmConnection<TMessage, TGame, TChar> {
@@ -54,6 +55,8 @@ export function useGmConnection<
   const revealedElements = getAllRevealedElements(game as TGame);
   const revealedElementsRef = useRef(revealedElements);
   revealedElementsRef.current = revealedElements;
+  const customDataRef = useRef(game.customData);
+  customDataRef.current = game.customData;
   const debounceRef = useRef(false);
   const playerConnectionsRef = useRef<Record<string, DataConnection>>({});
   const [transientMessages, setTransientMessages] =
@@ -102,10 +105,10 @@ export function useGmConnection<
 
       conn.on("data", function (data) {
         console.debug("Data received", data);
-        const typeData = data as AnyMessage<TChar, TMessage>;
+        const typeData = data as AnyMessage<TChar, TMessage, TCustomData>;
 
-        function sendSyncMessage(response: AllSyncMessageForPlayer<TMessage>) {
-          const message: AnyMessage<TChar, TMessage> = {
+        function sendSyncMessage(response: AllSyncMessageForPlayer<TMessage, TCustomData>) {
+          const message: AnyMessage<TChar, TMessage, TCustomData> = {
             ...response,
             destination: "Player",
             kind: "sync",
@@ -127,7 +130,7 @@ export function useGmConnection<
             return;
           }
           if (typeData.type === "MessageHistoryRequest") {
-            const response: AllSyncMessageForPlayer<TMessage> = {
+            const response: AllSyncMessageForPlayer<TMessage, TCustomData> = {
               type: "MessageHistoryResponse",
               props: {
                 messages: messagesRef.current.filter((m) => !m.gmOnly),
@@ -137,9 +140,17 @@ export function useGmConnection<
             return;
           }
           if (typeData.type === "RevealedElementsRequest") {
-            const response: AllSyncMessageForPlayer<TMessage> = {
+            const response: AllSyncMessageForPlayer<TMessage, TCustomData> = {
               type: "RevealedElementsResponse",
               props: { revealedElements: revealedElementsRef.current },
+            };
+            sendSyncMessage(response);
+            return;
+          }
+          if (typeData.type === "CustomDataRequest") {
+            const response: AllSyncMessageForPlayer<TMessage, TCustomData> = {
+              type: "CustomDataResponse",
+              props: { customData: customDataRef.current as TCustomData },
             };
             sendSyncMessage(response);
             return;
@@ -178,7 +189,7 @@ export function useGmConnection<
     }
   }
 
-  function sendAll(m: AnyMessage<TChar, TMessage>) {
+  function sendAll(m: AnyMessage<TChar, TMessage, TCustomData>) {
     if (playerConnectionsRef.current) {
       Object.values(playerConnectionsRef.current).forEach((c) => {
         c.send(m);
@@ -186,7 +197,7 @@ export function useGmConnection<
     }
   }
 
-  function sendAllSync(m: AllSyncMessageForPlayer<TMessage>) {
+  function sendAllSync(m: AllSyncMessageForPlayer<TMessage, TCustomData>) {
     sendAll({ kind: "sync", destination: "Player", ...m });
   }
 
@@ -212,7 +223,7 @@ export function useGmConnection<
   function removeMessage(
     filter: (m: AllChatMessage<TMessage>) => boolean
   ): void {
-    function removeFilter(m: AnyMessage<TChar, TMessage>): boolean {
+    function removeFilter(m: AnyMessage<TChar, TMessage, TCustomData>): boolean {
       if (m.kind === "sync") {
         return true;
       }
@@ -233,7 +244,7 @@ export function useGmConnection<
   }
 
   function updateRevealedElements(c: TGame) {
-    const response: AllSyncMessageForPlayer<TMessage> = {
+    const response: AllSyncMessageForPlayer<TMessage, TCustomData> = {
       type: "RevealedElementsResponse",
       props: { revealedElements: getAllRevealedElements(c) },
     };

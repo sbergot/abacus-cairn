@@ -1,7 +1,7 @@
 "use client";
 
 import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
-import { useCurrentCharacter, useLoggerContext } from "@/app/cairn-context";
+import { useCurrentCharacter, useLoggerContext, useShopItemsContext } from "@/app/cairn-context";
 import {
   Table,
   TableBody,
@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
-import { allItems, itemsByCategory } from "@/lib/game/cairn/items-data";
 import { useRouter } from "next/navigation";
 import { useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
@@ -27,6 +26,8 @@ import {
 import { NewItemDialog } from "./new-item-dialog";
 
 export function Shop() {
+  const itemsByCategory = useShopItemsContext();
+  const allItems: Gear[] = Object.values(itemsByCategory).flat();
   const { setState: setCharacter } = useCurrentCharacter();
   const router = useRouter();
   const log = useLoggerContext();

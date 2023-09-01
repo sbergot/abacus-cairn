@@ -1,10 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { GameContextProvider } from "./cairn-context";
+import {
+  GameContextProvider,
+  ShopItemsContextProvider,
+  useCurrentGame,
+} from "./cairn-context";
 import Link from "next/link";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
+import { Children } from "@/components/ui/types";
+import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
 export default function ClientLayout({
   children,
@@ -26,7 +32,9 @@ export default function ClientLayout({
         />
       </div>
       <TooltipProvider>
-        <GameContextProvider>{children}</GameContextProvider>
+        <GameContextProvider>
+          <GameShopItemsProvider>{children}</GameShopItemsProvider>
+        </GameContextProvider>
       </TooltipProvider>
       <Toaster />
     </div>
@@ -43,5 +51,16 @@ function HeaderLink({ text, href }: LinkProps) {
     <Button variant="link" className="p-0 mx-2" asChild>
       <Link href={href}>{text}</Link>
     </Button>
+  );
+}
+
+function GameShopItemsProvider({ children }: Children) {
+  const { state } = useCurrentGame();
+  return (
+    <ShopItemsContextProvider
+      value={state.customData.customItemsByCategory ?? itemsByCategory}
+    >
+      {children}
+    </ShopItemsContextProvider>
   );
 }

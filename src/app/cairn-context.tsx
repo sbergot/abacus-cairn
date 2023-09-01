@@ -3,6 +3,7 @@
 import { Children } from "@/components/ui/types";
 import {
   CairnCharacter,
+  CairnCustomData,
   CairnGame,
   CairnMessage,
   Gear,
@@ -23,6 +24,8 @@ type ShopItems = Record<string, Gear[]>;
 
 const ShopItemsContext = createContext<ShopItems>(itemsByCategory);
 
+export const ShopItemsContextProvider = ShopItemsContext.Provider;
+
 export function useShopItemsContext() {
   return useContext(ShopItemsContext);
 }
@@ -41,11 +44,13 @@ export const {
   useCurrentGame,
 } = createGameContext<CairnCharacter, CairnGame>("cairn");
 
-const PlayerConnectionContext =
-  createContext<PlayerConnection<CairnMessage> | null>(null);
+const PlayerConnectionContext = createContext<PlayerConnection<
+  CairnMessage,
+  CairnCustomData
+> | null>(null);
 
 export function PlayerConnectionStubContextProvider({ children }: Children) {
-  const ctx = usePlayerConnectionStub<CairnMessage>();
+  const ctx = usePlayerConnectionStub<CairnMessage, CairnCustomData>();
   return (
     <PlayerConnectionContext.Provider value={ctx}>
       <LoggerContext.Provider value={ctx.log}>
@@ -65,14 +70,19 @@ export function PlayerConnectionContextProvider({
   character,
   children,
 }: PlayerConnectionContextProviderProps) {
-  const ctx = usePlayerConnection<CairnCharacter, CairnMessage>(
-    sessionCode,
-    character
-  );
+  const ctx = usePlayerConnection<
+    CairnCharacter,
+    CairnMessage,
+    CairnCustomData
+  >(sessionCode, character);
   return (
     <PlayerConnectionContext.Provider value={ctx}>
       <LoggerContext.Provider value={ctx.log}>
-        {children}
+        <ShopItemsContext.Provider
+          value={ctx.customData?.customItemsByCategory ?? itemsByCategory}
+        >
+          {children}
+        </ShopItemsContext.Provider>
       </LoggerContext.Provider>
     </PlayerConnectionContext.Provider>
   );
@@ -142,9 +152,12 @@ function getAllRevealedElements(game: CairnGame) {
 }
 
 export function GmConnectionContextProvider({ children }: Children) {
-  const ctx = useGmConnection<CairnCharacter, CairnMessage, CairnGame>(
-    getAllRevealedElements
-  );
+  const ctx = useGmConnection<
+    CairnCharacter,
+    CairnMessage,
+    CairnGame,
+    CairnCustomData
+  >(getAllRevealedElements);
   return (
     <GmConnectionContext.Provider value={ctx}>
       <LoggerContext.Provider value={ctx.log}>

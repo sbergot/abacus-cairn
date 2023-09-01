@@ -25,10 +25,15 @@ export type UknownGameMessage = ChatMessage<string, unknown>;
 
 export type AllSyncMessageForGM<TChar> =
   | SyncMessage<"UpdateChar", { character: TChar }>
+  | SyncMessage<"CustomDataRequest", {}>
   | SyncMessage<"RevealedElementsRequest", {}>
   | SyncMessage<"MessageHistoryRequest", {}>;
 
-export type AllSyncMessageForPlayer<TMessage> =
+export type AllSyncMessageForPlayer<TMessage, TCustomData> =
+  | SyncMessage<
+      "CustomDataResponse",
+      { customData: TCustomData }
+    >
   | SyncMessage<
       "RevealedElementsResponse",
       { revealedElements: Record<string, LibraryElement[]> }
@@ -38,9 +43,9 @@ export type AllSyncMessageForPlayer<TMessage> =
       { messages: Stamped<AllChatMessage<TMessage>>[] }
     >;
 
-export type AllSyncMessage<TChar, TMessage> =
+export type AllSyncMessage<TChar, TMessage, TCustomData> =
   | ({ destination: "GM" } & AllSyncMessageForGM<TChar>)
-  | ({ destination: "Player" } & AllSyncMessageForPlayer<TMessage>);
+  | ({ destination: "Player" } & AllSyncMessageForPlayer<TMessage, TCustomData>);
 
 export type AllCommonChatMessage =
   | ChatMessage<"SimpleMessage", { content: string }>
@@ -50,8 +55,8 @@ export type AllChatMessage<TMessage> =
   | ({ kind: "chat-common" } & AllCommonChatMessage)
   | ({ kind: "chat-custom" } & TMessage);
 
-export type AnyMessage<TChar, TMessage> =
-  | ({ kind: "sync" } & AllSyncMessage<TChar, TMessage>)
+export type AnyMessage<TChar, TMessage, TCustomData> =
+  | ({ kind: "sync" } & AllSyncMessage<TChar, TMessage, TCustomData>)
   | Stamped<AllChatMessage<TMessage>>;
 
 export interface ConnectionMetadata {

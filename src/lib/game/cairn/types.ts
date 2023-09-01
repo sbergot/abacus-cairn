@@ -91,8 +91,11 @@ export type CairnMessage =
   | ChatMessage<"AbilityRoll", AbilityRollAnalysis>
   | ChatMessage<"AttackRoll", AttackRollResult>;
 
-export interface CairnGame extends BaseGame<CairnMessage> {
+export interface CairnCustomData {
+  customItemsByCategory?: Record<string, Gear[]>;
+}
+
+export interface CairnGame extends BaseGame<CairnMessage, CairnCustomData> {
   npcs: CairnNpc[];
   items: GearContent[];
-  customItemsByCategory?: Record<string, Gear[]>;
 }

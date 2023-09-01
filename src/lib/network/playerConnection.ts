@@ -21,17 +21,22 @@ type ConnectionStatus =
   | "disconnected"
   | "offline";
 
-export interface PlayerConnection<TMessage> {
+export interface PlayerConnection<TMessage, TCustomData> {
   messages: Stamped<AllChatMessage<TMessage>>[];
   connectionStatus: ConnectionStatus;
   revealedElements: Record<string, LibraryElement[]>;
   log: Logger<TMessage>;
+  customData: TCustomData | null;
 }
 
 export function usePlayerConnection<
   TChar extends BaseCharacter,
-  TMessage extends UknownGameMessage
->(sessionCode: string, character: TChar): PlayerConnection<TMessage> {
+  TMessage extends UknownGameMessage,
+  TCustomData
+>(
+  sessionCode: string,
+  character: TChar
+): PlayerConnection<TMessage, TCustomData> {
   const browserId = useBrowserId();
   const [messages, setMessages] = useState<Stamped<AllChatMessage<TMessage>>[]>(
     []
@@ -39,6 +44,7 @@ export function usePlayerConnection<
   const [revealedElements, setRevealedElements] = useState<
     Record<string, LibraryElement[]>
   >({});
+  const [customData, setCustomData] = useState<TCustomData | null>(null);
   const [connectionStatus, setConnectionStatus] =
     useState<ConnectionStatus>("connecting");
   const debounceRef = useRef(false);
@@ -109,11 +115,12 @@ export function usePlayerConnection<
       syncLog({ type: "UpdateChar", props: { character } });
       syncLog({ type: "MessageHistoryRequest", props: {} });
       syncLog({ type: "RevealedElementsRequest", props: {} });
+      syncLog({ type: "CustomDataRequest", props: {} });
     });
     // Handle incoming data (messages only since this is the signal sender)
     conn.on("data", function (data) {
       console.debug("data received", data);
-      const typeData = data as AnyMessage<TChar, TMessage>;
+      const typeData = data as AnyMessage<TChar, TMessage, TCustomData>;
       if (typeData.kind === "sync") {
         if (typeData.destination === "GM") {
           return;
@@ -124,6 +131,10 @@ export function usePlayerConnection<
         }
         if (typeData.type === "RevealedElementsResponse") {
           setRevealedElements(typeData.props.revealedElements);
+          return;
+        }
+        if (typeData.type === "CustomDataResponse") {
+          setCustomData(typeData.props.customData);
           return;
         }
       } else if (
@@ -145,7 +156,7 @@ export function usePlayerConnection<
     });
   }
 
-  function send(m: AnyMessage<TChar, TMessage>) {
+  function send(m: AnyMessage<TChar, TMessage, TCustomData>) {
     if (connRef.current) {
       connRef.current.send(m);
     }
@@ -179,12 +190,13 @@ export function usePlayerConnection<
     });
   }, [character]);
 
-  return { log, messages, connectionStatus, revealedElements };
+  return { log, messages, connectionStatus, revealedElements, customData };
 }
 
 export function usePlayerConnectionStub<
-  TMessage extends UknownGameMessage
->(): PlayerConnection<TMessage> {
+  TMessage extends UknownGameMessage,
+  TCustomData
+>(): PlayerConnection<TMessage, TCustomData> {
   const { characterId } = useUrlParams();
   const {
     characterRepo: { state: characters },
@@ -197,5 +209,6 @@ export function usePlayerConnectionStub<
     messages: stub.messages,
     connectionStatus: "offline",
     revealedElements: {},
+    customData: null,
   };
 }

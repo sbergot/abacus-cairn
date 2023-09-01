@@ -8,7 +8,7 @@ import { UknownGameMessage } from "./network/types";
 
 export interface IGameContext<
   TChar extends BaseCharacter,
-  TGame extends BaseGame<UknownGameMessage>
+  TGame extends BaseGame<UknownGameMessage, {}>
 > {
   characterRepo: ILens<Record<string, TChar>>;
   gameRepo: ILens<Record<string, TGame>>;
@@ -18,7 +18,7 @@ export interface IGameContext<
 // generic context for generic UI (game menu, session layout etc)
 const GenericGameContext = createContext<IGameContext<
   BaseCharacter,
-  BaseGame<UknownGameMessage>
+  BaseGame<UknownGameMessage, {}>
 > | null>(null);
 
 const GenericGameContextProvider = GenericGameContext.Provider;
@@ -38,7 +38,7 @@ export function useCurrentGenericCharacter(): ILens<BaseCharacter> {
   return { state: character, setState: setCharacter };
 }
 
-export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage>> {
+export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage, {}>> {
   const {
     gameRepo: { state, setState },
   } = useGenericGameContext();
@@ -51,7 +51,7 @@ export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage>> {
 
 export function createGameContext<
   TChar extends BaseCharacter,
-  TGame extends BaseGame<UknownGameMessage>
+  TGame extends BaseGame<UknownGameMessage, {}>
 >(gameName: string) {
   // typesafe context for game specific UI
   const GameContext = createContext<IGameContext<TChar, TGame> | null>(null);

@@ -61,6 +61,7 @@ export function initGame(name: string): CairnGame {
     npcs: [],
     items: [],
     clocks: [],
+    customData: {}
   };
 }
 
