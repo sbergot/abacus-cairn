@@ -1,23 +1,34 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { CairnMessage } from "@/lib/game/cairn/types";
-import { useCurrentGame, useGmConnectionContext } from "@/app/cairn-context";
+import { CairnMessage, Gear } from "@/lib/game/cairn/types";
+import {
+  useCurrentGame,
+  useGameContext,
+  useGmConnectionContext,
+} from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, UploadIcon } from "lucide-react";
 import { CharacterEntry } from "./character-entry";
 import { AllContent } from "./all-content";
 import { RightPanel } from "@/components/generic-pages/right-panel";
 import { TimerEditDialog } from "@/components/ui/timer-edit-dialog";
-import { getSubArrayLens, getSubLens } from "@/lib/utils";
+import {
+  download,
+  downloadJson,
+  getSubArrayLens,
+  getSubLens,
+} from "@/lib/utils";
 import { Timer } from "@/components/ui/timer";
 import { ClockEditDialog } from "@/components/ui/clocks-edit-dialog";
 import { Clock } from "@/components/ui/clock";
 import { useToast } from "@/components/ui/use-toast";
 import { useRelativeLinker } from "@/lib/hooks";
+import { FileImport } from "@/components/ui/file-import";
+import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
 export default function Session() {
   const { messages, revealedElements } = useGmConnectionContext();
@@ -51,6 +62,7 @@ function GmTabs() {
         </div>
       </TabsContent>
       <TabsContent value="content">
+        <ManageCustomItems />
         <AllContent />
       </TabsContent>
       <TabsContent value="timers">
@@ -60,6 +72,37 @@ function GmTabs() {
         </div>
       </TabsContent>
     </Tabs>
+  );
+}
+
+function ManageCustomItems() {
+  const { gameName } = useGameContext();
+  const lens = useCurrentGame();
+  return (
+    <div className="flex gap-2 mb-2">
+      <FileImport
+        variant="secondary"
+        label="import shop items"
+        onUpLoad={(body) => {
+          lens.setState((d) => {
+            const newData = JSON.parse(body) as Record<string, Gear[]>;
+            d.customData.customItemsByCategory = newData;
+          });
+        }}
+      />
+      <Button
+        variant="secondary"
+        onClick={() =>
+          downloadJson(
+            `${gameName}-custom-items`,
+            lens.state.customData.customItemsByCategory ?? itemsByCategory
+          )
+        }
+      >
+        <UploadIcon className="mr-2" />
+        export shop items
+      </Button>
+    </div>
   );
 }
 
@@ -129,9 +172,7 @@ function AllCharacters({}: AllCharactersProps) {
             <div>
               <WeakEmph>{c.id}</WeakEmph> - {c.state}
             </div>
-            {c.character && (
-              <CharacterEntry character={c.character} />
-            )}
+            {c.character && <CharacterEntry character={c.character} />}
             {!c.character && <div>no character received</div>}
           </div>
         ))}

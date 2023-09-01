@@ -33,7 +33,7 @@ export default function ClientLayout({
       </div>
       <TooltipProvider>
         <GameContextProvider>
-          <GameShopItemsProvider>{children}</GameShopItemsProvider>
+          {children}
         </GameContextProvider>
       </TooltipProvider>
       <Toaster />
@@ -51,16 +51,5 @@ function HeaderLink({ text, href }: LinkProps) {
     <Button variant="link" className="p-0 mx-2" asChild>
       <Link href={href}>{text}</Link>
     </Button>
-  );
-}
-
-function GameShopItemsProvider({ children }: Children) {
-  const { state } = useCurrentGame();
-  return (
-    <ShopItemsContextProvider
-      value={state.customData.customItemsByCategory ?? itemsByCategory}
-    >
-      {children}
-    </ShopItemsContextProvider>
   );
 }
