@@ -56,6 +56,21 @@ export function createGameContext<
   // typesafe context for game specific UI
   const GameContext = createContext<IGameContext<TChar, TGame> | null>(null);
 
+  
+const ShopItemsContext = createContext<ShopItems>(itemsByCategory);
+
+  const ShopItemsContextProvider = ShopItemsContext.Provider;
+
+  function useShopItemsContext() {
+    return useContext(ShopItemsContext);
+  }
+
+  const LoggerContext = createContext<Logger<CairnMessage> | null>(null);
+
+  function useLoggerContext() {
+    return useContext(LoggerContext)!;
+  }
+
   const CurrentCharacterContext = createContext<ILens<TChar> | null>(null);
   function CurrentCharacterFromParamsContextProvider({ children }: Children) {
     const {

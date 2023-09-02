@@ -20,22 +20,6 @@ import { Logger } from "@/lib/network/types";
 import { createContext, useContext } from "react";
 import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
-type ShopItems = Record<string, Gear[]>;
-
-const ShopItemsContext = createContext<ShopItems>(itemsByCategory);
-
-export const ShopItemsContextProvider = ShopItemsContext.Provider;
-
-export function useShopItemsContext() {
-  return useContext(ShopItemsContext);
-}
-
-const LoggerContext = createContext<Logger<CairnMessage> | null>(null);
-
-export function useLoggerContext() {
-  return useContext(LoggerContext)!;
-}
-
 export const {
   GameContextProvider,
   CurrentCharacterContextProvider,

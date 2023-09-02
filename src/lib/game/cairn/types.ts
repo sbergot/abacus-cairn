@@ -99,3 +99,5 @@ export interface CairnGame extends BaseGame<CairnMessage, CairnCustomData> {
   npcs: CairnNpc[];
   items: GearContent[];
 }
+
+export type ShopItems = Record<string, Gear[]>;
