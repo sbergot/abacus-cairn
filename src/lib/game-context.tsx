@@ -4,7 +4,7 @@ import { Children } from "@/components/ui/types";
 import { useImmerLocalStorage, useUrlParams } from "./hooks";
 import { ILens } from "./types";
 import { setSingle } from "./utils";
-import { UknownGameMessage } from "./network/types";
+import { Logger, UknownGameMessage } from "./network/types";
 
 export interface IGameContext<
   TChar extends BaseCharacter,
@@ -38,7 +38,9 @@ export function useCurrentGenericCharacter(): ILens<BaseCharacter> {
   return { state: character, setState: setCharacter };
 }
 
-export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage, {}>> {
+export function useCurrentGenericGame(): ILens<
+  BaseGame<UknownGameMessage, {}>
+> {
   const {
     gameRepo: { state, setState },
   } = useGenericGameContext();
@@ -51,21 +53,24 @@ export function useCurrentGenericGame(): ILens<BaseGame<UknownGameMessage, {}>> 
 
 export function createGameContext<
   TChar extends BaseCharacter,
-  TGame extends BaseGame<UknownGameMessage, {}>
->(gameName: string) {
+  TGame extends BaseGame<UknownGameMessage, {}>,
+  TMessage,
+  TCustomData
+>(gameName: string, defaultCustomData: TCustomData) {
   // typesafe context for game specific UI
   const GameContext = createContext<IGameContext<TChar, TGame> | null>(null);
 
-  
-const ShopItemsContext = createContext<ShopItems>(itemsByCategory);
+  const CustomDataContext = createContext<TCustomData>(defaultCustomData);
 
-  const ShopItemsContextProvider = ShopItemsContext.Provider;
+  const CustomDataContextProvider = CustomDataContext.Provider;
 
-  function useShopItemsContext() {
-    return useContext(ShopItemsContext);
+  function useCustomDataContext() {
+    return useContext(CustomDataContext)!;
   }
 
-  const LoggerContext = createContext<Logger<CairnMessage> | null>(null);
+  const LoggerContext = createContext<Logger<TMessage> | null>(null);
+
+  const LoggerContextProvider = LoggerContext.Provider;
 
   function useLoggerContext() {
     return useContext(LoggerContext)!;
@@ -143,5 +148,9 @@ const ShopItemsContext = createContext<ShopItems>(itemsByCategory);
     useGameContext,
     useCurrentCharacter,
     useCurrentGame,
+    CustomDataContextProvider,
+    useCustomDataContext,
+    LoggerContextProvider,
+    useLoggerContext,
   };
 }

@@ -3,14 +3,10 @@
 import { Button } from "@/components/ui/button";
 import {
   GameContextProvider,
-  ShopItemsContextProvider,
-  useCurrentGame,
 } from "./cairn-context";
 import Link from "next/link";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
-import { Children } from "@/components/ui/types";
-import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
 export default function ClientLayout({
   children,

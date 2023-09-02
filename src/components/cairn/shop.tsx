@@ -1,7 +1,7 @@
 "use client";
 
 import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
-import { useCurrentCharacter, useLoggerContext, useShopItemsContext } from "@/app/cairn-context";
+import { useCurrentCharacter, useLoggerContext, useCustomDataContext } from "@/app/cairn-context";
 import {
   Table,
   TableBody,
@@ -24,10 +24,12 @@ import {
   grabItem,
 } from "@/lib/game/cairn/utils";
 import { NewItemDialog } from "./new-item-dialog";
+import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
 export function Shop() {
-  const itemsByCategory = useShopItemsContext();
-  const allItems: Gear[] = Object.values(itemsByCategory).flat();
+  let { customItemsByCategory } = useCustomDataContext();
+  customItemsByCategory = customItemsByCategory ?? itemsByCategory;
+  const allItems: Gear[] = Object.values(customItemsByCategory).flat();
   const { setState: setCharacter } = useCurrentCharacter();
   const router = useRouter();
   const log = useLoggerContext();
@@ -47,17 +49,17 @@ export function Shop() {
       <Tabs className="mt-2" defaultValue="all">
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
-          {Object.keys(itemsByCategory).map((category) => (
+          {Object.keys(customItemsByCategory).map((category) => (
             <TabsTrigger key={category} value={category}>{category}</TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="all">
           <ShopTable items={allItems} />
         </TabsContent>
-        {Object.keys(itemsByCategory).map((category) => (
+        {Object.keys(customItemsByCategory).map((category) => (
           <TabsContent key={category} value={category}>
             <ShopTable
-              items={itemsByCategory[category as keyof typeof itemsByCategory]}
+              items={customItemsByCategory![category as keyof typeof customItemsByCategory]}
             />
           </TabsContent>
         ))}

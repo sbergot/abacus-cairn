@@ -26,7 +26,14 @@ export const {
   useGameContext,
   useCurrentCharacter,
   useCurrentGame,
-} = createGameContext<CairnCharacter, CairnGame>("cairn");
+  LoggerContextProvider,
+  useLoggerContext,
+  CustomDataContextProvider,
+  useCustomDataContext,
+} = createGameContext<CairnCharacter, CairnGame, CairnMessage, CairnCustomData>(
+  "cairn",
+  { customItemsByCategory: itemsByCategory }
+);
 
 const PlayerConnectionContext = createContext<PlayerConnection<
   CairnMessage,
@@ -37,9 +44,7 @@ export function PlayerConnectionStubContextProvider({ children }: Children) {
   const ctx = usePlayerConnectionStub<CairnMessage, CairnCustomData>();
   return (
     <PlayerConnectionContext.Provider value={ctx}>
-      <LoggerContext.Provider value={ctx.log}>
-        {children}
-      </LoggerContext.Provider>
+      <LoggerContextProvider value={ctx.log}>{children}</LoggerContextProvider>
     </PlayerConnectionContext.Provider>
   );
 }
@@ -61,13 +66,13 @@ export function PlayerConnectionContextProvider({
   >(sessionCode, character);
   return (
     <PlayerConnectionContext.Provider value={ctx}>
-      <LoggerContext.Provider value={ctx.log}>
-        <ShopItemsContext.Provider
-          value={ctx.customData?.customItemsByCategory ?? itemsByCategory}
+      <LoggerContextProvider value={ctx.log}>
+        <CustomDataContextProvider
+          value={ctx.customData ?? { customItemsByCategory: itemsByCategory }}
         >
           {children}
-        </ShopItemsContext.Provider>
-      </LoggerContext.Provider>
+        </CustomDataContextProvider>
+      </LoggerContextProvider>
     </PlayerConnectionContext.Provider>
   );
 }
@@ -144,9 +149,7 @@ export function GmConnectionContextProvider({ children }: Children) {
   >(getAllRevealedElements);
   return (
     <GmConnectionContext.Provider value={ctx}>
-      <LoggerContext.Provider value={ctx.log}>
-        {children}
-      </LoggerContext.Provider>
+      <LoggerContextProvider value={ctx.log}>{children}</LoggerContextProvider>
     </GmConnectionContext.Provider>
   );
 }

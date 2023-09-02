@@ -1,8 +1,8 @@
 "use client";
 
 import {
+  CustomDataContextProvider,
   GmConnectionContextProvider,
-  ShopItemsContextProvider,
   useCurrentGame,
 } from "@/app/cairn-context";
 import { TimerProvider } from "@/app/timer-provider";
@@ -22,10 +22,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 function GameShopItemsProvider({ children }: Children) {
   const { state } = useCurrentGame();
   return (
-    <ShopItemsContextProvider
-      value={state.customData.customItemsByCategory ?? itemsByCategory}
+    <CustomDataContextProvider
+      value={state.customData ?? { customItemsByCategory: itemsByCategory }}
     >
       {children}
-    </ShopItemsContextProvider>
+    </CustomDataContextProvider>
   );
 }
