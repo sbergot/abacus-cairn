@@ -1,5 +1,5 @@
-import { Children } from "../ui/types";
-import { CardTitle } from "../ui/card";
+import { Children } from "./types";
+import { CardTitle } from "./card";
 
 interface Props extends Children {
   name: string;

@@ -1,6 +1,6 @@
 import { CharacterCoins } from "./character-coins";
 import { CharacterInventory } from "./character-inventory";
-import { TitleWithIcons } from "./title-with-icons";
+import { TitleWithIcons } from "../ui/title-with-icons";
 import { CharacterStats } from "./character-stats";
 import { EditCharStats } from "./edit-char-stats";
 import { GenericRolls } from "./generic-rolls";

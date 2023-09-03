@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "./button";
 import { ILens } from "@/lib/types";
-import { TitleWithIcons } from "../cairn/title-with-icons";
+import { TitleWithIcons } from "./title-with-icons";
 import { DeleteAlert } from "./delete-alert";
 import { Progress } from "./progress";
 import { TooltipShort } from "./tooltip-short";

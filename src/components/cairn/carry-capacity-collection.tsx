@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { DeleteAlert } from "../ui/delete-alert";
-import { TitleWithIcons } from "./title-with-icons";
+import { TitleWithIcons } from "../ui/title-with-icons";
 import { Draft } from "immer";
 import {
   Dialog,

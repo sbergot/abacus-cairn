@@ -5,7 +5,6 @@ import { EditGameItemDialog } from "@/components/cairn/edit-game-item-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
 import { NewCustomEntryDialog } from "@/components/cairn/new-custom-entry-dialog";
 import { NewGameItemDialog } from "@/components/cairn/new-game-item-dialog";
-import { TitleWithIcons } from "@/components/cairn/title-with-icons";
 import {
   Accordion,
   AccordionContent,
@@ -14,14 +13,9 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { ButtonLike } from "@/components/ui/button-like";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CardMenu } from "@/components/ui/card-menu";
+import { Card, CardContent } from "@/components/ui/card";
 import { DeleteAlert } from "@/components/ui/delete-alert";
-import {
-  Dialog,
-  DialogContent,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { MenuEntry } from "@/components/ui/menu-entry";
 import TextAreaField from "@/components/ui/textareafield";
@@ -43,6 +37,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { RandomEntryDialog } from "./random-entry-dialog";
+import { CardHeaderWithMenu } from "@/components/ui/card-header-with-menu";
 
 export function AllContent() {
   const gameLens = useCurrentGame();
@@ -151,68 +146,61 @@ function CustomEntryHeader({
 }: CustomEntryHeaderProps) {
   const entry = entryLens.state;
   return (
-    <CardHeader className="flex justify-between flex-row items-center gap-0">
-      <CardTitle className="flex-grow">{entry.name}</CardTitle>
-      <CardMenu>
-        <MenuEntry>
-          <EditCustomEntryDialog lens={entryLens} title={`Edit ${category}`} />
-        </MenuEntry>
-        <MenuEntry>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() =>
-              categoryLens.setState((d) => {
-                const entryToEdit = d.find((e) => e.id === entry.id)!;
-                entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
-              })
-            }
-          >
-            {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
-          </Button>
-          {entry.visibleToAll
-            ? "Make invisible to players"
-            : "Make visible to players"}
-        </MenuEntry>
-        <MenuEntry>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() =>
-              categoryLens.setState((d) => {
-                const entryToEdit = d.find((e) => e.id === entry.id)!;
-                entryToEdit.excludedFromRandomPick =
-                  !entryToEdit.excludedFromRandomPick;
-              })
-            }
-          >
-            {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
-          </Button>
-          {entry.excludedFromRandomPick
-            ? "Include in random pick"
-            : "Exclude from random pick"}
-        </MenuEntry>
-        <MenuEntry>
-          <DeleteAlert
-            icon={
-              <ButtonLike
-                variant="ghost"
-                size="xs"
-                className="flex gap-2 w-full"
-              >
-                <Trash2Icon />
-                <div className="flex-grow text-left">Delete</div>
-              </ButtonLike>
-            }
-            onConfirm={() =>
-              categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
-            }
-          >
-            This will permanently delete this entry
-          </DeleteAlert>
-        </MenuEntry>
-      </CardMenu>
-    </CardHeader>
+    <CardHeaderWithMenu title={entry.name}>
+      <MenuEntry>
+        <EditCustomEntryDialog lens={entryLens} title={`Edit ${category}`} />
+      </MenuEntry>
+      <MenuEntry>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
+            })
+          }
+        >
+          {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
+        </Button>
+        {entry.visibleToAll
+          ? "Make invisible to players"
+          : "Make visible to players"}
+      </MenuEntry>
+      <MenuEntry>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.excludedFromRandomPick =
+                !entryToEdit.excludedFromRandomPick;
+            })
+          }
+        >
+          {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
+        </Button>
+        {entry.excludedFromRandomPick
+          ? "Include in random pick"
+          : "Exclude from random pick"}
+      </MenuEntry>
+      <MenuEntry>
+        <DeleteAlert
+          icon={
+            <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
+              <Trash2Icon />
+              <div className="flex-grow text-left">Delete</div>
+            </ButtonLike>
+          }
+          onConfirm={() =>
+            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
+          }
+        >
+          This will permanently delete this entry
+        </DeleteAlert>
+      </MenuEntry>
+    </CardHeaderWithMenu>
   );
 }
 
@@ -352,13 +340,15 @@ function AllNpcs() {
         <RandomEntryDialog lens={npcsLens} name="npc" />
       </div>
       {npcsLens.state.length === 0 && <div>No NPC defined</div>}
-      {npcsLens.state.length > 0 && <CharacterCollection<CairnNpc>
-        charType="npc"
-        lens={npcsLens}
-        HeaderMenu={NpcTools}
-        Edit={NpcEdit}
-        Details={NpcDetails}
-      />}
+      {npcsLens.state.length > 0 && (
+        <CharacterCollection<CairnNpc>
+          charType="npc"
+          lens={npcsLens}
+          HeaderMenu={NpcTools}
+          Edit={NpcEdit}
+          Details={NpcDetails}
+        />
+      )}
     </div>
   );
 }
@@ -372,97 +362,89 @@ function GameItemHeader({ entryLens, categoryLens }: GameItemHeaderProps) {
   const log = useLoggerContext();
   const entry = entryLens.state;
   return (
-    <CardHeader className="flex justify-between flex-row items-center gap-0 w-full">
-      <TitleWithIcons name={entry.name}>
-        <CardMenu>
-          <MenuEntry>
-            <EditGameItemDialog
-              initialValue={entryLens.state}
-              onSave={(g) => entryLens.setState(() => g)}
-            />
-          </MenuEntry>
-          <MenuEntry>
-            <Button
-              className="flex gap-2 w-full"
-              variant="ghost"
-              size="xs"
-              onClick={() =>
-                log({
-                  kind: "chat-custom",
-                  type: "ItemShare",
-                  props: { item: entryLens.state },
-                })
-              }
-            >
-              <Share2Icon />
-              <div className="flex-grow text-left">Share</div>
-            </Button>
-          </MenuEntry>
-          <MenuEntry>
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={() =>
-                categoryLens.setState((d) => {
-                  const entryToEdit = d.find((e) => e.id === entry.id)!;
-                  entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
-                })
-              }
-            >
-              {entry.visibleToAll ? (
-                <EyeIcon className="mr-2" />
-              ) : (
-                <EyeOffIcon className="mr-2" />
-              )}
-              {entry.visibleToAll
-                ? "Make invisible to players"
-                : "Make visible to players"}
-            </Button>
-          </MenuEntry>
-          <MenuEntry>
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={() =>
-                categoryLens.setState((d) => {
-                  const entryToEdit = d.find((e) => e.id === entry.id)!;
-                  entryToEdit.excludedFromRandomPick =
-                    !entryToEdit.excludedFromRandomPick;
-                })
-              }
-            >
-              {entry.excludedFromRandomPick ? (
-                <XCircle className="mr-2" />
-              ) : (
-                <CheckCircle2Icon className="mr-2" />
-              )}
-              {entry.excludedFromRandomPick
-                ? "Include in random pick"
-                : "Exclude from random pick"}
-            </Button>
-          </MenuEntry>
-          <MenuEntry>
-            <DeleteAlert
-              icon={
-                <ButtonLike
-                  variant="ghost"
-                  size="xs"
-                  className="flex gap-2 w-full"
-                >
-                  <Trash2Icon />
-                  <div className="flex-grow text-left">Delete</div>
-                </ButtonLike>
-              }
-              onConfirm={() =>
-                categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
-              }
-            >
-              This will permanently delete this entry
-            </DeleteAlert>
-          </MenuEntry>
-        </CardMenu>
-      </TitleWithIcons>
-    </CardHeader>
+    <CardHeaderWithMenu title={entry.name}>
+      <MenuEntry>
+        <EditGameItemDialog
+          initialValue={entryLens.state}
+          onSave={(g) => entryLens.setState(() => g)}
+        />
+      </MenuEntry>
+      <MenuEntry>
+        <Button
+          className="flex gap-2 w-full"
+          variant="ghost"
+          size="xs"
+          onClick={() =>
+            log({
+              kind: "chat-custom",
+              type: "ItemShare",
+              props: { item: entryLens.state },
+            })
+          }
+        >
+          <Share2Icon />
+          <div className="flex-grow text-left">Share</div>
+        </Button>
+      </MenuEntry>
+      <MenuEntry>
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
+            })
+          }
+        >
+          {entry.visibleToAll ? (
+            <EyeIcon className="mr-2" />
+          ) : (
+            <EyeOffIcon className="mr-2" />
+          )}
+          {entry.visibleToAll
+            ? "Make invisible to players"
+            : "Make visible to players"}
+        </Button>
+      </MenuEntry>
+      <MenuEntry>
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() =>
+            categoryLens.setState((d) => {
+              const entryToEdit = d.find((e) => e.id === entry.id)!;
+              entryToEdit.excludedFromRandomPick =
+                !entryToEdit.excludedFromRandomPick;
+            })
+          }
+        >
+          {entry.excludedFromRandomPick ? (
+            <XCircle className="mr-2" />
+          ) : (
+            <CheckCircle2Icon className="mr-2" />
+          )}
+          {entry.excludedFromRandomPick
+            ? "Include in random pick"
+            : "Exclude from random pick"}
+        </Button>
+      </MenuEntry>
+      <MenuEntry>
+        <DeleteAlert
+          icon={
+            <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
+              <Trash2Icon />
+              <div className="flex-grow text-left">Delete</div>
+            </ButtonLike>
+          }
+          onConfirm={() =>
+            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
+          }
+        >
+          This will permanently delete this entry
+        </DeleteAlert>
+      </MenuEntry>
+    </CardHeaderWithMenu>
   );
 }
 
@@ -488,21 +470,22 @@ function AllItems() {
         <RandomEntryDialog lens={itemsLens} name="item" />
       </div>
       {itemsLens.state.length === 0 && <div>No item defined</div>}
-      {itemsLens.state.length > 0 && <div className="flex flex-wrap w-full gap-2">
-        {itemsLens.state.map((item, idx) => {
-          const itemLens = getSubArrayLens(itemsLens, idx);
-          return (
-            <Card key={item.id} className="max-w-xs w-full">
-              <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
-              <CardContent>
-                <div>{item.description}</div>
-                <WeakEmph>{item.privateNotes}</WeakEmph>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>}
+      {itemsLens.state.length > 0 && (
+        <div className="flex flex-wrap w-full gap-2">
+          {itemsLens.state.map((item, idx) => {
+            const itemLens = getSubArrayLens(itemsLens, idx);
+            return (
+              <Card key={item.id} className="max-w-xs w-full">
+                <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
+                <CardContent>
+                  <div>{item.description}</div>
+                  <WeakEmph>{item.privateNotes}</WeakEmph>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
-
