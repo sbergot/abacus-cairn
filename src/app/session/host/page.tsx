@@ -1,24 +1,21 @@
 "use client";
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { CairnMessage, Gear } from "@/lib/game/cairn/types";
+import { CairnMessage } from "@/lib/game/cairn/types";
 import {
   useCurrentGame,
-  useGameContext,
   useGmConnectionContext,
 } from "@/app/cairn-context";
 import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
 import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { CopyIcon, UploadIcon } from "lucide-react";
+import { CopyIcon } from "lucide-react";
 import { CharacterEntry } from "./character-entry";
 import { AllContent } from "./all-content";
 import { RightPanel } from "@/components/generic-pages/right-panel";
 import { TimerEditDialog } from "@/components/ui/timer-edit-dialog";
 import {
-  download,
-  downloadJson,
   getSubArrayLens,
   getSubLens,
 } from "@/lib/utils";
@@ -27,8 +24,6 @@ import { ClockEditDialog } from "@/components/ui/clocks-edit-dialog";
 import { Clock } from "@/components/ui/clock";
 import { useToast } from "@/components/ui/use-toast";
 import { useRelativeLinker } from "@/lib/hooks";
-import { FileImport } from "@/components/ui/file-import";
-import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
 export default function Session() {
   const { messages, revealedElements } = useGmConnectionContext();
@@ -62,7 +57,6 @@ function GmTabs() {
         </div>
       </TabsContent>
       <TabsContent value="content">
-        <ManageCustomItems />
         <AllContent />
       </TabsContent>
       <TabsContent value="timers">
@@ -72,37 +66,6 @@ function GmTabs() {
         </div>
       </TabsContent>
     </Tabs>
-  );
-}
-
-function ManageCustomItems() {
-  const { gameName } = useGameContext();
-  const lens = useCurrentGame();
-  return (
-    <div className="flex gap-2 mb-2">
-      <FileImport
-        variant="secondary"
-        label="import shop items"
-        onUpLoad={(body) => {
-          lens.setState((d) => {
-            const newData = JSON.parse(body) as Record<string, Gear[]>;
-            d.customData.customItemsByCategory = newData;
-          });
-        }}
-      />
-      <Button
-        variant="secondary"
-        onClick={() =>
-          downloadJson(
-            `${gameName}-custom-items`,
-            lens.state.customData.customItemsByCategory ?? itemsByCategory
-          )
-        }
-      >
-        <UploadIcon className="mr-2" />
-        export shop items
-      </Button>
-    </div>
   );
 }
 
@@ -117,34 +80,18 @@ function InviteLinks() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <span className="align-text-bottom">
-          table id: <WeakEmph>{sessionCode}</WeakEmph>{" "}
-        </span>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => {
-            global.navigator.clipboard.writeText(sessionCode);
-            toast({ title: "table id copied", description: sessionCode });
-          }}
-        >
-          <CopyIcon />
-        </Button>
-      </div>
-      <div>
-        <span className="align-text-bottom">
-          table link: <WeakEmph>{joinLink}</WeakEmph>{" "}
-        </span>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => {
-            global.navigator.clipboard.writeText(joinLink);
-            toast({ title: "table link copied", description: joinLink });
-          }}
-        >
-          <CopyIcon />
-        </Button>
+        <div>
+          <span className="align-text-bottom">
+            table id: <WeakEmph>{sessionCode}</WeakEmph>{" "}
+          </span>
+          <CopyButton name="table id" content={sessionCode} />
+        </div>
+        <div>
+          <span className="align-text-bottom">
+            table link: <WeakEmph>{joinLink}</WeakEmph>{" "}
+          </span>
+          <CopyButton name="table link" content={joinLink} />
+        </div>
       </div>
       <div>
         Provide this link or id to the player to let them join this table.{" "}
@@ -155,13 +102,34 @@ function InviteLinks() {
   );
 }
 
+interface CopyButtonProps {
+  content: string;
+  name: string;
+}
+
+function CopyButton({ name, content }: CopyButtonProps) {
+  const { toast } = useToast();
+  return (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      onClick={() => {
+        global.navigator.clipboard.writeText(content);
+        toast({ title: `${name} copied`, description: content });
+      }}
+    >
+      <CopyIcon />
+    </Button>
+  );
+}
+
 interface AllCharactersProps {}
 
 function AllCharacters({}: AllCharactersProps) {
   const { connections } = useGmConnectionContext();
 
   if (connections.length === 0) {
-    return <div>No player connected</div>;
+    return <WeakEmph>No player connected</WeakEmph>;
   }
   return (
     <div>
@@ -173,7 +141,7 @@ function AllCharacters({}: AllCharactersProps) {
               <WeakEmph>{c.id}</WeakEmph> - {c.state}
             </div>
             {c.character && <CharacterEntry character={c.character} />}
-            {!c.character && <div>no character received</div>}
+            {!c.character && <WeakEmph>no character received</WeakEmph>}
           </div>
         ))}
       </div>

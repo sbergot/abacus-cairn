@@ -20,8 +20,6 @@ import { DeleteAlert } from "@/components/ui/delete-alert";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -30,14 +28,12 @@ import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, CairnNpc, GearContent } from "@/lib/game/cairn/types";
-import { CustomEntry, GmContent } from "@/lib/game/types";
-import { pickRandom } from "@/lib/random";
+import { CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
 import { getSubArrayLens, getSubLens, getSubRecordLens } from "@/lib/utils";
 import { Draft } from "immer";
 import {
   CheckCircle2Icon,
-  DicesIcon,
   EyeIcon,
   EyeOffIcon,
   FolderPlusIcon,
@@ -46,6 +42,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useState } from "react";
+import { RandomEntryDialog } from "./random-entry-dialog";
 
 export function AllContent() {
   const gameLens = useCurrentGame();
@@ -230,7 +227,7 @@ function NewCategoryDialog({ onCreate }: NewCategoryDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ButtonLike>
-          <FolderPlusIcon className="mr-2" /> New category
+          <FolderPlusIcon className="mr-2" /> New custom category
         </ButtonLike>
       </DialogTrigger>
       <DialogContent>
@@ -509,40 +506,3 @@ function AllItems() {
   );
 }
 
-interface RandomEntryDialogProps {
-  lens: ILens<GmContent[]>;
-  name: string;
-}
-
-function RandomEntryDialog({ lens, name }: RandomEntryDialogProps) {
-  const [entry, setEntry] = useState<GmContent | undefined>(undefined);
-  return (
-    <Dialog
-      onOpenChange={(open) =>
-        open &&
-        setEntry(
-          pickRandom(lens.state.filter((e) => !e.excludedFromRandomPick))
-        )
-      }
-    >
-      <DialogTrigger asChild>
-        <ButtonLike>
-          <DicesIcon /> Pick random {name}
-        </ButtonLike>
-      </DialogTrigger>
-      <DialogContent>
-        {entry === undefined ? (
-          "no pickable entry"
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>{entry.name}</DialogTitle>
-            </DialogHeader>
-            {entry.description}
-            <WeakEmph>{entry.privateNotes}</WeakEmph>
-          </>
-        )}
-      </DialogContent>
-    </Dialog>
-  );
-}
