@@ -34,7 +34,9 @@ export function NewObjectDialog<T>({
         <Button
           onClick={() => {
             setOpen(false);
-            onCreate(lens.state);
+            const result = lens.state;
+            lens.setState(d => ({...initialValue}))
+            onCreate(result);
           }}
           disabled={!validate(lens.state)}
         >

@@ -90,7 +90,7 @@
   @media (min-width: 1024px) {
     .session-right-part {
       left: 45rem;
-      max-width: clamp(25rem, 100vw - 50rem, 40rem);
+      max-width: clamp(25rem, 100vw - 50rem, 42rem);
     }
   }
 }

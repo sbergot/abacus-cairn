@@ -20,7 +20,7 @@ import { DeleteAlert } from "@/components/ui/delete-alert";
 import {
   Dialog,
   DialogContent,
-  DialogTrigger,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { MenuEntry } from "@/components/ui/menu-entry";
@@ -110,11 +110,11 @@ export function AllContent() {
                       items
                     </DeleteAlert>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 w-full">
+                  <div className="flex flex-wrap gap-2 w-full">
                     {categoryLens.state.map((entry, idx) => {
                       const entryLens = getSubArrayLens(categoryLens, idx);
                       return (
-                        <Card key={entry.id}>
+                        <Card key={entry.id} className="max-w-xs w-full">
                           <CustomEntryHeader
                             categoryLens={categoryLens}
                             entryLens={entryLens}
@@ -488,11 +488,11 @@ function AllItems() {
         <RandomEntryDialog lens={itemsLens} name="item" />
       </div>
       {itemsLens.state.length === 0 && <div>No item defined</div>}
-      {itemsLens.state.length > 0 && <div className="grid grid-cols-2 w-full gap-2">
+      {itemsLens.state.length > 0 && <div className="flex flex-wrap w-full gap-2">
         {itemsLens.state.map((item, idx) => {
           const itemLens = getSubArrayLens(itemsLens, idx);
           return (
-            <Card key={item.id} className="w-full">
+            <Card key={item.id} className="max-w-xs w-full">
               <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
               <CardContent>
                 <div>{item.description}</div>

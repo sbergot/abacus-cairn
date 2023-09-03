@@ -19,10 +19,10 @@ export function RevealedElements({ elements }: Props) {
         <AccordionItem key={category} value={category}>
           <AccordionTrigger>{category}</AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-2 gap-2 w-full">
+            <div className="flex flex-wrap gap-2 w-full">
               {elements[category].map((entry, i) => {
                 return (
-                  <Card key={i}>
+                  <Card key={i} className="max-w-xs w-full">
                     <CardHeader className="flex justify-between flex-row items-center gap-2">
                       <CardTitle className="flex-grow">{entry.name}</CardTitle>
                     </CardHeader>
