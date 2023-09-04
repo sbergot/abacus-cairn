@@ -56,7 +56,7 @@ export function initGame(name: string): CairnGame {
     id: uuidv4(),
     name,
     messages: [],
-    customEntries: {},
+    customEntries: [],
     timers: [],
     npcs: [],
     items: [],

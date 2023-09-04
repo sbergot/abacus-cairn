@@ -12,7 +12,7 @@
       "type": "npm",
       "script": "check-types",
       "problemMatcher": [
-        "$eslint-compact"
+        "$tsc"
       ],
       "label": "npm: check-types",
       "detail": "tsc --noemit"

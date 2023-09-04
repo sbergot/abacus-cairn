@@ -22,9 +22,14 @@ import TextAreaField from "@/components/ui/textareafield";
 import { TooltipShort } from "@/components/ui/tooltip-short";
 import { WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, CairnNpc, GearContent } from "@/lib/game/cairn/types";
-import { CustomEntry } from "@/lib/game/types";
+import { CustomCategory, CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
-import { getSubArrayLens, getSubLens, getSubRecordLens } from "@/lib/utils";
+import {
+  getSubArrayLens,
+  getSubLens,
+  getSubRecordLens,
+  uuidv4,
+} from "@/lib/utils";
 import { Draft } from "immer";
 import { FolderPlusIcon, Share2Icon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
@@ -44,7 +49,12 @@ export function AllContent() {
         <NewCategoryDialog
           onCreate={(name) =>
             gameLens.setState((d) => {
-              d.customEntries[name] = [];
+              d.customEntries.push({
+                id: uuidv4(),
+                name,
+                description: "",
+                entries: [],
+              });
             })
           }
         />
@@ -71,22 +81,26 @@ export function AllContent() {
             <AllItems />
           </AccordionContent>
         </AccordionItem>
-        {Object.keys(customEntriesLens.state).map((category) => {
-          const categoryLens = getSubRecordLens(customEntriesLens, category);
+        {customEntriesLens.state.map((category, idx) => {
+          const categoryLens = getSubArrayLens(customEntriesLens, idx);
+          const entriesLens = getSubLens(categoryLens, "entries");
           return (
-            <AccordionItem key={category} value={category}>
-              <AccordionTrigger>{category}</AccordionTrigger>
+            <AccordionItem key={category.id} value={category.name}>
+              <AccordionTrigger>{category.name}</AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col items-start gap-2">
                   <div className="flex flex-wrap gap-2">
                     <NewCustomEntryDialog
                       onCreate={(ce) =>
-                        gameLens.setState((d) => {
-                          d.customEntries[category].push(ce);
+                        categoryLens.setState((d) => {
+                          d.entries.push(ce);
                         })
                       }
                     />
-                    <RandomEntryDialog lens={categoryLens} name={category} />
+                    <RandomEntryDialog
+                      lens={entriesLens}
+                      name={categoryLens.state.name}
+                    />
                     <DeleteAlert
                       icon={
                         <Button>
@@ -95,7 +109,9 @@ export function AllContent() {
                       }
                       onConfirm={() =>
                         gameLens.setState((d) => {
-                          delete d.customEntries[category];
+                          d.customEntries = d.customEntries.filter(
+                            (e) => e.id !== category.id
+                          );
                         })
                       }
                     >
@@ -104,14 +120,14 @@ export function AllContent() {
                     </DeleteAlert>
                   </div>
                   <div className="flex flex-wrap gap-2 w-full">
-                    {categoryLens.state.map((entry, idx) => {
-                      const entryLens = getSubArrayLens(categoryLens, idx);
+                    {categoryLens.state.entries.map((entry, idx) => {
+                      const entriesLens = getSubLens(categoryLens, "entries");
+                      const entryLens = getSubArrayLens(entriesLens, idx);
                       return (
                         <Card key={entry.id} className="max-w-xs w-full">
                           <CustomEntryHeader
                             categoryLens={categoryLens}
                             entryLens={entryLens}
-                            category={category}
                           />
                           <CardContent>
                             <div>{entry.description}</div>
@@ -133,15 +149,15 @@ export function AllContent() {
 
 interface CustomEntryHeaderProps {
   entryLens: ILens<CustomEntry>;
-  categoryLens: ILens<CustomEntry[]>;
-  category: string;
+  categoryLens: ILens<CustomCategory>;
 }
 
 function CustomEntryHeader({
   entryLens,
   categoryLens,
-  category,
 }: CustomEntryHeaderProps) {
+  const category = categoryLens.state.name;
+  const entriesLens = getSubLens(categoryLens, "entries");
   const entry = entryLens.state;
   return (
     <CardHeaderWithMenu title={entry.name}>
@@ -151,7 +167,7 @@ function CustomEntryHeader({
       <GmContentMenuItems lens={entryLens} />
       <MenuEntry>
         <DeleteMenuItem
-          collectionLens={categoryLens}
+          collectionLens={entriesLens}
           entry={entry}
           type={category}
         />
