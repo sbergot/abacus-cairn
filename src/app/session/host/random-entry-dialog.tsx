@@ -30,7 +30,7 @@ export function RandomEntryDialog({ lens, name }: RandomEntryDialogProps) {
       }
     >
       <DialogTrigger asChild>
-        <ButtonLike>
+        <ButtonLike variant="secondary">
           <DicesIcon /> Pick random {name}
         </ButtonLike>
       </DialogTrigger>

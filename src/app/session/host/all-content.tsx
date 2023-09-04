@@ -12,6 +12,7 @@ import { DeleteAlert } from "@/components/ui/delete-alert";
 import { ButtonLike } from "@/components/ui/button-like";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import Link from "next/link";
+import { StrongEmph } from "@/components/ui/typography";
 
 interface CategoryLinkProps {
   name: string;
@@ -53,13 +54,6 @@ export function AllContent() {
       <AllEntriesForCategory
         category={customCategory.name}
         categoryLens={entriesLens}
-        onDeleteCategory={() =>
-          gameLens.setState((d) => {
-            d.customEntries = d.customEntries.filter(
-              (c) => c.id !== categoryLens.state.id
-            );
-          })
-        }
       />
     );
   }
@@ -111,7 +105,7 @@ function CategoryList() {
           const categoryLens = getSubArrayLens(customCategoriesLens, idx);
           const categoryName = categoryLens.state.name;
           return (
-            <Card className="max-w-xs w-full">
+            <Card key={category.id} className="max-w-xs w-full">
               <CardHeader>
                 <TitleWithIcons name={categoryName}>
                   <ButtonLike variant="ghost" size="icon-sm">
@@ -131,7 +125,9 @@ function CategoryList() {
                       })
                     }
                   >
-                    This will permanently delete this category and all its items
+                    This will permanently delete the{" "}
+                    <StrongEmph>{category.name}</StrongEmph> category and{" "}
+                    <StrongEmph>all its items</StrongEmph>
                   </DeleteAlert>
                 </TitleWithIcons>
               </CardHeader>

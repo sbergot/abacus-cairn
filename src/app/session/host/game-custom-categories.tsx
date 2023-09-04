@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CardHeaderWithMenu } from "@/components/ui/card-header-with-menu";
-import { DeleteAlert } from "@/components/ui/delete-alert";
 import { DeleteMenuItem } from "@/components/ui/delete-menu-item";
 import { EditCustomEntryDialog } from "@/components/ui/edit-custom-entry-dialog";
 import { GmContentMenuItems } from "@/components/ui/gm-content-menu-items";
@@ -11,19 +9,16 @@ import { WeakEmph } from "@/components/ui/typography";
 import { CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
 import { getSubArrayLens } from "@/lib/utils";
-import { Trash2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
 
 interface AllEntriesForCategoryProps {
   categoryLens: ILens<CustomEntry[]>;
-  onDeleteCategory(): void;
   category: string;
 }
 
 export function AllEntriesForCategory({
   categoryLens,
-  onDeleteCategory,
   category,
 }: AllEntriesForCategoryProps) {
   return (
@@ -38,16 +33,6 @@ export function AllEntriesForCategory({
           }
         />
         <RandomEntryDialog lens={categoryLens} name={category} />
-        <DeleteAlert
-          icon={
-            <Button>
-              <Trash2Icon /> Delete category
-            </Button>
-          }
-          onConfirm={onDeleteCategory}
-        >
-          This will permanently delete this category and all its items
-        </DeleteAlert>
       </div>
       <div className="flex flex-wrap gap-2 w-full">
         {categoryLens.state.map((entry, idx) => {
