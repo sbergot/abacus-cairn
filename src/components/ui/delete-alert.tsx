@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Trash2Icon } from "lucide-react";
 import { ReactNode } from "react";
 import {
   AlertDialog,

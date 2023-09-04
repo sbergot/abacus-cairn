@@ -1,6 +1,6 @@
 import { CairnCharacter, CarryCapacity } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
-import { clone, getSubArrayLens, getSubLens } from "@/lib/utils";
+import { clone, getSubLens } from "@/lib/utils";
 import { Trash2Icon, ShoppingCartIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -15,7 +15,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { InventoryControl } from "./inventory-control";
 import { carryCapacities } from "@/lib/game/cairn/other-data";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { getEmptySlots } from "@/lib/game/cairn/character-generation";

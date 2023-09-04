@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BaseCharacter } from "@/lib/game/types";
 import {
   Dialog,
   DialogTrigger,
@@ -26,12 +25,7 @@ import { OrSeparator } from "../ui/or-separator";
 import { useRouter } from "next/navigation";
 import { initGame } from "@/lib/game/cairn/utils";
 
-interface MainMenuProps {}
-
-export default function MainMenu<
-  TChar extends BaseCharacter,
-  TGame
->({}: MainMenuProps) {
+export default function MainMenu() {
   const { characterRepo, gameRepo } = useGenericGameContext();
 
   return (

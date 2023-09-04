@@ -11,20 +11,16 @@ import { CharacterCollection } from "./character-collection";
 import { getSubLens, getSubRecordLens } from "@/lib/utils";
 import { CarryCapacityCollection } from "./carry-capacity-collection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { TooltipShort } from "../ui/tooltip-short";
 import { NewCharacterDialog } from "./new-character-dialog";
 import { Button } from "../ui/button";
 import { ArrowUpDownIcon } from "lucide-react";
 import { ILens } from "@/lib/types";
 import { CairnCharacter } from "@/lib/game/cairn/types";
-import { useParams } from "next/navigation";
 import { switchHirelingToMainCharacter } from "@/lib/game/cairn/utils";
 import { MenuEntry } from "../ui/menu-entry";
 import { CardMenu } from "../ui/card-menu";
 
-interface CharacterSheetProps {}
-
-export function CharacterSheet({}: CharacterSheetProps) {
+export function CharacterSheet() {
   const characterLens = useCurrentCharacter();
   const { characterId } = useUrlParams();
   const linker = useRelativeLinker();
