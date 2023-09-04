@@ -32,6 +32,7 @@ import { RandomEntryDialog } from "./random-entry-dialog";
 import { CardHeaderWithMenu } from "@/components/ui/card-header-with-menu";
 import { GmContentMenuItems } from "@/components/ui/gm-content-menu-items";
 import { DeleteMenuItem } from "@/components/ui/delete-menu-item";
+import { ManageCustomItems } from "./manage-custom-items";
 
 export function AllContent() {
   const gameLens = useCurrentGame();
@@ -39,13 +40,16 @@ export function AllContent() {
 
   return (
     <div>
-      <NewCategoryDialog
-        onCreate={(name) =>
-          gameLens.setState((d) => {
-            d.customEntries[name] = [];
-          })
-        }
-      />
+      <div className="flex flex-wrap gap-2">
+        <NewCategoryDialog
+          onCreate={(name) =>
+            gameLens.setState((d) => {
+              d.customEntries[name] = [];
+            })
+          }
+        />
+        <ManageCustomItems />
+      </div>
       <Accordion
         type="multiple"
         className="w-full"
