@@ -3,9 +3,7 @@ import { PlusIcon, MinusIcon } from "lucide-react";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import { updateGauge } from "@/lib/game/cairn/utils";
 
-interface HpControlProps {}
-
-export function HpControl({}: HpControlProps) {
+export function HpControl() {
   const { state: character, setState: setCharacter } = useCurrentCharacter();
   const value = character.hp;
   return (

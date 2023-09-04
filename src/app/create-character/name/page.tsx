@@ -19,7 +19,6 @@ import { useState } from "react";
 import { useGameContext } from "../../cairn-context";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
-import { ButtonLike } from "@/components/ui/button-like";
 
 export default function CharacterName() {
   const { lens } = useCharacterCreationContext();

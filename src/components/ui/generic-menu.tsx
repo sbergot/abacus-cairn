@@ -1,16 +1,15 @@
 import { WithId } from "@/lib/game/types";
 import { download } from "@/lib/utils";
-import { UserPlusIcon, UploadIcon } from "lucide-react";
+import { UploadIcon } from "lucide-react";
 import { Button } from "./button";
 import { FileImport } from "./file-import";
 import { Title } from "./typography";
-import Link from "next/link";
 import { useGenericGameContext } from "@/lib/game-context";
 import { ILens } from "@/lib/types";
 import { Draft } from "immer";
 import { ReactNode } from "react";
 
-interface EntryProps<T> {
+interface EntryProps {
   name: string;
   id: string;
   deleteObj(): void;
@@ -19,7 +18,7 @@ interface EntryProps<T> {
 interface Props<T> {
   title: string;
   lens: ILens<Record<string, T>>;
-  Entry(props: EntryProps<T>): ReactNode;
+  Entry(props: EntryProps): ReactNode;
   Create(): ReactNode
 }
 

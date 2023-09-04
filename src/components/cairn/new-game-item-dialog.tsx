@@ -1,4 +1,4 @@
-import { Gear, GearContent } from "@/lib/game/cairn/types";
+import { GearContent } from "@/lib/game/cairn/types";
 import { uuidv4 } from "@/lib/utils";
 import { PackagePlusIcon } from "lucide-react";
 import { NewObjectDialog } from "../ui/new-object-dialog";

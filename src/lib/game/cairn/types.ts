@@ -1,5 +1,6 @@
 import { ChatMessage } from "@/lib/network/types";
 import { BaseGame, Gauge, GmContent } from "../types";
+import { DiceRollAnalysis } from "@/lib/dice/types";
 
 export type AbilityType = "strength" | "dexterity" | "willpower";
 

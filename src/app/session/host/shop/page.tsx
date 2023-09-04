@@ -6,7 +6,7 @@ import {
   useGmConnectionContext,
 } from "@/app/cairn-context";
 import { Shop } from "@/components/cairn/shop";
-import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
+import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { CairnMessage } from "@/lib/game/cairn/types";
@@ -22,7 +22,7 @@ export default function Page() {
         <MessagePanel<CairnMessage>
           context={{ contextType: "gm", authorId: "gm" }}
           messages={messages}
-          ShowCustomMessage={ShowCustomMessage}
+          ShowCustomMessage={ShowCairnMessage}
         />
       }
     />

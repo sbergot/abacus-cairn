@@ -1,13 +1,11 @@
 import { Clock } from "@/lib/game/types";
 import { Card, CardContent, CardHeader } from "./card";
 import {
-  CheckCircle2Icon,
   EyeIcon,
   EyeOffIcon,
   MinusIcon,
   PlusIcon,
   Trash2Icon,
-  XCircle,
 } from "lucide-react";
 import { Button } from "./button";
 import { ILens } from "@/lib/types";
@@ -21,7 +19,7 @@ interface Props {
   onDelete(): void;
 }
 
-export function Clock({ clockLens, onDelete }: Props) {
+export function ClockControl({ clockLens, onDelete }: Props) {
   const clock = clockLens.state;
   const progressPercent = (clock.gauge.current * 100) / clock.gauge.max;
   return (

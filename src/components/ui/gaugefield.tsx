@@ -1,6 +1,6 @@
-import { ILens, Setter } from "@/lib/types";
-import { Input } from "../ui/input";
-import { ClassName, KeyOfType } from "../ui/types";
+import { ILens } from "@/lib/types";
+import { Input } from "./input";
+import { ClassName, KeyOfType } from "./types";
 import { Draft } from "immer";
 import { clampGauge } from "@/lib/game/cairn/utils";
 import { Gauge } from "@/lib/game/types";

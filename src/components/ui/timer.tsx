@@ -32,7 +32,7 @@ interface Props {
   onDelete(): void;
 }
 
-export function Timer({ timerLens, onDelete }: Props) {
+export function TimerControl({ timerLens, onDelete }: Props) {
   const timer = timerLens.state;
   const progressPercent =
     (timer.currentTimeInMSec * 100) / (timer.intervalInSec * 1000);

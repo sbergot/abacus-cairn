@@ -1,3 +1,5 @@
+import { DicePool, DiceRoll, DiceRollAnalysis } from "./types";
+
 export function simpleRoll(sides: number): number {
   return Math.floor(Math.random() * sides) + 1;
 }

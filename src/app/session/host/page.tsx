@@ -6,7 +6,7 @@ import {
   useCurrentGame,
   useGmConnectionContext,
 } from "@/app/cairn-context";
-import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
+import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -19,9 +19,9 @@ import {
   getSubArrayLens,
   getSubLens,
 } from "@/lib/utils";
-import { Timer } from "@/components/ui/timer";
+import { TimerControl } from "@/components/ui/timer";
 import { ClockEditDialog } from "@/components/ui/clocks-edit-dialog";
-import { Clock } from "@/components/ui/clock";
+import { ClockControl } from "@/components/ui/clock";
 import { useToast } from "@/components/ui/use-toast";
 import { useRelativeLinker } from "@/lib/hooks";
 
@@ -34,7 +34,7 @@ export default function Session() {
         <RightPanel<CairnMessage>
           context={{ contextType: "gm", authorId: "gm" }}
           messages={messages}
-          ShowCustomMessage={ShowCustomMessage}
+          ShowCustomMessage={ShowCairnMessage}
           elements={revealedElements}
         />
       }
@@ -71,7 +71,6 @@ function GmTabs() {
 
 function InviteLinks() {
   const { sessionCode } = useGmConnectionContext();
-  const { toast } = useToast();
   const linker = useRelativeLinker();
   const joinLink = new URL(
     linker(`../../invitation?tableId=${sessionCode}`),
@@ -123,9 +122,7 @@ function CopyButton({ name, content }: CopyButtonProps) {
   );
 }
 
-interface AllCharactersProps {}
-
-function AllCharacters({}: AllCharactersProps) {
+function AllCharacters() {
   const { connections } = useGmConnectionContext();
 
   if (connections.length === 0) {
@@ -164,7 +161,7 @@ function AllTimers() {
       {timersLens.state.length === 0 && <div>No timer defined</div>}
       <div className="flex flex-wrap gap-4">
         {timersLens.state.map((timer, idx) => (
-          <Timer
+          <TimerControl
             key={timer.id}
             timerLens={getSubArrayLens(timersLens, idx)}
             onDelete={() =>
@@ -192,7 +189,7 @@ function AllClocks() {
       {clocksLens.state.length === 0 && <div>No clock defined</div>}
       <div className="flex flex-wrap gap-4">
         {clocksLens.state.map((clock, idx) => (
-          <Clock
+          <ClockControl
             key={clock.id}
             clockLens={getSubArrayLens(clocksLens, idx)}
             onDelete={() =>

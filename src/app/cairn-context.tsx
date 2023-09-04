@@ -6,7 +6,6 @@ import {
   CairnCustomData,
   CairnGame,
   CairnMessage,
-  Gear,
 } from "@/lib/game/cairn/types";
 import { LibraryElement } from "@/lib/game/types";
 import { createGameContext } from "@/lib/game-context";
@@ -16,7 +15,6 @@ import {
   usePlayerConnection,
   usePlayerConnectionStub,
 } from "@/lib/network/playerConnection";
-import { Logger } from "@/lib/network/types";
 import { createContext, useContext } from "react";
 import { itemsByCategory } from "@/lib/game/cairn/items-data";
 
@@ -83,7 +81,6 @@ export function usePlayerConnectionContext() {
 
 const GmConnectionContext = createContext<GmConnection<
   CairnMessage,
-  CairnGame,
   CairnCharacter
 > | null>(null);
 

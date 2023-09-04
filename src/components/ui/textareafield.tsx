@@ -1,9 +1,7 @@
 import { ILens } from "@/lib/types";
-import { Input } from "./input";
 import { ClassName, KeyOfType } from "./types";
 import { Draft } from "immer";
 import { Textarea } from "./textarea";
-import { cn } from "@/lib/utils";
 
 interface Props<T> extends ClassName {
   lens: ILens<T>;

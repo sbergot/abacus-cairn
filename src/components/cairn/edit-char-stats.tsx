@@ -9,7 +9,7 @@ import { PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import TextField from "../ui/textfield";
-import GaugeField from "./gaugefield";
+import GaugeField from "../ui/gaugefield";
 import { useCurrentCharacter } from "@/app/cairn-context";
 import TextAreaField from "../ui/textareafield";
 import { Children } from "../ui/types";

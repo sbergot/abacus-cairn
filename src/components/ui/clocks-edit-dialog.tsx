@@ -1,11 +1,10 @@
-import { Clock, Timer } from "@/lib/game/types";
+import { Clock } from "@/lib/game/types";
 import { useLens } from "@/lib/hooks";
 import { uuidv4 } from "@/lib/utils";
 import TextField from "./textfield";
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "./dialog";
 import { Button } from "./button";
 import { AlarmPlusIcon } from "lucide-react";
-import CheckboxField from "./checkboxfield";
 import NumberField from "./numberfield";
 import { useState } from "react";
 

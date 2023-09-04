@@ -4,9 +4,7 @@ import { Checkbox } from "../ui/checkbox";
 import { getArmorValue } from "@/lib/game/cairn/utils";
 import { useCurrentCharacter } from "@/app/cairn-context";
 
-interface CharacterStatsProps {}
-
-export function CharacterStats({}: CharacterStatsProps) {
+export function CharacterStats() {
   const { state: character, setState: setCharacter } = useCurrentCharacter();
 
   const armor = getArmorValue(character);

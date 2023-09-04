@@ -1,3 +1,4 @@
+import { DiceRollAnalysis } from "@/lib/dice/types";
 import { StrongEmph } from "./typography";
 
 interface Props {

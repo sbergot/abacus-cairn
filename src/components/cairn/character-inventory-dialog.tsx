@@ -12,9 +12,7 @@ import { CharacterInventory } from "./character-inventory";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { ButtonLike } from "../ui/button-like";
 
-interface Props {}
-
-export function CharacterInventoryDialog({}: Props) {
+export function CharacterInventoryDialog() {
   const { gameId } = useUrlParams();
   const linker = useRelativeLinker();
   const [open, setOpen] = useState(false);

@@ -1,9 +1,9 @@
 import { useCurrentGame, useLoggerContext } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
-import { EditCustomEntryDialog } from "@/components/cairn/edit-custom-entry-dialog";
+import { EditCustomEntryDialog } from "@/components/ui/edit-custom-entry-dialog";
 import { EditGameItemDialog } from "@/components/cairn/edit-game-item-dialog";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
-import { NewCustomEntryDialog } from "@/components/cairn/new-custom-entry-dialog";
+import { NewCustomEntryDialog } from "@/components/ui/new-custom-entry-dialog";
 import { NewGameItemDialog } from "@/components/cairn/new-game-item-dialog";
 import {
   Accordion,
