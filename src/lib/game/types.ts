@@ -43,10 +43,17 @@ export interface Clock extends GmContent {
   gauge: Gauge;
 }
 
+export interface CustomCategory {
+  id: string;
+  name: string;
+  description: string;
+  entries: CustomEntry[];
+}
+
 export interface BaseGame<TMessage, TCustomData> {
   id: string;
   name: string;
-  customEntries: Record<string, CustomEntry[]>;
+  customEntries: CustomCategory[];
   messages: Stamped<AllChatMessage<TMessage>>[];
   timers: Timer[];
   clocks: Clock[];

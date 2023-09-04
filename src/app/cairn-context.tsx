@@ -90,10 +90,10 @@ export function useGmConnectionContext() {
 
 function getAllRevealedElements(game: CairnGame) {
   const result: Record<string, LibraryElement[]> = {};
-  Object.keys(game.customEntries).map((k) => {
-    const entries = game.customEntries[k].filter((e) => e.visibleToAll);
+  game.customEntries.map((category) => {
+    const entries = category.entries.filter((e) => e.visibleToAll);
     if (entries.length > 0) {
-      result[k] = entries.map((e) => ({
+      result[category.name] = entries.map((e) => ({
         name: e.name,
         description: e.description,
       }));

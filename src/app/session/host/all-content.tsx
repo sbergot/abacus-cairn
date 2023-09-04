@@ -5,7 +5,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { getSubLens, getSubRecordLens } from "@/lib/utils";
+import {
+  getSubArrayLens,
+  getSubLens,
+  uuidv4,
+} from "@/lib/utils";
 import { ManageCustomItems } from "./manage-custom-items";
 import { AllItems } from "./game-items";
 import { AllNpcs } from "./game-npcs";
@@ -14,7 +18,7 @@ import { NewCategoryDialog } from "./new-category-dialog";
 
 export function AllContent() {
   const gameLens = useCurrentGame();
-  const customEntriesLens = getSubLens(gameLens, "customEntries");
+  const customCategoriesLens = getSubLens(gameLens, "customEntries");
 
   return (
     <div>
@@ -22,7 +26,12 @@ export function AllContent() {
         <NewCategoryDialog
           onCreate={(name) =>
             gameLens.setState((d) => {
-              d.customEntries[name] = [];
+              d.customEntries.push({
+                id: uuidv4(),
+                name,
+                description: "",
+                entries: [],
+              });
             })
           }
         />
@@ -49,18 +58,22 @@ export function AllContent() {
             <AllItems />
           </AccordionContent>
         </AccordionItem>
-        {Object.keys(customEntriesLens.state).map((category) => {
-          const categoryLens = getSubRecordLens(customEntriesLens, category);
+        {customCategoriesLens.state.map((category, idx) => {
+          const categoryLens = getSubArrayLens(customCategoriesLens, idx);
+          const entriesLens = getSubLens(categoryLens, "entries");
+          const categoryName = categoryLens.state.name;
           return (
-            <AccordionItem key={category} value={category}>
-              <AccordionTrigger>{category}</AccordionTrigger>
+            <AccordionItem key={category.id} value={category.name}>
+              <AccordionTrigger>{category.name}</AccordionTrigger>
               <AccordionContent>
                 <AllEntriesForCategory
-                  categoryLens={categoryLens}
-                  category={category}
+                  categoryLens={entriesLens}
+                  category={categoryName}
                   onDeleteCategory={() =>
                     gameLens.setState((d) => {
-                      delete d.customEntries[category];
+                      d.customEntries = d.customEntries.filter(
+                        (c) => c.id !== categoryLens.state.id
+                      );
                     })
                   }
                 />
