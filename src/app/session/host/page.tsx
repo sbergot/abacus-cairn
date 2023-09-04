@@ -122,9 +122,7 @@ function CopyButton({ name, content }: CopyButtonProps) {
   );
 }
 
-interface AllCharactersProps {}
-
-function AllCharacters({}: AllCharactersProps) {
+function AllCharacters() {
   const { connections } = useGmConnectionContext();
 
   if (connections.length === 0) {

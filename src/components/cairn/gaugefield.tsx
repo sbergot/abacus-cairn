@@ -1,4 +1,4 @@
-import { ILens, Setter } from "@/lib/types";
+import { ILens } from "@/lib/types";
 import { Input } from "../ui/input";
 import { ClassName, KeyOfType } from "../ui/types";
 import { Draft } from "immer";

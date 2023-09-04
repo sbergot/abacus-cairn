@@ -23,7 +23,7 @@ interface ConnectionInfo<TChar> {
   state: ConnectionState;
 }
 
-export interface GmConnection<TMessage, TGame, TChar> {
+export interface GmConnection<TMessage, TChar> {
   sessionCode: string;
   messages: Stamped<AllChatMessage<TMessage>>[];
   connections: ConnectionInfo<TChar>[];
@@ -43,7 +43,7 @@ export function useGmConnection<
   TCustomData
 >(
   getAllRevealedElements: (g: TGame) => Record<string, LibraryElement[]>
-): GmConnection<TMessage, TGame, TChar> {
+): GmConnection<TMessage, TChar> {
   const { state: game, setState: setGame } = useCurrentGenericGame();
   const [sessionCode, setSessionCode] = useState("");
   const [connectionsState, setConnectionsState] = useState<

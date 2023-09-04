@@ -16,7 +16,6 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { carryCapacities } from "@/lib/game/cairn/other-data";
-import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import { getEmptySlots } from "@/lib/game/cairn/character-generation";
 import { WeakEmph } from "../ui/typography";
 import { ButtonLike } from "../ui/button-like";
@@ -29,8 +28,6 @@ interface CarryCapacityCollectionProps {
 export function CarryCapacityCollection({
   characterLens,
 }: CarryCapacityCollectionProps) {
-  const { characterId } = useUrlParams();
-  const linker = useRelativeLinker();
   const lens = getSubLens(characterLens, "carryCapacities");
 
   return (

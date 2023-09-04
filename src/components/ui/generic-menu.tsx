@@ -9,7 +9,7 @@ import { ILens } from "@/lib/types";
 import { Draft } from "immer";
 import { ReactNode } from "react";
 
-interface EntryProps<T> {
+interface EntryProps {
   name: string;
   id: string;
   deleteObj(): void;
@@ -18,7 +18,7 @@ interface EntryProps<T> {
 interface Props<T> {
   title: string;
   lens: ILens<Record<string, T>>;
-  Entry(props: EntryProps<T>): ReactNode;
+  Entry(props: EntryProps): ReactNode;
   Create(): ReactNode
 }
 
