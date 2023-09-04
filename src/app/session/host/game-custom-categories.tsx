@@ -13,6 +13,7 @@ import { ILens } from "@/lib/types";
 import { getSubArrayLens } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
+import { BackLink } from "./back-link";
 
 interface AllEntriesForCategoryProps {
   categoryLens: ILens<CustomEntry[]>;
@@ -27,7 +28,8 @@ export function AllEntriesForCategory({
 }: AllEntriesForCategoryProps) {
   return (
     <div className="flex flex-col items-start gap-2">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <BackLink />
         <NewCustomEntryDialog
           onCreate={(ce) =>
             categoryLens.setState((d) => {

@@ -13,6 +13,7 @@ import { ILens } from "@/lib/types";
 import { getSubLens, getSubArrayLens } from "@/lib/utils";
 import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
+import { BackLink } from "./back-link";
 
 interface GameItemHeaderProps {
   entryLens: ILens<GearContent>;
@@ -61,7 +62,8 @@ export function AllItems() {
 
   return (
     <div className="flex flex-col gap-2 items-start">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2 items-center">
+        <BackLink />
         <NewGameItemDialog
           onCreate={(g) => {
             gameLens.setState((d) => {

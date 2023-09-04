@@ -13,6 +13,7 @@ import { getSubLens } from "@/lib/utils";
 import { Draft } from "immer";
 import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
+import { BackLink } from "./back-link";
 
 function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   const log = useLoggerContext();
@@ -69,7 +70,8 @@ export function AllNpcs() {
   const npcsLens = getSubLens(gameLens, "npcs");
   return (
     <div className="flex flex-col gap-2 items-start">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <BackLink />
         <NewCharacterDialog
           charType="npc"
           onCreate={(c) => {
