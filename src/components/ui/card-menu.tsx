@@ -17,7 +17,7 @@ export function CardMenu({ children }: Props) {
           <MoreVerticalIcon />
         </ButtonLike>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>{children}</DropdownMenuContent>
+      <DropdownMenuContent className="w-64">{children}</DropdownMenuContent>
     </DropdownMenu>
   );
 }

@@ -1,5 +1,5 @@
 import { useCurrentCharacter } from "@/app/cairn-context";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { UserSquare2Icon } from "lucide-react";
 import { Children } from "../ui/types";
 import { ButtonLike } from "../ui/button-like";
@@ -15,6 +15,7 @@ export function CharacterDescriptionDialog({ children }: Children) {
         </ButtonLike>
       </DialogTrigger>
       <DialogContent>
+        <DialogTitle>{characterLens.state.name}</DialogTitle>
         <div>{characterLens.state.description}</div>
         {children}
       </DialogContent>

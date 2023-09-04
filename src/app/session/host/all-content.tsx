@@ -26,18 +26,12 @@ import { CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
 import { getSubArrayLens, getSubLens, getSubRecordLens } from "@/lib/utils";
 import { Draft } from "immer";
-import {
-  CheckCircle2Icon,
-  EyeIcon,
-  EyeOffIcon,
-  FolderPlusIcon,
-  Share2Icon,
-  Trash2Icon,
-  XCircle,
-} from "lucide-react";
+import { FolderPlusIcon, Share2Icon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { CardHeaderWithMenu } from "@/components/ui/card-header-with-menu";
+import { GmContentMenuItems } from "@/components/ui/gm-content-menu-items";
+import { DeleteMenuItem } from "@/components/ui/delete-menu-item";
 
 export function AllContent() {
   const gameLens = useCurrentGame();
@@ -150,55 +144,13 @@ function CustomEntryHeader({
       <MenuEntry>
         <EditCustomEntryDialog lens={entryLens} title={`Edit ${category}`} />
       </MenuEntry>
+      <GmContentMenuItems lens={entryLens} />
       <MenuEntry>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() =>
-            categoryLens.setState((d) => {
-              const entryToEdit = d.find((e) => e.id === entry.id)!;
-              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
-            })
-          }
-        >
-          {entry.visibleToAll ? <EyeIcon /> : <EyeOffIcon />}
-        </Button>
-        {entry.visibleToAll
-          ? "Make invisible to players"
-          : "Make visible to players"}
-      </MenuEntry>
-      <MenuEntry>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() =>
-            categoryLens.setState((d) => {
-              const entryToEdit = d.find((e) => e.id === entry.id)!;
-              entryToEdit.excludedFromRandomPick =
-                !entryToEdit.excludedFromRandomPick;
-            })
-          }
-        >
-          {entry.excludedFromRandomPick ? <XCircle /> : <CheckCircle2Icon />}
-        </Button>
-        {entry.excludedFromRandomPick
-          ? "Include in random pick"
-          : "Exclude from random pick"}
-      </MenuEntry>
-      <MenuEntry>
-        <DeleteAlert
-          icon={
-            <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
-              <Trash2Icon />
-              <div className="flex-grow text-left">Delete</div>
-            </ButtonLike>
-          }
-          onConfirm={() =>
-            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
-          }
-        >
-          This will permanently delete this entry
-        </DeleteAlert>
+        <DeleteMenuItem
+          collectionLens={categoryLens}
+          entry={entry}
+          type={category}
+        />
       </MenuEntry>
     </CardHeaderWithMenu>
   );
@@ -238,46 +190,7 @@ function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   const log = useLoggerContext();
   return (
     <>
-      <MenuEntry>
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={() =>
-            characterLens.setState((d) => {
-              d.visibleToAll = !d.visibleToAll;
-            })
-          }
-        >
-          {characterLens.state.visibleToAll ? (
-            <EyeIcon className="mr-2" />
-          ) : (
-            <EyeOffIcon className="mr-2" />
-          )}
-          {characterLens.state.visibleToAll
-            ? "Make invisible to players"
-            : "Make visible to players"}
-        </Button>
-      </MenuEntry>
-      <MenuEntry>
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={() =>
-            characterLens.setState((d) => {
-              d.excludedFromRandomPick = !d.excludedFromRandomPick;
-            })
-          }
-        >
-          {characterLens.state.excludedFromRandomPick ? (
-            <XCircle className="mr-2" />
-          ) : (
-            <CheckCircle2Icon className="mr-2" />
-          )}
-          {characterLens.state.excludedFromRandomPick
-            ? "Include in random pick"
-            : "Exclude from random pick"}
-        </Button>
-      </MenuEntry>
+      <GmContentMenuItems lens={characterLens} />
       <MenuEntry>
         <Button
           size="icon-sm"
@@ -355,10 +268,10 @@ function AllNpcs() {
 
 interface GameItemHeaderProps {
   entryLens: ILens<GearContent>;
-  categoryLens: ILens<GearContent[]>;
+  itemsLens: ILens<GearContent[]>;
 }
 
-function GameItemHeader({ entryLens, categoryLens }: GameItemHeaderProps) {
+function GameItemHeader({ entryLens, itemsLens }: GameItemHeaderProps) {
   const log = useLoggerContext();
   const entry = entryLens.state;
   return (
@@ -386,63 +299,9 @@ function GameItemHeader({ entryLens, categoryLens }: GameItemHeaderProps) {
           <div className="flex-grow text-left">Share</div>
         </Button>
       </MenuEntry>
+      <GmContentMenuItems lens={entryLens} />
       <MenuEntry>
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={() =>
-            categoryLens.setState((d) => {
-              const entryToEdit = d.find((e) => e.id === entry.id)!;
-              entryToEdit.visibleToAll = !entryToEdit.visibleToAll;
-            })
-          }
-        >
-          {entry.visibleToAll ? (
-            <EyeIcon className="mr-2" />
-          ) : (
-            <EyeOffIcon className="mr-2" />
-          )}
-          {entry.visibleToAll
-            ? "Make invisible to players"
-            : "Make visible to players"}
-        </Button>
-      </MenuEntry>
-      <MenuEntry>
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={() =>
-            categoryLens.setState((d) => {
-              const entryToEdit = d.find((e) => e.id === entry.id)!;
-              entryToEdit.excludedFromRandomPick =
-                !entryToEdit.excludedFromRandomPick;
-            })
-          }
-        >
-          {entry.excludedFromRandomPick ? (
-            <XCircle className="mr-2" />
-          ) : (
-            <CheckCircle2Icon className="mr-2" />
-          )}
-          {entry.excludedFromRandomPick
-            ? "Include in random pick"
-            : "Exclude from random pick"}
-        </Button>
-      </MenuEntry>
-      <MenuEntry>
-        <DeleteAlert
-          icon={
-            <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
-              <Trash2Icon />
-              <div className="flex-grow text-left">Delete</div>
-            </ButtonLike>
-          }
-          onConfirm={() =>
-            categoryLens.setState((d) => d.filter((e) => e.id !== entry.id))
-          }
-        >
-          This will permanently delete this entry
-        </DeleteAlert>
+        <DeleteMenuItem collectionLens={itemsLens} entry={entry} type="item" />
       </MenuEntry>
     </CardHeaderWithMenu>
   );
@@ -476,7 +335,7 @@ function AllItems() {
             const itemLens = getSubArrayLens(itemsLens, idx);
             return (
               <Card key={item.id} className="max-w-xs w-full">
-                <GameItemHeader categoryLens={itemsLens} entryLens={itemLens} />
+                <GameItemHeader itemsLens={itemsLens} entryLens={itemLens} />
                 <CardContent>
                   <div>{item.description}</div>
                   <WeakEmph>{item.privateNotes}</WeakEmph>
