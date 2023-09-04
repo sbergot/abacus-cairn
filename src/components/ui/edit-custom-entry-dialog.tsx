@@ -1,10 +1,10 @@
 import { ILens } from "@/lib/types";
 import { CustomEntry } from "@/lib/game/types";
-import { NewObjectDialog } from "../ui/new-object-dialog";
-import { CustomEntryEdit } from "./custom-entry-edit";
+import { NewObjectDialog } from "./new-object-dialog";
+import { CustomEntryEdit } from "../cairn/custom-entry-edit";
 import { PencilIcon } from "lucide-react";
-import { ButtonLike } from "../ui/button-like";
-import { NameEdit } from "./name-edit";
+import { ButtonLike } from "./button-like";
+import { NameEdit } from "../cairn/name-edit";
 
 interface Props {
   lens: ILens<CustomEntry>;

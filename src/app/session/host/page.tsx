@@ -6,7 +6,7 @@ import {
   useCurrentGame,
   useGmConnectionContext,
 } from "@/app/cairn-context";
-import { ShowCustomMessage } from "@/components/cairn/show-custom-message";
+import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ export default function Session() {
         <RightPanel<CairnMessage>
           context={{ contextType: "gm", authorId: "gm" }}
           messages={messages}
-          ShowCustomMessage={ShowCustomMessage}
+          ShowCustomMessage={ShowCairnMessage}
           elements={revealedElements}
         />
       }

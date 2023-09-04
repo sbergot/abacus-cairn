@@ -10,7 +10,7 @@ import { InviteNpc } from "./invite-npc";
 import { TakeItemDialog } from "./take-item-dialog";
 import { RemoveMessage } from "./remove-message";
 
-export function ShowCustomMessage({
+export function ShowCairnMessage({
   m,
   ctx,
 }: ShowCustomMessageProps<CairnMessage>) {
