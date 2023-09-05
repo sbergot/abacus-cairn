@@ -9,7 +9,6 @@ import {
 import { CairnCharacter } from "@/lib/game/cairn/types";
 import { useCharacterCreationContext } from "../character-creation-context";
 import { Title } from "@/components/ui/typography";
-import { useState } from "react";
 import { useGameContext } from "../../cairn-context";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -17,7 +16,6 @@ import { Label } from "@/components/ui/label";
 export default function CharacterName() {
   const { lens } = useCharacterCreationContext();
   const { state: character, setState: setCharacter } = lens;
-  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const {
@@ -42,7 +40,6 @@ export default function CharacterName() {
             setCharacter((d) => {
               d.name = getRandomMaleName();
             });
-            setOpen(false);
           }}
         >
           random male name
@@ -53,7 +50,6 @@ export default function CharacterName() {
             setCharacter((d) => {
               d.name = getRandomFemaleName();
             });
-            setOpen(false);
           }}
         >
           random female name
