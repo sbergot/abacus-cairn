@@ -2,7 +2,8 @@
   "extends": ["next/core-web-vitals", "eslint:recommended"],
   "rules": {
     "react-hooks/exhaustive-deps": "off",
-    "no-unused-vars": ["error", { "args": "none" }]
+    "no-unused-vars": ["error", { "args": "none" }],
+    "@next/next/no-img-element": "off"
   },
   "globals": {
     "React":"readonly"
