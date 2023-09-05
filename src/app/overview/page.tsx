@@ -33,11 +33,11 @@ export default function Page() {
       </div>
       <div>
         <Title>Manage inventory</Title>
-        <img src="gifs/attribute_check.gif" alt="share link" width="450px" />
+        <img src="gifs/manage_inventory.gif" alt="share link" width="450px" />
       </div>
       <div>
         <Title>Manage hirelings & carts</Title>
-        <img src="gifs/dice_result.gif" alt="join game" width="450px" />
+        <img src="gifs/manage_hirelings.gif" alt="join game" width="450px" />
       </div>
     </div>
   );
