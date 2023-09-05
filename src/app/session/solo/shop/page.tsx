@@ -2,20 +2,24 @@
 
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
-import { CairnMessage } from "@/lib/game/cairn/types";
+import { CairnCharacter, CairnMessage } from "@/lib/game/cairn/types";
 import {
+  CurrentCharacterContextProvider,
   useCurrentCharacter,
   usePlayerConnectionContext,
 } from "@/app/cairn-context";
 import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { Shop } from "@/components/cairn/shop";
+import { useUrlParams } from "@/lib/hooks";
+import { getSubLens, getSubArrayLens } from "@/lib/utils";
+import { ILens } from "@/lib/types";
 
 export default function Session() {
   const characterLens = useCurrentCharacter();
   const { messages } = usePlayerConnectionContext();
   return (
     <TwoColumns
-      leftPart={<Shop />}
+      leftPart={<HirelingShop />}
       rightPart={
         <MessagePanel<CairnMessage>
           context={{ contextType: "player", authorId: characterLens.state.id }}
@@ -24,5 +28,24 @@ export default function Session() {
         />
       }
     />
+  );
+}
+
+
+function HirelingShop() {
+  const charLens = useCurrentCharacter();
+  let shoppingCharLens: ILens<CairnCharacter> = charLens;
+  const { npcId } = useUrlParams();
+  if (npcId !== undefined) {
+    const npcsLens = getSubLens(charLens, "hireLings");
+    const idx = npcsLens.state.findIndex((n) => n.id === npcId);
+    const npcLens = getSubArrayLens(npcsLens, idx);
+    shoppingCharLens = npcLens;
+  }
+
+  return (
+    <CurrentCharacterContextProvider value={shoppingCharLens}>
+      <Shop />
+    </CurrentCharacterContextProvider>
   );
 }

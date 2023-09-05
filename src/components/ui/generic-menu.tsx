@@ -3,7 +3,7 @@ import { download } from "@/lib/utils";
 import { UploadIcon } from "lucide-react";
 import { Button } from "./button";
 import { FileImport } from "./file-import";
-import { Title } from "./typography";
+import { Title, WeakEmph } from "./typography";
 import { useGenericGameContext } from "@/lib/game-context";
 import { ILens } from "@/lib/types";
 import { Draft } from "immer";
@@ -53,7 +53,7 @@ export function GenericMenu<T extends WithId & { name: string }>({
         </Button>
       </div>
       <div className="flex flex-col gap-2 w-full">
-        {Object.values(lens.state).length === 0 && <div>No {title} found</div>}
+        {Object.values(lens.state).length === 0 && <WeakEmph>No {title} found</WeakEmph>}
         {Object.values(lens.state).map((c) => (
           <Entry
             key={c.id}

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { fillCharacterGear } from "@/lib/game/cairn/character-generation";
 import { InventoryView } from "../../../components/cairn/inventory-view";
+import { Title } from "@/components/ui/typography";
 
 export default function RollGear() {
   const { lens } = useCharacterCreationContext();
@@ -16,6 +17,7 @@ export default function RollGear() {
 
   return (
     <div className="flex flex-col items-start gap-4 max-w-sm pl-4">
+      <Title>Gears</Title>
       <Button className="w-full" asChild>
         <Link href={linker("../name")}>Next</Link>
       </Button>

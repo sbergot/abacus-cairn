@@ -106,7 +106,7 @@ function SwitchAsMain({
           );
         }}
       >
-        <ArrowUpDownIcon /> <div className="flex-grow">Switch as main</div>
+        <ArrowUpDownIcon /> <div className="flex-grow text-left">Switch as main</div>
       </Button>
     </MenuEntry>
   );
