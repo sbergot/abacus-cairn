@@ -19,13 +19,20 @@ export default function ClientLayout({
         <h1 className="text-4xl">
           <Link href="/">Cairn</Link>
         </h1>
-        <span className="mr-2">Cairn is a tabletop rpg by Yochai Gal</span>-
+        <div>Cairn is a tabletop rpg by Yochai Gal</div>
+        <div className="flex gap-1 items-center">
         <HeaderLink text="cairnrpg.com" href="https://cairnrpg.com" />
+        -
+        <HeaderLink
+          text="features overview"
+          href="overview"
+        />
         -
         <HeaderLink
           text="report a bug"
           href="https://github.com/sbergot/abacus/issues"
         />
+        </div>
       </div>
       <TooltipProvider>
         <GameContextProvider>
@@ -44,7 +51,7 @@ interface LinkProps {
 
 function HeaderLink({ text, href }: LinkProps) {
   return (
-    <Button variant="link" className="p-0 mx-2" asChild>
+    <Button variant="link" size="xs" className="p-0" asChild>
       <Link href={href}>{text}</Link>
     </Button>
   );

@@ -39,6 +39,14 @@ export default function Page() {
         <Title>Manage hirelings & carts</Title>
         <img src="gifs/manage_hirelings.gif" alt="join game" width="450px" />
       </div>
+      <div>
+        <Title>Create and share game content</Title>
+        <img src="gifs/create_game_content.gif" alt="share link" width="450px" />
+      </div>
+      <div>
+        <Title>React to shared content and damages</Title>
+        <img src="gifs/react_to_content.gif" alt="join game" width="450px" />
+      </div>
     </div>
   );
 }
