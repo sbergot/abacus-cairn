@@ -40,7 +40,7 @@ export function CharacterCollection<TChar extends CairnCharacter>({
       {lens.state.map((npc, idx) => {
         const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
         return (
-          <CurrentCharacterContextProvider key={npc.id} value={charLens}>
+          <CurrentCharacterContextProvider key={npc.id} value={charLens as any as ILens<CairnCharacter>}>
             <Card>
               <CardHeaderWithMenu title={npc.name}>
                 <MenuEntry>

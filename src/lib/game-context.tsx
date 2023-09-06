@@ -117,7 +117,14 @@ export function createGameContext<
     };
 
     return (
-      <GenericGameContextProvider value={context}>
+      <GenericGameContextProvider
+        value={
+          context as any as IGameContext<
+            BaseCharacter,
+            BaseGame<UknownGameMessage, {}>
+          >
+        }
+      >
         <GameContext.Provider value={context}>
           <CurrentCharacterFromParamsContextProvider>
             {children}
