@@ -18,7 +18,7 @@ export const scars: string[] = [
 
 export const carryCapacities: CarryCapacity[] = [
   {
-    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    id: "6d1e0553-a867-4329-bba9-0bd098ad480e",
     name: "cart",
     description: "must be pulled with both hands",
     price: 30,
@@ -30,7 +30,7 @@ export const carryCapacities: CarryCapacity[] = [
     ],
   },
   {
-    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    id: "d656f7be-f995-41f2-80d7-7c6b4820ab8c",
     name: "horse",
     description: "",
     price: 75,
@@ -42,7 +42,7 @@ export const carryCapacities: CarryCapacity[] = [
     ],
   },
   {
-    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    id: "b1fb787e-dcd0-4a90-8fa8-92c65a0e1495",
     name: "mule",
     description: "slow",
     price: 30,
@@ -56,7 +56,7 @@ export const carryCapacities: CarryCapacity[] = [
     ],
   },
   {
-    id: "a7f5b4a3-64e7-4476-878f-c4653df702ba",
+    id: "835c223a-c6de-4354-ba28-2d62f2b834d6",
     name: "wagon",
     description: "heavy",
     price: 200,
