@@ -655,7 +655,7 @@ export const itemsByCategory = {
       price: 1,
     },
     {
-      id: "93fcff8f-2eb5-4b48-9927-12d7d3649ff2",
+      id: "9de2cb85-55b4-4f98-a2b0-7990e2a5e131",
       description: "",
       name: "Spiked boots",
       price: 5,
