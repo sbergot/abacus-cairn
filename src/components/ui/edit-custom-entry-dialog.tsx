@@ -28,7 +28,7 @@ export function EditCustomEntryDialog({ lens, title }: Props) {
     >
       {(lens) => (
         <>
-          <NameEdit lens={lens} />
+          <NameEdit lens={lens as any as ILens<{ name: string }>} />
           <CustomEntryEdit lens={lens} />
         </>
       )}

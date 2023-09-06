@@ -61,7 +61,7 @@ export function ClockEditDialog({ onCreate }: Props) {
                 },
               });
               clockLens.setState(() => initClock());
-              sizeLens.setState(() => 1);
+              sizeLens.setState(() => ({ value: 1 }));
               setOpen(false);
             }}
           >

@@ -13,12 +13,12 @@ import { ILens } from "@/lib/types";
 import { DicesIcon } from "lucide-react";
 import { useState } from "react";
 
-interface RandomEntryDialogProps {
-  lens: ILens<GmContent[]>;
+interface RandomEntryDialogProps<T> {
+  lens: ILens<T[]>;
   name: string;
 }
 
-export function RandomEntryDialog({ lens, name }: RandomEntryDialogProps) {
+export function RandomEntryDialog<T extends GmContent>({ lens, name }: RandomEntryDialogProps<T>) {
   const [entry, setEntry] = useState<GmContent | undefined>(undefined);
   return (
     <Dialog

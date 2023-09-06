@@ -5,6 +5,7 @@ import { uuidv4 } from "@/lib/utils";
 import { CustomEntryEdit } from "../cairn/custom-entry-edit";
 import { ButtonLike } from "./button-like";
 import { NameEdit } from "../cairn/name-edit";
+import { ILens } from "@/lib/types";
 
 interface Props {
   onCreate(e: CustomEntry): void;
@@ -27,7 +28,7 @@ export function NewCustomEntryDialog({ onCreate }: Props) {
       title="Custom entry"
     >
       {(lens) => <>
-          <NameEdit lens={lens} />
+        <NameEdit lens={lens as any as ILens<{ name: string }>} />
           <CustomEntryEdit lens={lens} />
         </>}
     </NewObjectDialog>

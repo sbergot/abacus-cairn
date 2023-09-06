@@ -5,13 +5,13 @@ import { ILens } from "@/lib/types";
 import { WithId } from "@/lib/game/types";
 import { StrongEmph } from "./typography";
 
-interface Props {
-  collectionLens: ILens<WithId[]>;
+interface Props<T> {
+  collectionLens: ILens<T[]>;
   entry: WithId & { name: string };
   type: string;
 }
 
-export function DeleteMenuItem({ collectionLens, entry, type }: Props) {
+export function DeleteMenuItem<T extends WithId>({ collectionLens, entry, type }: Props<T>) {
   return (
     <DeleteAlert
       icon={

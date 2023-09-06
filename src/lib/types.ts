@@ -5,4 +5,4 @@ export interface ILens<T> {
   setState: Setter<T>;
 }
 
-export type Setter<T> = (r: (d: Draft<T>) => void) => void
+export type Setter<T> = (r: (d: Draft<T>) => Draft<T> | T | void) => void

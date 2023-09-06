@@ -1,9 +1,10 @@
-import { GearContent } from "@/lib/game/cairn/types";
+import { Gear, GearContent } from "@/lib/game/cairn/types";
 import { PencilIcon } from "lucide-react";
 import { NewObjectDialog } from "../ui/new-object-dialog";
 import { GearEdit } from "./gear-edit";
 import { ButtonLike } from "../ui/button-like";
 import { CustomEntryEdit } from "./custom-entry-edit";
+import { ILens } from "@/lib/types";
 
 interface Props {
   title?: string;
@@ -29,7 +30,7 @@ export function EditGameItemDialog({ initialValue, onSave }: Props) {
     >
       {(lens) => (
         <>
-          <GearEdit lens={lens} />
+          <GearEdit lens={lens as any as ILens<Gear>} />
           <CustomEntryEdit lens={lens} />
         </>
       )}

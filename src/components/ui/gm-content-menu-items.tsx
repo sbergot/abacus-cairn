@@ -4,11 +4,11 @@ import { MenuEntry } from "./menu-entry";
 import { ILens } from "@/lib/types";
 import { GmContent } from "@/lib/game/types";
 
-interface Props {
-  lens: ILens<GmContent>;
+interface Props<T> {
+  lens: ILens<T>;
 }
 
-export function GmContentMenuItems({ lens }: Props) {
+export function GmContentMenuItems<T extends GmContent>({ lens }: Props<T>) {
   return (
     <>
       <MenuEntry>

@@ -9,7 +9,8 @@ import { Shop } from "@/components/cairn/shop";
 import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
-import { CairnMessage } from "@/lib/game/cairn/types";
+import { CairnCharacter, CairnMessage } from "@/lib/game/cairn/types";
+import { ILens } from "@/lib/types";
 import { getSubArrayLens, getSubLens } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 
@@ -38,7 +39,7 @@ function NpcShop() {
   const npcLens = getSubArrayLens(npcsLens, idx);
 
   return (
-    <CurrentCharacterContextProvider value={npcLens}>
+    <CurrentCharacterContextProvider value={npcLens as any as ILens<CairnCharacter>}>
       <Shop />
     </CurrentCharacterContextProvider>
   );
