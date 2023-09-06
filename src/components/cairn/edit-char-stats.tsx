@@ -24,7 +24,7 @@ export function EditCharStats({ children }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ButtonLike variant="ghost" size="xs" className="flex gap-2 w-full">
-          <PencilIcon  />
+          <PencilIcon />
           <div className="flex-grow">Edit stats</div>
         </ButtonLike>
       </DialogTrigger>
