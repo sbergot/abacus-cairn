@@ -1,5 +1,10 @@
 import { useCurrentGame } from "@/app/cairn-context";
-import { getSubArrayLens, getSubLens, uuidv4 } from "@/lib/utils";
+import {
+  getSubArrayLens,
+  getSubArrayLensById,
+  getSubLens,
+  uuidv4,
+} from "@/lib/utils";
 import { ManageCustomItems } from "./manage-custom-items";
 import { AllItems } from "./game-items";
 import { AllNpcs } from "./game-npcs";
@@ -13,6 +18,9 @@ import { ButtonLike } from "@/components/ui/button-like";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import Link from "next/link";
 import { StrongEmph } from "@/components/ui/typography";
+import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
+import { BaseCategory } from "@/lib/game/types";
+import { ILens } from "@/lib/types";
 
 interface CategoryLinkProps {
   name: string;
@@ -31,28 +39,31 @@ function CategoryLink({ name }: CategoryLinkProps) {
 export function AllContent() {
   const { category } = useUrlParams();
   const gameLens = useCurrentGame();
-  const customCategoriesLens = getSubLens(gameLens, "customEntries");
+  const customCategoriesLens = getSubLens(gameLens, "content");
 
-  if (category === "npc") {
-    return <AllNpcs />;
-  }
-
-  if (category === "item") {
-    return <AllItems />;
-  }
-
-  const customCategory = gameLens.state.customEntries.find(
-    (c) => c.id === category
-  );
-  if (customCategory !== undefined) {
-    const idx = gameLens.state.customEntries.findIndex(
-      (c) => c.id === category
-    );
-    const categoryLens = getSubArrayLens(customCategoriesLens, idx);
+  if (category !== undefined) {
+    const categoryLens = getSubArrayLensById(customCategoriesLens, category);
     const entriesLens = getSubLens(categoryLens, "entries");
+
+    if (categoryLens.state.type === "character") {
+      return (
+        <AllNpcs
+          charCategoryLens={
+            categoryLens as ILens<BaseCategory<"character", CairnCharacter>>
+          }
+        />
+      );
+    }
+
+    if (categoryLens.state.type === "item") {
+      <AllItems
+        itemCategoryLens={categoryLens as ILens<BaseCategory<"item", Gear>>}
+      />;
+    }
+
     return (
       <AllEntriesForCategory
-        category={customCategory.name}
+        category={categoryLens.state.name}
         categoryLens={entriesLens}
       />
     );
@@ -63,7 +74,7 @@ export function AllContent() {
 
 function CategoryList() {
   const gameLens = useCurrentGame();
-  const customCategoriesLens = getSubLens(gameLens, "customEntries");
+  const customCategoriesLens = getSubLens(gameLens, "content");
 
   return (
     <div className="flex flex-col gap-2">
@@ -71,8 +82,9 @@ function CategoryList() {
         <NewCategoryDialog
           onCreate={(name) =>
             gameLens.setState((d) => {
-              d.customEntries.push({
+              d.content.push({
                 id: uuidv4(),
+                type: "misc",
                 name,
                 description: "",
                 entries: [],
@@ -119,7 +131,7 @@ function CategoryList() {
                     }
                     onConfirm={() =>
                       gameLens.setState((d) => {
-                        d.customEntries = d.customEntries.filter(
+                        d.content = d.content.filter(
                           (c) => c.id !== categoryLens.state.id
                         );
                       })

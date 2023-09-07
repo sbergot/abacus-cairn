@@ -1,4 +1,4 @@
-import { useLoggerContext, useCurrentGame } from "@/app/cairn-context";
+import { useLoggerContext } from "@/app/cairn-context";
 import { EditGameItemDialog } from "@/components/cairn/edit-game-item-dialog";
 import { NewGameItemDialog } from "@/components/cairn/new-game-item-dialog";
 import { Button } from "@/components/ui/button";
@@ -8,12 +8,13 @@ import { DeleteMenuItem } from "@/components/ui/delete-menu-item";
 import { GmContentMenuItems } from "@/components/ui/gm-content-menu-items";
 import { MenuEntry } from "@/components/ui/menu-entry";
 import { WeakEmph } from "@/components/ui/typography";
-import { GearContent } from "@/lib/game/cairn/types";
+import { Gear, GearContent } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
-import { getSubLens, getSubArrayLens } from "@/lib/utils";
+import { getSubLens, getSubArrayLens, uuidv4 } from "@/lib/utils";
 import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
+import { BaseCategory } from "@/lib/game/types";
 
 interface GameItemHeaderProps {
   entryLens: ILens<GearContent>;
@@ -56,9 +57,12 @@ function GameItemHeader({ entryLens, itemsLens }: GameItemHeaderProps) {
   );
 }
 
-export function AllItems() {
-  const gameLens = useCurrentGame();
-  const itemsLens = getSubLens(gameLens, "items");
+interface AllNpcsProps {
+  itemCategoryLens: ILens<BaseCategory<"item", Gear>>;
+}
+
+export function AllItems({ itemCategoryLens }: AllNpcsProps) {
+  const itemsLens = getSubLens(itemCategoryLens, "entries");
 
   return (
     <div className="flex flex-col gap-2 items-start">
@@ -66,12 +70,13 @@ export function AllItems() {
         <BackLink />
         <NewGameItemDialog
           onCreate={(g) => {
-            gameLens.setState((d) => {
-              d.items.push({
+            itemsLens.setState((d) => {
+              d.push({
                 ...g,
                 excludedFromRandomPick: false,
                 privateNotes: "",
                 visibleToAll: false,
+                id: uuidv4()
               });
             });
           }}

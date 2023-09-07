@@ -1,7 +1,13 @@
 import { useCurrentGame, useLoggerContext } from "@/app/cairn-context";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { hurt } from "@/lib/game/cairn/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { getAllNpcs, hurt } from "@/lib/game/cairn/utils";
 import { useState } from "react";
 import { ButtonLike } from "../ui/button-like";
 
@@ -23,12 +29,14 @@ export function GmDealDamageDialog({ damages }: Props) {
           <DialogTitle>Deal damage</DialogTitle>
         </DialogHeader>
         <div className="flex flex-wrap gap-2">
-          {gameLens.state.npcs.map((npc) => (
+          {getAllNpcs(gameLens.state).map((npc) => (
             <Button
               key={npc.id}
               onClick={() =>
                 gameLens.setState((d) => {
-                  const npcToUpdate = d.npcs.find((n) => n.id === npc.id)!;
+                  const npcToUpdate = getAllNpcs(d).find(
+                    (n) => n.id === npc.id
+                  )!;
                   hurt(npcToUpdate, damages, log, true);
                   setOpen(false);
                 })

@@ -105,6 +105,44 @@ export function getSubRecordLens<T>(
   };
 }
 
+export function findById<T extends WithId>(
+  arr: T[],
+  id: string
+): T {
+  const result = arr.find(e => e.id === id);
+  if (result === undefined) {
+    throw new Error(`id not found: ${id}`);
+  }
+  return result;
+}
+
+export function findIndexById<T extends WithId>(
+  arr: T[],
+  id: string
+): number {
+  const result = arr.findIndex(e => e.id === id);
+  if (result < 0) {
+    throw new Error(`id not found: ${id}`);
+  }
+  return result;
+}
+
+export function getSubArrayLensById<T extends WithId>(
+  lens: ILens<T[]>,
+  id: string
+): ILens<T> {
+  return {
+    state: findById(lens.state, id),
+    setState: (recipe) => lens.setState((d) => {
+      const idx = findIndexById(d, id);
+      const result = recipe(d[idx]);
+      if (result !== undefined) {
+        d[idx] = result as any;
+      }
+    }),
+  };
+}
+
 export function countBy<T>(list: T[], select: (o: T) => string): Record<string, number> {
   const result: Record<string, number> = {};
   for (const o of list) {

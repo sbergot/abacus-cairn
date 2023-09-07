@@ -96,9 +96,8 @@ export interface CairnCustomData {
   customItemsByCategory?: Record<string, Gear[]>;
 }
 
-export interface CairnGame extends BaseGame<CairnMessage, CairnCustomData> {
-  npcs: CairnNpc[];
-  items: GearContent[];
+export interface CairnGame
+  extends BaseGame<CairnCharacter, Gear, CairnMessage, CairnCustomData> {
 }
 
 export type ShopItems = Record<string, Gear[]>;

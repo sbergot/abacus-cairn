@@ -1,4 +1,4 @@
-import { useLoggerContext, useCurrentGame } from "@/app/cairn-context";
+import { useLoggerContext } from "@/app/cairn-context";
 import { CharacterCollection } from "@/components/cairn/character-collection";
 import { NewCharacterDialog } from "@/components/cairn/new-character-dialog";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Draft } from "immer";
 import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
+import { BaseCategory } from "@/lib/game/types";
 
 function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   const log = useLoggerContext();
@@ -65,9 +66,12 @@ function newNpc(char: CairnCharacter): CairnNpc {
   return newNpc;
 }
 
-export function AllNpcs() {
-  const gameLens = useCurrentGame();
-  const npcsLens = getSubLens(gameLens, "npcs");
+interface AllNpcsProps {
+  charCategoryLens: ILens<BaseCategory<"character", CairnCharacter>>;
+}
+
+export function AllNpcs({ charCategoryLens }: AllNpcsProps) {
+  const entriesLens = getSubLens(charCategoryLens, "entries");
   return (
     <div className="flex flex-col gap-2 items-start">
       <div className="flex flex-wrap items-center gap-2">
@@ -75,18 +79,18 @@ export function AllNpcs() {
         <NewCharacterDialog
           charType="npc"
           onCreate={(c) => {
-            npcsLens.setState((d) => {
+            entriesLens.setState((d) => {
               d.push(newNpc(c) as Draft<CairnNpc>);
             });
           }}
         />
-        <RandomEntryDialog lens={npcsLens} name="npc" />
+        <RandomEntryDialog lens={entriesLens} name="npc" />
       </div>
-      {npcsLens.state.length === 0 && <div>No NPC defined</div>}
-      {npcsLens.state.length > 0 && (
+      {entriesLens.state.length === 0 && <WeakEmph>No NPC defined</WeakEmph>}
+      {entriesLens.state.length > 0 && (
         <CharacterCollection<CairnNpc>
           charType="npc"
-          lens={npcsLens}
+          lens={entriesLens}
           HeaderMenu={NpcTools}
           Edit={NpcEdit}
           Details={NpcDetails}

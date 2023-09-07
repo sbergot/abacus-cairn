@@ -39,7 +39,8 @@ function rotateArray<T>(arr: T[], limit: number): T[] {
 export function useGmConnection<
   TChar extends BaseCharacter,
   TMessage extends UknownGameMessage,
-  TGame extends BaseGame<TMessage, TCustomData>,
+  TItem,
+  TGame extends BaseGame<TChar, TItem, TMessage,  TCustomData>,
   TCustomData
 >(
   getAllRevealedElements: (g: TGame) => Record<string, LibraryElement[]>

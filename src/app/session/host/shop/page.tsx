@@ -10,9 +10,10 @@ import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { MessagePanel } from "@/components/generic-pages/message-panel";
 import { TwoColumns } from "@/components/generic-pages/two-columns";
 import { CairnCharacter, CairnMessage } from "@/lib/game/cairn/types";
+import { BaseCategory, BaseGenericGame } from "@/lib/game/types";
+import { useUrlParams } from "@/lib/hooks";
 import { ILens } from "@/lib/types";
-import { getSubArrayLens, getSubLens } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
+import { getSubArrayLensById, getSubLens } from "@/lib/utils";
 
 export default function Page() {
   const { messages } = useGmConnectionContext();
@@ -30,13 +31,22 @@ export default function Page() {
   );
 }
 
+function findNpcCategory(game: BaseGenericGame, npcId: string): BaseCategory<"character", CairnCharacter> {
+  const result = game.content.filter(category => category.type === "character").find(category => category.entries.some(e => e.id === npcId));
+  if (result === undefined) {
+    throw new Error("npc id not found");
+  }
+  return result as BaseCategory<"character", CairnCharacter>;
+}
+
 function NpcShop() {
   const gameLens = useCurrentGame();
-  const searchParams = useSearchParams();
-  const npcId = searchParams.get("npcId");
-  const npcsLens = getSubLens(gameLens, "npcs");
-  const idx = npcsLens.state.findIndex((n) => n.id === npcId);
-  const npcLens = getSubArrayLens(npcsLens, idx);
+  const { npcId } = useUrlParams();
+  const category = findNpcCategory(gameLens.state, npcId);
+  const contentLens = getSubLens(gameLens, "content");
+  const categoryLens = getSubArrayLensById(contentLens, category.id);
+  const entriesLens = getSubLens(categoryLens, "entries");
+  const npcLens = getSubArrayLensById(entriesLens, npcId);
 
   return (
     <CurrentCharacterContextProvider value={npcLens as any as ILens<CairnCharacter>}>

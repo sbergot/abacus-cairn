@@ -5,6 +5,7 @@ import {
   CairnCharacter,
   CairnGame,
   CairnMessage,
+  CairnNpc,
   Gear,
   Slot,
 } from "./types";
@@ -56,12 +57,10 @@ export function initGame(name: string): CairnGame {
     id: uuidv4(),
     name,
     messages: [],
-    customEntries: [],
+    content: [],
     timers: [],
-    npcs: [],
-    items: [],
     clocks: [],
-    customData: {}
+    customData: {},
   };
 }
 
@@ -218,4 +217,10 @@ export function findFreeSiblingSlot(inventory: Slot[], currentSlot: Slot) {
       s.id !== currentSlot.id
   );
   return siblingFreeSlot;
+}
+
+export function getAllNpcs(game: CairnGame) {
+  return game.content
+    .filter((category) => category.type === "character")
+    .flatMap((category) => category.entries as CairnNpc[]);
 }

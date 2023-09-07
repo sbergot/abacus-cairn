@@ -6,6 +6,7 @@ import {
   CairnCustomData,
   CairnGame,
   CairnMessage,
+  Gear,
 } from "@/lib/game/cairn/types";
 import { LibraryElement } from "@/lib/game/types";
 import { createGameContext } from "@/lib/game-context";
@@ -90,7 +91,7 @@ export function useGmConnectionContext() {
 
 function getAllRevealedElements(game: CairnGame) {
   const result: Record<string, LibraryElement[]> = {};
-  game.customEntries.map((category) => {
+  game.content.map((category) => {
     const entries = category.entries.filter((e) => e.visibleToAll);
     if (entries.length > 0) {
       result[category.name] = entries.map((e) => ({
@@ -99,22 +100,6 @@ function getAllRevealedElements(game: CairnGame) {
       }));
     }
   });
-
-  const npcs = game.npcs.filter((e) => e.visibleToAll);
-  if (npcs.length > 0) {
-    result["npcs"] = npcs.map((e) => ({
-      name: e.name,
-      description: e.description,
-    }));
-  }
-
-  const items = game.items.filter((e) => e.visibleToAll);
-  if (items.length > 0) {
-    result["items"] = items.map((e) => ({
-      name: e.name,
-      description: e.description,
-    }));
-  }
 
   const clocks = game.clocks.filter((e) => e.visibleToAll);
   if (clocks.length > 0) {
@@ -141,6 +126,7 @@ export function GmConnectionContextProvider({ children }: Children) {
   const ctx = useGmConnection<
     CairnCharacter,
     CairnMessage,
+    Gear,
     CairnGame,
     CairnCustomData
   >(getAllRevealedElements);

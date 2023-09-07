@@ -19,9 +19,10 @@ export interface ChatMessage<T extends string, P> extends BaseMessage<T, P> {
   title?: string;
 }
 
+export type UknownGameMessage = ChatMessage<string, unknown>;
+
 export interface SyncMessage<T extends string, P> extends BaseMessage<T, P> {}
 
-export type UknownGameMessage = ChatMessage<string, unknown>;
 
 export type AllSyncMessageForGM<TChar> =
   | SyncMessage<"UpdateChar", { character: TChar }>

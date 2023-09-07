@@ -1,14 +1,14 @@
 import { createContext, useContext } from "react";
-import { BaseCharacter, BaseGame } from "./game/types";
+import { BaseCharacter, BaseGenericGame } from "./game/types";
 import { Children } from "@/components/ui/types";
 import { useImmerLocalStorage, useUrlParams } from "./hooks";
 import { ILens } from "./types";
 import { setSingle } from "./utils";
-import { Logger, UknownGameMessage } from "./network/types";
+import { Logger } from "./network/types";
 
 export interface IGameContext<
   TChar extends BaseCharacter,
-  TGame extends BaseGame<UknownGameMessage, {}>
+  TGame extends BaseGenericGame
 > {
   characterRepo: ILens<Record<string, TChar>>;
   gameRepo: ILens<Record<string, TGame>>;
@@ -18,7 +18,7 @@ export interface IGameContext<
 // generic context for generic UI (game menu, session layout etc)
 const GenericGameContext = createContext<IGameContext<
   BaseCharacter,
-  BaseGame<UknownGameMessage, {}>
+  BaseGenericGame
 > | null>(null);
 
 const GenericGameContextProvider = GenericGameContext.Provider;
@@ -38,9 +38,7 @@ export function useCurrentGenericCharacter(): ILens<BaseCharacter> {
   return { state: character, setState: setCharacter };
 }
 
-export function useCurrentGenericGame(): ILens<
-  BaseGame<UknownGameMessage, {}>
-> {
+export function useCurrentGenericGame(): ILens<BaseGenericGame> {
   const {
     gameRepo: { state, setState },
   } = useGenericGameContext();
@@ -53,7 +51,7 @@ export function useCurrentGenericGame(): ILens<
 
 export function createGameContext<
   TChar extends BaseCharacter,
-  TGame extends BaseGame<UknownGameMessage, {}>,
+  TGame extends BaseGenericGame,
   TMessage,
   TCustomData
 >(gameName: string, defaultCustomData: TCustomData) {
@@ -118,12 +116,7 @@ export function createGameContext<
 
     return (
       <GenericGameContextProvider
-        value={
-          context as any as IGameContext<
-            BaseCharacter,
-            BaseGame<UknownGameMessage, {}>
-          >
-        }
+        value={context as any as IGameContext<BaseCharacter, BaseGenericGame>}
       >
         <GameContext.Provider value={context}>
           <CurrentCharacterFromParamsContextProvider>

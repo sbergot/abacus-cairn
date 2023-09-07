@@ -1,4 +1,4 @@
-import { AllChatMessage, Stamped } from "../network/types";
+import { AllChatMessage, Stamped, UknownGameMessage } from "../network/types";
 import { ILens } from "../types";
 
 export interface LibraryElement {
@@ -39,26 +39,41 @@ export interface Timer extends WithId, GmContent {
   isPaused: boolean;
 }
 
+
+
 export interface Clock extends GmContent {
   gauge: Gauge;
 }
 
-export interface CustomCategory {
+export interface BaseCategory<TType extends string, T> {
   id: string;
+  type: TType;
   name: string;
   description: string;
-  entries: CustomEntry[];
+  entries: (T & GmContent)[];
 }
 
-export interface BaseGame<TMessage, TCustomData> {
+export type AnyCategory<TChar extends BaseCharacter, TItem> =
+  | BaseCategory<"character", TChar>
+  | BaseCategory<"item", TItem>
+  | BaseCategory<"misc", {}>
+
+export interface BaseGame<
+  TCharacter extends BaseCharacter,
+  TItem,
+  TMessage,
+  TCustomData
+> {
   id: string;
   name: string;
-  customEntries: CustomCategory[];
+  content: AnyCategory<TCharacter, TItem>[];
   messages: Stamped<AllChatMessage<TMessage>>[];
   timers: Timer[];
   clocks: Clock[];
   customData: TCustomData;
 }
+
+export type BaseGenericGame = BaseGame<BaseCharacter, {}, UknownGameMessage, {}>;
 
 export interface CharacterProp<TChar> {
   characterLens: ILens<TChar>;
