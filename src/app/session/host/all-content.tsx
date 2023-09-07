@@ -10,14 +10,14 @@ import { AllItems } from "./game-items";
 import { AllNpcs } from "./game-npcs";
 import { AllEntriesForCategory } from "./game-custom-categories";
 import { NewCategoryDialog } from "./new-category-dialog";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TitleWithIcons } from "@/components/ui/title-with-icons";
 import { FolderOpenIcon, Trash2Icon } from "lucide-react";
 import { DeleteAlert } from "@/components/ui/delete-alert";
 import { ButtonLike } from "@/components/ui/button-like";
 import { useRelativeLinker, useUrlParams } from "@/lib/hooks";
 import Link from "next/link";
-import { StrongEmph } from "@/components/ui/typography";
+import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
 import { BaseCategory } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
@@ -43,7 +43,6 @@ export function AllContent() {
 
   if (category !== undefined) {
     const categoryLens = getSubArrayLensById(customCategoriesLens, category);
-    const entriesLens = getSubLens(categoryLens, "entries");
 
     if (categoryLens.state.type === "character") {
       return (
@@ -56,17 +55,22 @@ export function AllContent() {
     }
 
     if (categoryLens.state.type === "item") {
-      <AllItems
-        itemCategoryLens={categoryLens as ILens<BaseCategory<"item", Gear>>}
-      />;
+      return (
+        <AllItems
+          itemCategoryLens={categoryLens as ILens<BaseCategory<"item", Gear>>}
+        />
+      );
     }
 
-    return (
-      <AllEntriesForCategory
-        category={categoryLens.state.name}
-        categoryLens={entriesLens}
-      />
-    );
+    if (categoryLens.state.type === "misc") {
+      return (
+        <AllEntriesForCategory
+          categoryLens={categoryLens as ILens<BaseCategory<"misc", {}>>}
+        />
+      );
+    }
+
+    throw new Error("unknown category type");
   }
 
   return <CategoryList />;
@@ -80,11 +84,11 @@ function CategoryList() {
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap gap-2">
         <NewCategoryDialog
-          onCreate={(name) =>
+          onCreate={(name, type) =>
             gameLens.setState((d) => {
               d.content.push({
                 id: uuidv4(),
-                type: "misc",
+                type,
                 name,
                 description: "",
                 entries: [],
@@ -95,30 +99,12 @@ function CategoryList() {
         <ManageCustomItems />
       </div>
       <div className="flex flex-wrap gap-2">
-        <Card className="max-w-xs w-full">
-          <CardHeader>
-            <TitleWithIcons name="NPCs">
-              <ButtonLike variant="ghost" size="icon-sm">
-                <CategoryLink name="npc" />
-              </ButtonLike>
-            </TitleWithIcons>
-          </CardHeader>
-        </Card>
-        <Card className="max-w-xs w-full">
-          <CardHeader>
-            <TitleWithIcons name="Items">
-              <ButtonLike variant="ghost" size="icon-sm">
-                <CategoryLink name="item" />
-              </ButtonLike>
-            </TitleWithIcons>
-          </CardHeader>
-        </Card>
         {customCategoriesLens.state.map((category, idx) => {
           const categoryLens = getSubArrayLens(customCategoriesLens, idx);
           const categoryName = categoryLens.state.name;
           return (
             <Card key={category.id} className="max-w-xs w-full">
-              <CardHeader>
+              <CardHeader className="pb-0">
                 <TitleWithIcons name={categoryName}>
                   <ButtonLike variant="ghost" size="icon-sm">
                     <CategoryLink name={category.id} />
@@ -143,6 +129,9 @@ function CategoryList() {
                   </DeleteAlert>
                 </TitleWithIcons>
               </CardHeader>
+              <CardContent>
+                <WeakEmph>{category.type}</WeakEmph>
+              </CardContent>
             </Card>
           );
         })}

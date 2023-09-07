@@ -7,7 +7,7 @@ interface Props extends Children {
 
 export function TitleWithIcons({ name, children }: Props) {
   return (
-    <div className="flex justify-between items-start w-full">
+    <div className="flex justify-between items-center w-full">
       <CardTitle>{name}</CardTitle>
       <div className="flex">{children}</div>
     </div>

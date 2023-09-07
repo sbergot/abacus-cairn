@@ -6,43 +6,43 @@ import { GmContentMenuItems } from "@/components/ui/gm-content-menu-items";
 import { MenuEntry } from "@/components/ui/menu-entry";
 import { NewCustomEntryDialog } from "@/components/ui/new-custom-entry-dialog";
 import { WeakEmph } from "@/components/ui/typography";
-import { CustomEntry } from "@/lib/game/types";
+import { BaseCategory, CustomEntry, GmContent } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
-import { getSubArrayLens } from "@/lib/utils";
+import { getSubArrayLens, getSubLens } from "@/lib/utils";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
 
 interface AllEntriesForCategoryProps {
-  categoryLens: ILens<CustomEntry[]>;
-  category: string;
+  categoryLens: ILens<BaseCategory<"misc", {}>>;
 }
 
 export function AllEntriesForCategory({
   categoryLens,
-  category,
 }: AllEntriesForCategoryProps) {
+  const entriesLens = getSubLens(categoryLens, "entries");
+  const categoryName = categoryLens.state.name;
   return (
     <div className="flex flex-col items-start gap-2">
       <div className="flex flex-wrap items-center gap-2">
         <BackLink />
         <NewCustomEntryDialog
           onCreate={(ce) =>
-            categoryLens.setState((d) => {
+            entriesLens.setState((d) => {
               d.push(ce);
             })
           }
         />
-        <RandomEntryDialog lens={categoryLens} name={category} />
+        <RandomEntryDialog lens={entriesLens} name={categoryName} />
       </div>
       <div className="flex flex-wrap gap-2 w-full">
-        {categoryLens.state.map((entry, idx) => {
-          const entryLens = getSubArrayLens(categoryLens, idx);
+        {entriesLens.state.map((entry, idx) => {
+          const entryLens = getSubArrayLens(entriesLens, idx);
           return (
             <Card key={entry.id} className="max-w-xs w-full">
               <CustomEntryHeader
-                categoryLens={categoryLens}
+                categoryLens={entriesLens}
                 entryLens={entryLens}
-                category={category}
+                category={categoryName}
               />
               <CardContent>
                 <div>{entry.description}</div>

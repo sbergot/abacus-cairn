@@ -45,7 +45,9 @@ export interface Clock extends GmContent {
   gauge: Gauge;
 }
 
-export interface BaseCategory<TType extends string, T> {
+export type CategoryType = "character" | "item" | "misc";
+
+export interface BaseCategory<TType extends CategoryType, T> {
   id: string;
   type: TType;
   name: string;
