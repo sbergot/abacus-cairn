@@ -4,4 +4,5 @@ A mapless vtt
 
 ## todo
 
-- tutorial with animated gifs
+- add pagination on game content entries
+- deep id renewal function
