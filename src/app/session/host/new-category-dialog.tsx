@@ -5,9 +5,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -27,7 +25,7 @@ export function NewCategoryDialog({ onCreate }: NewCategoryDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ButtonLike>
-          <FolderPlusIcon className="mr-2" /> New custom category
+          <FolderPlusIcon className="mr-2" /> New category
         </ButtonLike>
       </DialogTrigger>
       <DialogContent>

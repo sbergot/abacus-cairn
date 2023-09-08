@@ -87,6 +87,9 @@ export function AllItems({ itemCategoryLens }: AllNpcsProps) {
         <RandomEntryDialog lens={itemsLens} name="item" />
         <SearchInput lens={searchLens} />
       </div>
+      {itemsLens.state.length > 20 && (
+        <WeakEmph>Results limited to the first 20 entries</WeakEmph>
+      )}
       {itemsLens.state.length === 0 && <div>No item defined</div>}
       {itemsLens.state.length > 0 && (
         <>
@@ -96,6 +99,7 @@ export function AllItems({ itemCategoryLens }: AllNpcsProps) {
                 i.name.toLowerCase().includes(searchLens.state.toLowerCase())
               )
               .toSorted((a, b) => a.name.localeCompare(b.name))
+              .slice(0, 20)
               .map((item, idx) => {
                 const itemLens = getSubArrayLens(itemsLens, idx);
                 return (

@@ -15,13 +15,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
+import { PlusIcon, Undo2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLens, useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import {
   findContainer,
   findFreeSiblingSlot,

@@ -19,6 +19,7 @@ import { CharacterProp } from "@/lib/game/types";
 import { MenuEntry } from "../ui/menu-entry";
 import { CardHeaderWithMenu } from "../ui/card-header-with-menu";
 import { DeleteMenuItem } from "../ui/delete-menu-item";
+import { WeakEmph } from "../ui/typography";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
@@ -44,49 +45,56 @@ export function CharacterCollection<TChar extends CairnCharacter>({
     );
   }
   return (
-    <div className="flex flex-col gap-2 items-start">
-      {charList
-        .toSorted((a, b) => a.name.localeCompare(b.name))
-        .map((npc, idx) => {
-          const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
-          return (
-            <CurrentCharacterContextProvider
-              key={npc.id}
-              value={charLens as any as ILens<CairnCharacter>}
-            >
-              <Card>
-                <CardHeaderWithMenu title={npc.name}>
-                  <MenuEntry>
-                    <EditCharStats>
-                      <Edit characterLens={charLens} />
-                    </EditCharStats>
-                  </MenuEntry>
-                  <MenuEntry>
-                    <CharacterDescriptionDialog>
-                      <Details characterLens={charLens} />
-                    </CharacterDescriptionDialog>
-                  </MenuEntry>
-                  <MenuEntry>
-                    <CharacterInventoryDialog />
-                  </MenuEntry>
-                  <MenuEntry>
-                    <DeleteMenuItem
-                      collectionLens={lens}
-                      entry={npc}
-                      type={charType}
-                    />
-                  </MenuEntry>
-                  <HeaderMenu characterLens={charLens} />
-                </CardHeaderWithMenu>
-                <CardContent>
-                  <CharacterStats />
-                  <CharacterAttacks />
-                </CardContent>
-              </Card>
-            </CurrentCharacterContextProvider>
-          );
-        })}
-    </div>
+    <>
+      {charList.length > 20 && (
+        <WeakEmph>Results limited to the first 20 entries</WeakEmph>
+      )}
+
+      <div className="flex flex-col gap-2 items-start">
+        {charList
+          .toSorted((a, b) => a.name.localeCompare(b.name))
+          .slice(0, 20)
+          .map((npc, idx) => {
+            const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
+            return (
+              <CurrentCharacterContextProvider
+                key={npc.id}
+                value={charLens as any as ILens<CairnCharacter>}
+              >
+                <Card>
+                  <CardHeaderWithMenu title={npc.name}>
+                    <MenuEntry>
+                      <EditCharStats>
+                        <Edit characterLens={charLens} />
+                      </EditCharStats>
+                    </MenuEntry>
+                    <MenuEntry>
+                      <CharacterDescriptionDialog>
+                        <Details characterLens={charLens} />
+                      </CharacterDescriptionDialog>
+                    </MenuEntry>
+                    <MenuEntry>
+                      <CharacterInventoryDialog />
+                    </MenuEntry>
+                    <MenuEntry>
+                      <DeleteMenuItem
+                        collectionLens={lens}
+                        entry={npc}
+                        type={charType}
+                      />
+                    </MenuEntry>
+                    <HeaderMenu characterLens={charLens} />
+                  </CardHeaderWithMenu>
+                  <CardContent>
+                    <CharacterStats />
+                    <CharacterAttacks />
+                  </CardContent>
+                </Card>
+              </CurrentCharacterContextProvider>
+            );
+          })}
+      </div>
+    </>
   );
 }
 

@@ -6,7 +6,7 @@ import { GmContentMenuItems } from "@/components/ui/gm-content-menu-items";
 import { MenuEntry } from "@/components/ui/menu-entry";
 import { NewCustomEntryDialog } from "@/components/ui/new-custom-entry-dialog";
 import { WeakEmph } from "@/components/ui/typography";
-import { BaseCategory, CustomEntry, GmContent } from "@/lib/game/types";
+import { BaseCategory, CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
 import { getSubArrayLens, getSubLens } from "@/lib/utils";
 import { RandomEntryDialog } from "./random-entry-dialog";
@@ -38,12 +38,16 @@ export function AllEntriesForCategory({
         <RandomEntryDialog lens={entriesLens} name={categoryName} />
         <SearchInput lens={searchLens} />
       </div>
+      {entriesLens.state.length > 20 && (
+        <WeakEmph>Results limited to the first 20 entries</WeakEmph>
+      )}
       <div className="flex flex-wrap gap-2 w-full">
         {entriesLens.state
           .filter((i) =>
             i.name.toLowerCase().includes(searchLens.state.toLowerCase())
           )
           .toSorted((a, b) => a.name.localeCompare(b.name))
+          .slice(0, 20)
           .map((entry, idx) => {
             const entryLens = getSubArrayLens(entriesLens, idx);
             return (
