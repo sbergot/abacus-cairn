@@ -4,10 +4,9 @@ import {
   useCurrentCharacter,
 } from "@/app/cairn-context";
 import { CairnCharacter } from "@/lib/game/cairn/types";
-import { getDamages } from "@/lib/game/cairn/utils";
-import { roll } from "@/lib/random";
+import { getDamageDiceNbr, getDamages } from "@/lib/game/cairn/utils";
 import { ILens } from "@/lib/types";
-import { getSubArrayLens } from "@/lib/utils";
+import { getSubArrayLensById } from "@/lib/utils";
 import { ReactNode } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -20,6 +19,7 @@ import { MenuEntry } from "../ui/menu-entry";
 import { CardHeaderWithMenu } from "../ui/card-header-with-menu";
 import { DeleteMenuItem } from "../ui/delete-menu-item";
 import { WeakEmph } from "../ui/typography";
+import { maxRoll } from "@/lib/dice/dice";
 
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
@@ -54,8 +54,8 @@ export function CharacterCollection<TChar extends CairnCharacter>({
         {charList
           .toSorted((a, b) => a.name.localeCompare(b.name))
           .slice(0, 20)
-          .map((npc, idx) => {
-            const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
+          .map((npc) => {
+            const charLens: ILens<TChar> = getSubArrayLensById(lens, npc.id);
             return (
               <CurrentCharacterContextProvider
                 key={npc.id}
@@ -103,7 +103,7 @@ function CharacterAttacks() {
   const log = useLoggerContext();
   const character = lens.state;
   return (
-    <div>
+    <div className="flex flex-wrap gap-1">
       {character.inventory.map((s) =>
         s.state.type === "gear" && s.state.gear.damage ? (
           <Button
@@ -114,13 +114,13 @@ function CharacterAttacks() {
                 type: "AttackRoll",
                 title: "Attack roll",
                 props: {
-                  dice: getDamages(s),
-                  result: roll(1, getDamages(s)),
+                  dice: { number: getDamageDiceNbr(s), sides: getDamages(s) },
+                  result: maxRoll({ number: getDamageDiceNbr(s), sides: getDamages(s) }),
                 },
               })
             }
           >
-            {s.state.gear.name} (d{s.state.gear.damage})
+            {s.state.gear.name} ({s.state.gear.damageDiceNbr ?? ""}d{s.state.gear.damage})
           </Button>
         ) : null
       )}

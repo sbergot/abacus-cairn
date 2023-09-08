@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { scars } from "@/lib/game/cairn/other-data";
 import { DiceSelect } from "./dice-select";
 import { ButtonLike } from "../ui/button-like";
+import { maxRoll } from "@/lib/dice/dice";
 
 export function GenericRolls() {
   const [open, setOpen] = useState(false);
@@ -55,7 +56,7 @@ function AttackRoll({ close }: CloseProps) {
               kind: "chat-custom",
               type: "AttackRoll",
               title: "Generic attack roll",
-              props: { dice, result: roll(1, dice) },
+              props: { dice: { number: 1, sides: dice }, result: maxRoll({ number: 1, sides: dice }) },
             });
             close();
           }}

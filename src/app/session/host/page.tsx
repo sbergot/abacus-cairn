@@ -16,7 +16,7 @@ import { AllContent } from "./all-content";
 import { RightPanel } from "@/components/generic-pages/right-panel";
 import { TimerEditDialog } from "@/components/ui/timer-edit-dialog";
 import {
-  getSubArrayLens,
+  getSubArrayLensById,
   getSubLens,
 } from "@/lib/utils";
 import { TimerControl } from "@/components/ui/timer";
@@ -160,10 +160,10 @@ function AllTimers() {
       />
       {timersLens.state.length === 0 && <div>No timer defined</div>}
       <div className="flex flex-wrap gap-4">
-        {timersLens.state.map((timer, idx) => (
+        {timersLens.state.map((timer) => (
           <TimerControl
             key={timer.id}
-            timerLens={getSubArrayLens(timersLens, idx)}
+            timerLens={getSubArrayLensById(timersLens, timer.id)}
             onDelete={() =>
               timersLens.setState((d) => d.filter((t) => t.id !== timer.id))
             }
@@ -191,7 +191,7 @@ function AllClocks() {
         {clocksLens.state.map((clock, idx) => (
           <ClockControl
             key={clock.id}
-            clockLens={getSubArrayLens(clocksLens, idx)}
+            clockLens={getSubArrayLensById(clocksLens, clock.id)}
             onDelete={() =>
               clocksLens.setState((d) => d.filter((t) => t.id !== clock.id))
             }

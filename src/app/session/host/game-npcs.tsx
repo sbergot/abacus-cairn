@@ -22,7 +22,7 @@ function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   const log = useLoggerContext();
   return (
     <>
-      <GmContentMenuItems lens={characterLens} />
+      <GmContentMenuItems lens={characterLens} categoryType="character" />
       <MenuEntry>
         <Button
           size="icon-sm"

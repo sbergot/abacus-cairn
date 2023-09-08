@@ -12,6 +12,7 @@ import {
 import { maxRoll, minRoll, poolRoll } from "@/lib/dice/dice";
 import { AllChatMessage, Logger } from "@/lib/network/types";
 import { Gauge } from "../types";
+import { monsters } from "./monster-data";
 
 export function abilityCheck(check: AbilityCheck): AbilityRollAnalysis {
   const { abilityValue, mode } = check;
@@ -83,7 +84,7 @@ export function initGame(name: string): CairnGame {
         id: uuidv4(),
         name: "Monsters",
         type: "character",
-        entries: [],
+        entries: monsters.map(m => clone(m)),
         description: "",
       },
     ],
@@ -160,6 +161,12 @@ export function getDamages(slot: Slot) {
   return slot.state.type === "gear" && slot.state.gear.damage !== undefined
     ? slot.state.gear.damage
     : 0;
+}
+
+export function getDamageDiceNbr(slot: Slot) {
+  return slot.state.type === "gear" && slot.state.gear.damageDiceNbr !== undefined
+    ? slot.state.gear.damageDiceNbr
+    : 1;
 }
 
 export function switchHirelingToMainCharacter(

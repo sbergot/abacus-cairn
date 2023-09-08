@@ -1,7 +1,11 @@
 import { useLoggerContext } from "@/app/cairn-context";
 import { Slot } from "@/lib/game/cairn/types";
-import { clampGauge, dropItem, getDamages } from "@/lib/game/cairn/utils";
-import { roll } from "@/lib/random";
+import {
+  clampGauge,
+  dropItem,
+  getDamageDiceNbr,
+  getDamages,
+} from "@/lib/game/cairn/utils";
 import {
   CircleSlashIcon,
   PlusIcon,
@@ -25,6 +29,7 @@ import { ILens } from "@/lib/types";
 import Link from "next/link";
 import { GearDescriptionDialog } from "./gear-description-dialog";
 import { SwitchSlotDialog } from "./switch-slot-dialog";
+import { maxRoll } from "@/lib/dice/dice";
 
 interface Props {
   shopLink(slotId: string): string;
@@ -112,12 +117,18 @@ export function InventoryControl({ shopLink, slotsLens }: Props) {
                 <Button
                   size="icon-sm"
                   onClick={() => {
-                    const damages = getDamages(slot);
+                    const dicePool = {
+                      number: getDamageDiceNbr(slot),
+                      sides: getDamages(slot),
+                    };
                     log({
                       kind: "chat-custom",
                       type: "AttackRoll",
                       title: "Attack roll",
-                      props: { dice: damages, result: roll(1, damages) },
+                      props: {
+                        dice: dicePool,
+                        result: maxRoll(dicePool),
+                      },
                     });
                   }}
                 >

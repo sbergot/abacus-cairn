@@ -10,7 +10,7 @@ import { MenuEntry } from "@/components/ui/menu-entry";
 import { WeakEmph } from "@/components/ui/typography";
 import { Gear, GearContent } from "@/lib/game/cairn/types";
 import { ILens } from "@/lib/types";
-import { getSubLens, getSubArrayLens, uuidv4 } from "@/lib/utils";
+import { getSubLens, uuidv4, getSubArrayLensById } from "@/lib/utils";
 import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
@@ -51,7 +51,7 @@ function GameItemHeader({ entryLens, itemsLens }: GameItemHeaderProps) {
           <div className="flex-grow text-left">Share</div>
         </Button>
       </MenuEntry>
-      <GmContentMenuItems lens={entryLens} />
+      <GmContentMenuItems lens={entryLens} categoryType="item" />
       <MenuEntry>
         <DeleteMenuItem collectionLens={itemsLens} entry={entry} type="item" />
       </MenuEntry>
@@ -100,8 +100,8 @@ export function AllItems({ itemCategoryLens }: AllNpcsProps) {
               )
               .toSorted((a, b) => a.name.localeCompare(b.name))
               .slice(0, 20)
-              .map((item, idx) => {
-                const itemLens = getSubArrayLens(itemsLens, idx);
+              .map((item) => {
+                const itemLens = getSubArrayLensById(itemsLens, item.id);
                 return (
                   <Card key={item.id} className="max-w-xs w-full">
                     <GameItemHeader

@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { getAllNpcs, hurt } from "@/lib/game/cairn/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonLike } from "../ui/button-like";
 import { findById } from "@/lib/utils";
 import { Undo2Icon } from "lucide-react";
@@ -26,6 +26,11 @@ export function GmDealDamageDialog({ damages }: Props) {
   const gameLens = useCurrentGame();
   const log = useLoggerContext();
   const searchLens = useLens("");
+
+  useEffect(() => {
+    setSelectedCategory(null);
+    searchLens.setState(() => "");
+  }, [open]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

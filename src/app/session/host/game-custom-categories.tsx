@@ -8,7 +8,7 @@ import { NewCustomEntryDialog } from "@/components/ui/new-custom-entry-dialog";
 import { WeakEmph } from "@/components/ui/typography";
 import { BaseCategory, CustomEntry } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
-import { getSubArrayLens, getSubLens } from "@/lib/utils";
+import { getSubArrayLensById, getSubLens } from "@/lib/utils";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
 import { SearchInput } from "@/components/ui/search-input";
@@ -48,8 +48,8 @@ export function AllEntriesForCategory({
           )
           .toSorted((a, b) => a.name.localeCompare(b.name))
           .slice(0, 20)
-          .map((entry, idx) => {
-            const entryLens = getSubArrayLens(entriesLens, idx);
+          .map((entry) => {
+            const entryLens = getSubArrayLensById(entriesLens, entry.id);
             return (
               <Card key={entry.id} className="max-w-xs w-full">
                 <CustomEntryHeader
@@ -86,7 +86,7 @@ function CustomEntryHeader({
       <MenuEntry>
         <EditCustomEntryDialog lens={entryLens} title={`Edit ${category}`} />
       </MenuEntry>
-      <GmContentMenuItems lens={entryLens} />
+      <GmContentMenuItems lens={entryLens} categoryType="misc" />
       <MenuEntry>
         <DeleteMenuItem
           collectionLens={categoryLens}

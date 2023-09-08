@@ -11,7 +11,7 @@ import {
 import { ShowCairnMessage } from "@/components/cairn/show-cairn-message";
 import { Shop } from "@/components/cairn/shop";
 import { useUrlParams } from "@/lib/hooks";
-import { getSubLens, getSubArrayLens } from "@/lib/utils";
+import { getSubLens, getSubArrayLensById } from "@/lib/utils";
 import { ILens } from "@/lib/types";
 
 export default function Session() {
@@ -38,8 +38,7 @@ function HirelingShop() {
   const { npcId } = useUrlParams();
   if (npcId !== undefined) {
     const npcsLens = getSubLens(charLens, "hireLings");
-    const idx = npcsLens.state.findIndex((n) => n.id === npcId);
-    const npcLens = getSubArrayLens(npcsLens, idx);
+    const npcLens = getSubArrayLensById(npcsLens, npcId);
     shoppingCharLens = npcLens;
   }
 

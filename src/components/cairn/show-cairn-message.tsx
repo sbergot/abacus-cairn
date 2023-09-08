@@ -31,13 +31,23 @@ export function ShowCairnMessage({
     return (
       <>
         <div>
-          1d{m.props.dice} → {m.props.result}
+          {m.props.dice.number === 1 && (
+            <>
+              1d{m.props.dice.sides} → {m.props.result.rollValue}
+            </>
+          )}
+          {m.props.dice.number > 1 && (
+            <>
+              ({m.props.dice.number}d{m.props.dice.sides}){" "}
+              <DiceRoll results={m.props.result} /> → {m.props.result.rollValue}
+            </>
+          )}
         </div>
         {ctx.contextType === "player" && (
-          <TakeDamage damages={m.props.result} />
+          <TakeDamage damages={m.props.result.rollValue} />
         )}
         {ctx.contextType === "gm" && (
-          <GmDealDamageDialog damages={m.props.result} />
+          <GmDealDamageDialog damages={m.props.result.rollValue} />
         )}
       </>
     );

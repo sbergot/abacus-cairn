@@ -1,6 +1,5 @@
 import { useCurrentGame } from "@/app/cairn-context";
 import {
-  getSubArrayLens,
   getSubArrayLensById,
   getSubLens,
   uuidv4,
@@ -99,8 +98,8 @@ function CategoryList() {
         <ManageCustomItems />
       </div>
       <div className="flex flex-wrap gap-2">
-        {customCategoriesLens.state.map((category, idx) => {
-          const categoryLens = getSubArrayLens(customCategoriesLens, idx);
+        {customCategoriesLens.state.map((category) => {
+          const categoryLens = getSubArrayLensById(customCategoriesLens, category.id);
           const categoryName = categoryLens.state.name;
           return (
             <Card key={category.id} className="max-w-xs w-full">

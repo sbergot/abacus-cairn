@@ -75,21 +75,6 @@ export function getSubLens<T, K extends keyof T>(
   };
 }
 
-export function getSubArrayLens<T>(
-  lens: ILens<T[]>,
-  key: number
-): ILens<T> {
-  return {
-    state: lens.state[key],
-    setState: (recipe) => lens.setState((d) => {
-      const result = recipe(d[key]);
-      if (result !== undefined) {
-        d[key] = result as any;
-      }
-    }),
-  };
-}
-
 export function getSubRecordLens<T>(
   lens: ILens<Record<string, T>>,
   key: string

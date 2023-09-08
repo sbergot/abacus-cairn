@@ -1,6 +1,6 @@
 import { ChatMessage } from "@/lib/network/types";
 import { BaseGame, Gauge, GmContent } from "../types";
-import { DiceRollAnalysis } from "@/lib/dice/types";
+import { DicePool, DiceRollAnalysis } from "@/lib/dice/types";
 
 export type AbilityType = "strength" | "dexterity" | "willpower";
 
@@ -63,6 +63,7 @@ export interface Gear {
   charges?: Gauge;
   price?: number;
   damage?: number;
+  damageDiceNbr?: number;
   armor?: number;
 }
 
@@ -81,8 +82,8 @@ export interface AbilityRollAnalysis {
 }
 
 export interface AttackRollResult {
-  dice: number;
-  result: number;
+  dice: DicePool;
+  result: DiceRollAnalysis;
 }
 
 export type CairnMessage =
