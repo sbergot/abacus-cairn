@@ -114,7 +114,7 @@ export function useTickingTimers() {
     let previousRunningTimerIds = lensRef.current.state
       .filter((t) => !t.isPaused)
       .map((t) => t.id);
-    setInterval(() => {
+    const handle = setInterval(() => {
       const nextRunningTimerIds = lensRef.current.state
         .filter((t) => !t.isPaused)
         .map((t) => t.id);
@@ -133,5 +133,9 @@ export function useTickingTimers() {
         });
       });
     }, 1000);
+
+    return () => {
+      clearInterval(handle);
+    }
   }, []);
 }
