@@ -11,6 +11,8 @@ import { ILens } from "@/lib/types";
 import { getSubArrayLens, getSubLens } from "@/lib/utils";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
+import { SearchInput } from "@/components/ui/search-input";
+import { useLens } from "@/lib/hooks";
 
 interface AllEntriesForCategoryProps {
   categoryLens: ILens<BaseCategory<"misc", {}>>;
@@ -19,6 +21,7 @@ interface AllEntriesForCategoryProps {
 export function AllEntriesForCategory({
   categoryLens,
 }: AllEntriesForCategoryProps) {
+  const searchLens = useLens("");
   const entriesLens = getSubLens(categoryLens, "entries");
   const categoryName = categoryLens.state.name;
   return (
@@ -33,24 +36,30 @@ export function AllEntriesForCategory({
           }
         />
         <RandomEntryDialog lens={entriesLens} name={categoryName} />
+        <SearchInput lens={searchLens} />
       </div>
       <div className="flex flex-wrap gap-2 w-full">
-        {entriesLens.state.map((entry, idx) => {
-          const entryLens = getSubArrayLens(entriesLens, idx);
-          return (
-            <Card key={entry.id} className="max-w-xs w-full">
-              <CustomEntryHeader
-                categoryLens={entriesLens}
-                entryLens={entryLens}
-                category={categoryName}
-              />
-              <CardContent>
-                <div>{entry.description}</div>
-                <WeakEmph>{entry.privateNotes}</WeakEmph>
-              </CardContent>
-            </Card>
-          );
-        })}
+        {entriesLens.state
+          .filter((i) =>
+            i.name.toLowerCase().includes(searchLens.state.toLowerCase())
+          )
+          .toSorted((a, b) => a.name.localeCompare(b.name))
+          .map((entry, idx) => {
+            const entryLens = getSubArrayLens(entriesLens, idx);
+            return (
+              <Card key={entry.id} className="max-w-xs w-full">
+                <CustomEntryHeader
+                  categoryLens={entriesLens}
+                  entryLens={entryLens}
+                  category={categoryName}
+                />
+                <CardContent>
+                  <div>{entry.description}</div>
+                  <WeakEmph>{entry.privateNotes}</WeakEmph>
+                </CardContent>
+              </Card>
+            );
+          })}
       </div>
     </div>
   );

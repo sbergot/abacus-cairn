@@ -15,6 +15,8 @@ import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
 import { BaseCategory } from "@/lib/game/types";
+import { SearchInput } from "@/components/ui/search-input";
+import { useLens } from "@/lib/hooks";
 
 function NpcTools({ characterLens }: { characterLens: ILens<CairnNpc> }) {
   const log = useLoggerContext();
@@ -72,6 +74,7 @@ interface AllNpcsProps {
 
 export function AllNpcs({ charCategoryLens }: AllNpcsProps) {
   const entriesLens = getSubLens(charCategoryLens, "entries");
+  const searchLens = useLens("");
   return (
     <div className="flex flex-col gap-2 items-start">
       <div className="flex flex-wrap items-center gap-2">
@@ -85,16 +88,20 @@ export function AllNpcs({ charCategoryLens }: AllNpcsProps) {
           }}
         />
         <RandomEntryDialog lens={entriesLens} name="npc" />
+        <SearchInput lens={searchLens} />
       </div>
       {entriesLens.state.length === 0 && <WeakEmph>No NPC defined</WeakEmph>}
       {entriesLens.state.length > 0 && (
-        <CharacterCollection<CairnNpc>
-          charType="npc"
-          lens={entriesLens}
-          HeaderMenu={NpcTools}
-          Edit={NpcEdit}
-          Details={NpcDetails}
-        />
+        <>
+          <CharacterCollection<CairnNpc>
+            charType="npc"
+            lens={entriesLens}
+            searchFilter={searchLens.state}
+            HeaderMenu={NpcTools}
+            Edit={NpcEdit}
+            Details={NpcDetails}
+          />
+        </>
       )}
     </div>
   );

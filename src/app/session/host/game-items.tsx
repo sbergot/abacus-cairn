@@ -15,6 +15,8 @@ import { Share2Icon } from "lucide-react";
 import { RandomEntryDialog } from "./random-entry-dialog";
 import { BackLink } from "./back-link";
 import { BaseCategory } from "@/lib/game/types";
+import { SearchInput } from "@/components/ui/search-input";
+import { useLens } from "@/lib/hooks";
 
 interface GameItemHeaderProps {
   entryLens: ILens<GearContent>;
@@ -63,6 +65,7 @@ interface AllNpcsProps {
 
 export function AllItems({ itemCategoryLens }: AllNpcsProps) {
   const itemsLens = getSubLens(itemCategoryLens, "entries");
+  const searchLens = useLens("");
 
   return (
     <div className="flex flex-col gap-2 items-start">
@@ -76,29 +79,40 @@ export function AllItems({ itemCategoryLens }: AllNpcsProps) {
                 excludedFromRandomPick: false,
                 privateNotes: "",
                 visibleToAll: false,
-                id: uuidv4()
+                id: uuidv4(),
               });
             });
           }}
         />
         <RandomEntryDialog lens={itemsLens} name="item" />
+        <SearchInput lens={searchLens} />
       </div>
       {itemsLens.state.length === 0 && <div>No item defined</div>}
       {itemsLens.state.length > 0 && (
-        <div className="flex flex-wrap w-full gap-2">
-          {itemsLens.state.map((item, idx) => {
-            const itemLens = getSubArrayLens(itemsLens, idx);
-            return (
-              <Card key={item.id} className="max-w-xs w-full">
-                <GameItemHeader itemsLens={itemsLens} entryLens={itemLens} />
-                <CardContent>
-                  <div>{item.description}</div>
-                  <WeakEmph>{item.privateNotes}</WeakEmph>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+        <>
+          <div className="flex flex-wrap w-full gap-2">
+            {itemsLens.state
+              .filter((i) =>
+                i.name.toLowerCase().includes(searchLens.state.toLowerCase())
+              )
+              .toSorted((a, b) => a.name.localeCompare(b.name))
+              .map((item, idx) => {
+                const itemLens = getSubArrayLens(itemsLens, idx);
+                return (
+                  <Card key={item.id} className="max-w-xs w-full">
+                    <GameItemHeader
+                      itemsLens={itemsLens}
+                      entryLens={itemLens}
+                    />
+                    <CardContent>
+                      <div>{item.description}</div>
+                      <WeakEmph>{item.privateNotes}</WeakEmph>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+          </div>
+        </>
       )}
     </div>
   );

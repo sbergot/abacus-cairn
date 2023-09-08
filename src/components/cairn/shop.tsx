@@ -1,7 +1,11 @@
 "use client";
 
 import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
-import { useCurrentCharacter, useLoggerContext, useCustomDataContext } from "@/app/cairn-context";
+import {
+  useCurrentCharacter,
+  useLoggerContext,
+  useCustomDataContext,
+} from "@/app/cairn-context";
 import {
   Table,
   TableBody,
@@ -13,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { PlusIcon, SearchIcon, Undo2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUrlParams } from "@/lib/hooks";
+import { useLens, useUrlParams } from "@/lib/hooks";
 import { ShowGear } from "@/components/cairn/show-gear";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
@@ -25,6 +29,7 @@ import {
 } from "@/lib/game/cairn/utils";
 import { NewItemDialog } from "./new-item-dialog";
 import { itemsByCategory } from "@/lib/game/cairn/items-data";
+import { SearchInput } from "../ui/search-input";
 
 export function Shop() {
   let { customItemsByCategory } = useCustomDataContext();
@@ -50,7 +55,9 @@ export function Shop() {
         <TabsList>
           <TabsTrigger value="all">All</TabsTrigger>
           {Object.keys(customItemsByCategory).map((category) => (
-            <TabsTrigger key={category} value={category}>{category}</TabsTrigger>
+            <TabsTrigger key={category} value={category}>
+              {category}
+            </TabsTrigger>
           ))}
         </TabsList>
         <TabsContent value="all">
@@ -59,7 +66,11 @@ export function Shop() {
         {Object.keys(customItemsByCategory).map((category) => (
           <TabsContent key={category} value={category}>
             <ShopTable
-              items={customItemsByCategory![category as keyof typeof customItemsByCategory]}
+              items={
+                customItemsByCategory![
+                  category as keyof typeof customItemsByCategory
+                ]
+              }
             />
           </TabsContent>
         ))}
@@ -97,19 +108,12 @@ function ShopTable({ items }: ShopTableProps) {
   const urlParams = useUrlParams();
   const { slotId } = urlParams;
   const router = useRouter();
-  const [search, setSearch] = useState("");
+  const searchLens = useLens("");
   const log = useLoggerContext();
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
-        <SearchIcon />
-        <Input
-          className="w-40"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+      <SearchInput lens={searchLens} />
       <Table>
         <TableHeader>
           <TableRow>
@@ -120,8 +124,10 @@ function ShopTable({ items }: ShopTableProps) {
         </TableHeader>
         <TableBody>
           {items
-            .filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
-            .sort((a, b) => a.name.localeCompare(b.name))
+            .filter((i) =>
+              i.name.toLowerCase().includes(searchLens.state.toLowerCase())
+            )
+            .toSorted((a, b) => a.name.localeCompare(b.name))
             .map((g) => (
               <TableRow key={g.id}>
                 <TableCell className="p-1">

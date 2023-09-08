@@ -23,6 +23,7 @@ import { DeleteMenuItem } from "../ui/delete-menu-item";
 interface CharacterCollectionProps<TChar extends CairnCharacter> {
   charType: string;
   lens: ILens<TChar[]>;
+  searchFilter?: string;
   HeaderMenu({ characterLens }: CharacterProp<TChar>): ReactNode;
   Edit({ characterLens }: CharacterProp<TChar>): ReactNode;
   Details({ characterLens }: CharacterProp<TChar>): ReactNode;
@@ -31,48 +32,60 @@ interface CharacterCollectionProps<TChar extends CairnCharacter> {
 export function CharacterCollection<TChar extends CairnCharacter>({
   charType,
   lens,
+  searchFilter,
   HeaderMenu,
   Edit,
   Details,
 }: CharacterCollectionProps<TChar>) {
+  let charList = lens.state;
+  if (searchFilter) {
+    charList = lens.state.filter((i) =>
+      i.name.toLowerCase().includes(searchFilter.toLowerCase())
+    );
+  }
   return (
     <div className="flex flex-col gap-2 items-start">
-      {lens.state.map((npc, idx) => {
-        const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
-        return (
-          <CurrentCharacterContextProvider key={npc.id} value={charLens as any as ILens<CairnCharacter>}>
-            <Card>
-              <CardHeaderWithMenu title={npc.name}>
-                <MenuEntry>
-                  <EditCharStats>
-                    <Edit characterLens={charLens} />
-                  </EditCharStats>
-                </MenuEntry>
-                <MenuEntry>
-                  <CharacterDescriptionDialog>
-                    <Details characterLens={charLens} />
-                  </CharacterDescriptionDialog>
-                </MenuEntry>
-                <MenuEntry>
-                  <CharacterInventoryDialog />
-                </MenuEntry>
-                <MenuEntry>
-                  <DeleteMenuItem
-                    collectionLens={lens}
-                    entry={npc}
-                    type={charType}
-                  />
-                </MenuEntry>
-                <HeaderMenu characterLens={charLens} />
-              </CardHeaderWithMenu>
-              <CardContent>
-                <CharacterStats />
-                <CharacterAttacks />
-              </CardContent>
-            </Card>
-          </CurrentCharacterContextProvider>
-        );
-      })}
+      {charList
+        .toSorted((a, b) => a.name.localeCompare(b.name))
+        .map((npc, idx) => {
+          const charLens: ILens<TChar> = getSubArrayLens(lens, idx);
+          return (
+            <CurrentCharacterContextProvider
+              key={npc.id}
+              value={charLens as any as ILens<CairnCharacter>}
+            >
+              <Card>
+                <CardHeaderWithMenu title={npc.name}>
+                  <MenuEntry>
+                    <EditCharStats>
+                      <Edit characterLens={charLens} />
+                    </EditCharStats>
+                  </MenuEntry>
+                  <MenuEntry>
+                    <CharacterDescriptionDialog>
+                      <Details characterLens={charLens} />
+                    </CharacterDescriptionDialog>
+                  </MenuEntry>
+                  <MenuEntry>
+                    <CharacterInventoryDialog />
+                  </MenuEntry>
+                  <MenuEntry>
+                    <DeleteMenuItem
+                      collectionLens={lens}
+                      entry={npc}
+                      type={charType}
+                    />
+                  </MenuEntry>
+                  <HeaderMenu characterLens={charLens} />
+                </CardHeaderWithMenu>
+                <CardContent>
+                  <CharacterStats />
+                  <CharacterAttacks />
+                </CardContent>
+              </Card>
+            </CurrentCharacterContextProvider>
+          );
+        })}
     </div>
   );
 }
