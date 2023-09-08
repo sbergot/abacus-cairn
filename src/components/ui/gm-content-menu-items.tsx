@@ -12,7 +12,7 @@ import { CategoryType, GmContent } from "@/lib/game/types";
 import { ButtonLike } from "./button-like";
 import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import { useCurrentGame } from "@/app/cairn-context";
-import { clone, findById, getSubArrayLensById, getSubLens } from "@/lib/utils";
+import { clone, getSubArrayLensById, getSubLens } from "@/lib/utils";
 import { useState } from "react";
 
 interface Props<T> {

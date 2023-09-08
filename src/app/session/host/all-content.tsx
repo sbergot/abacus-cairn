@@ -20,6 +20,7 @@ import { StrongEmph, WeakEmph } from "@/components/ui/typography";
 import { CairnCharacter, Gear } from "@/lib/game/cairn/types";
 import { BaseCategory } from "@/lib/game/types";
 import { ILens } from "@/lib/types";
+import { ManageGameContent } from "./manage-game-content";
 
 interface CategoryLinkProps {
   name: string;
@@ -96,6 +97,7 @@ function CategoryList() {
           }
         />
         <ManageCustomItems />
+        <ManageGameContent />
       </div>
       <div className="flex flex-wrap gap-2">
         {customCategoriesLens.state.map((category) => {

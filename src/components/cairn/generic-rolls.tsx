@@ -3,7 +3,7 @@ import { DicesIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { pickRandom, roll } from "@/lib/random";
+import { pickRandom } from "@/lib/random";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { scars } from "@/lib/game/cairn/other-data";
 import { DiceSelect } from "./dice-select";
