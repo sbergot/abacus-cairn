@@ -66,12 +66,14 @@ interface AllNpcsProps {
 export function AllItems({ itemCategoryLens }: AllNpcsProps) {
   const itemsLens = getSubLens(itemCategoryLens, "entries");
   const searchLens = useLens("");
+  const categoryName = itemCategoryLens.state.name;
 
   return (
     <div className="flex flex-col gap-2 items-start">
       <div className="flex flex-wrap gap-2 items-center">
         <BackLink />
         <NewGameItemDialog
+          categoryName={categoryName}
           onCreate={(g) => {
             itemsLens.setState((d) => {
               d.push({
@@ -84,13 +86,13 @@ export function AllItems({ itemCategoryLens }: AllNpcsProps) {
             });
           }}
         />
-        <RandomEntryDialog lens={itemsLens} name="item" />
+        <RandomEntryDialog lens={itemsLens} name={categoryName} />
         <SearchInput lens={searchLens} />
       </div>
       {itemsLens.state.length > 20 && (
         <WeakEmph>Results limited to the first 20 entries</WeakEmph>
       )}
-      {itemsLens.state.length === 0 && <div>No item defined</div>}
+      {itemsLens.state.length === 0 && <WeakEmph>No {categoryName} defined</WeakEmph>}
       {itemsLens.state.length > 0 && (
         <>
           <div className="flex flex-wrap w-full gap-2">

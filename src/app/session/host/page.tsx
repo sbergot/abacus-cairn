@@ -158,7 +158,7 @@ function AllTimers() {
           })
         }
       />
-      {timersLens.state.length === 0 && <div>No timer defined</div>}
+      {timersLens.state.length === 0 && <WeakEmph>No timer defined</WeakEmph>}
       <div className="flex flex-wrap gap-4">
         {timersLens.state.map((timer) => (
           <TimerControl
@@ -186,7 +186,7 @@ function AllClocks() {
           })
         }
       />
-      {clocksLens.state.length === 0 && <div>No clock defined</div>}
+      {clocksLens.state.length === 0 && <WeakEmph>No clock defined</WeakEmph>}
       <div className="flex flex-wrap gap-4">
         {clocksLens.state.map((clock, idx) => (
           <ClockControl

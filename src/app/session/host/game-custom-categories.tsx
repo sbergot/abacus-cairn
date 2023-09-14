@@ -41,30 +41,33 @@ export function AllEntriesForCategory({
       {entriesLens.state.length > 20 && (
         <WeakEmph>Results limited to the first 20 entries</WeakEmph>
       )}
-      <div className="flex flex-wrap gap-2 w-full">
-        {entriesLens.state
-          .filter((i) =>
-            i.name.toLowerCase().includes(searchLens.state.toLowerCase())
-          )
-          .toSorted((a, b) => a.name.localeCompare(b.name))
-          .slice(0, 20)
-          .map((entry) => {
-            const entryLens = getSubArrayLensById(entriesLens, entry.id);
-            return (
-              <Card key={entry.id} className="max-w-xs w-full">
-                <CustomEntryHeader
-                  categoryLens={entriesLens}
-                  entryLens={entryLens}
-                  category={categoryName}
-                />
-                <CardContent>
-                  <div>{entry.description}</div>
-                  <WeakEmph>{entry.privateNotes}</WeakEmph>
-                </CardContent>
-              </Card>
-            );
-          })}
-      </div>
+      {entriesLens.state.length === 0 && <WeakEmph>No {categoryName} defined</WeakEmph>}
+      {entriesLens.state.length > 0 && (
+        <div className="flex flex-wrap gap-2 w-full">
+          {entriesLens.state
+            .filter((i) =>
+              i.name.toLowerCase().includes(searchLens.state.toLowerCase())
+            )
+            .toSorted((a, b) => a.name.localeCompare(b.name))
+            .slice(0, 20)
+            .map((entry) => {
+              const entryLens = getSubArrayLensById(entriesLens, entry.id);
+              return (
+                <Card key={entry.id} className="max-w-xs w-full">
+                  <CustomEntryHeader
+                    categoryLens={entriesLens}
+                    entryLens={entryLens}
+                    category={categoryName}
+                  />
+                  <CardContent>
+                    <div>{entry.description}</div>
+                    <WeakEmph>{entry.privateNotes}</WeakEmph>
+                  </CardContent>
+                </Card>
+              );
+            })}
+        </div>
+      )}
     </div>
   );
 }

@@ -61,28 +61,28 @@ export function initGame(name: string): CairnGame {
     content: [
       {
         id: uuidv4(),
-        name: "NPCs",
+        name: "NPC",
         type: "character",
         entries: [],
         description: "",
       },
       {
         id: uuidv4(),
-        name: "Items",
+        name: "Item",
         type: "item",
         entries: [],
         description: "",
       },
       {
         id: uuidv4(),
-        name: "Locations",
+        name: "Location",
         type: "misc",
         entries: [],
         description: "",
       },
       {
         id: uuidv4(),
-        name: "Monsters",
+        name: "Monster",
         type: "character",
         entries: monsters.map(m => clone(m)),
         description: "",

@@ -75,26 +75,29 @@ interface AllNpcsProps {
 export function AllNpcs({ charCategoryLens }: AllNpcsProps) {
   const entriesLens = getSubLens(charCategoryLens, "entries");
   const searchLens = useLens("");
+  const categoryName = charCategoryLens.state.name;
   return (
     <div className="flex flex-col gap-2 items-start">
       <div className="flex flex-wrap items-center gap-2">
         <BackLink />
         <NewCharacterDialog
-          charType="npc"
+          charType={categoryName}
           onCreate={(c) => {
             entriesLens.setState((d) => {
               d.push(newNpc(c) as Draft<CairnNpc>);
             });
           }}
         />
-        <RandomEntryDialog lens={entriesLens} name="npc" />
+        <RandomEntryDialog lens={entriesLens} name={categoryName} />
         <SearchInput lens={searchLens} />
       </div>
-      {entriesLens.state.length === 0 && <WeakEmph>No NPC defined</WeakEmph>}
+      {entriesLens.state.length === 0 && (
+        <WeakEmph>No {categoryName} defined</WeakEmph>
+      )}
       {entriesLens.state.length > 0 && (
         <>
           <CharacterCollection<CairnNpc>
-            charType="npc"
+            charType={categoryName}
             lens={entriesLens}
             searchFilter={searchLens.state}
             HeaderMenu={NpcTools}

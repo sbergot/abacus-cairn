@@ -8,15 +8,16 @@ import { CustomEntryEdit } from "./custom-entry-edit";
 import { ILens } from "@/lib/types";
 
 interface Props {
+  categoryName: string;
   onCreate(g: GearContent): void;
 }
 
-export function NewGameItemDialog({ onCreate }: Props) {
+export function NewGameItemDialog({ onCreate, categoryName }: Props) {
   return (
     <NewObjectDialog<GearContent>
       trigger={
         <ButtonLike>
-          <PackagePlusIcon /> New item
+          <PackagePlusIcon /> New {categoryName}
         </ButtonLike>
       }
       initialValue={{
@@ -29,7 +30,7 @@ export function NewGameItemDialog({ onCreate }: Props) {
       }}
       onCreate={onCreate}
       validate={(g) => !!g.name}
-      title="Custom item"
+      title={`Custom ${categoryName}`}
     >
       {(lens) => (
         <>
